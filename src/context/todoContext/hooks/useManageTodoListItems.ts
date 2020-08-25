@@ -1,0 +1,45 @@
+import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
+import { useState, useEffect } from 'react';
+import type { TodoListItem, Mode } from '../../../model/TodoListItem';
+import {
+    applyUpdate,
+    applyModeChange,
+    applyDelete,
+    applyEditFirst,
+} from '../utility/todosMutators';
+import { get as getItemsFromStorage } from '../../../model/repository/todoListItemRepository';
+
+export type ChangeItemHandler = (
+    id: string,
+    value: string,
+    done: boolean,
+) => void;
+
+export type DeleteItemHandler = (id: string) => void;
+
+export type SetItemModeHandler = (id: string, mode: Mode) => void;
+
+export type StartEditFirstHandler = () => void;
+
+export default function useManageTodoListItems() {
+    const [items, setItems] = useState<TodoListItem[]>(getItemsFromStorage);
+
+    useEffect(() => {
+        if (items.length === 0) {
+            setItems(createInitialCollection());
+        }
+    }, [items]);
+
+    const changeItem: ChangeItemHandler = (id, value, done) =>
+        setItems((currentItems) => applyUpdate(currentItems, id, value, done));
+
+    const deleteItem: DeleteItemHandler = (id) =>
+        setItems((currentItems) => applyDelete(currentItems, id));
+
+    const setItemMode: SetItemModeHandler = (id, mode) =>
+        setItems((items) => applyModeChange(items, id, mode));
+
+    const startEditFirst: StartEditFirstHandler = () => applyEditFirst(items);
+
+    return { items, setItemMode, deleteItem, changeItem, startEditFirst };
+}

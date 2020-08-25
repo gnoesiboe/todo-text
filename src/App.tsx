@@ -1,28 +1,19 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Container, Row, Col } from 'react-bootstrap';
+import TodoList from './features/todoList/TodoList';
+import { TodoContextProvider } from './context/todoContext/TodoContext';
 
-interface AppProps {}
-
-function App({}: AppProps) {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
-}
+const App: React.FC = () => (
+    <Container fluid="sm">
+        <Row>
+            <Col md={{ span: 6, offset: 3 }}>
+                <TodoContextProvider>
+                    <TodoList />
+                </TodoContextProvider>
+            </Col>
+        </Row>
+    </Container>
+);
 
 export default App;
