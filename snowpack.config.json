@@ -1,4 +1,5 @@
 {
-  "extends": "@snowpack/app-scripts-react",
-  "plugins": []
+    "extends": "@snowpack/app-scripts-react",
+    "plugins": [],
+    "install": ["bootstrap/dist/css/bootstrap.css"]
 }

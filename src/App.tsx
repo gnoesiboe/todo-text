@@ -3,6 +3,7 @@ import './App.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import TodoList from './features/todoList/TodoList';
 import { TodoContextProvider } from './context/todoContext/TodoContext';
+import 'bootstrap/dist/css/bootstrap.css';
 
 const App: React.FC = () => (
     <Container fluid="sm">
