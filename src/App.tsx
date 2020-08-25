@@ -6,15 +6,17 @@ import { TodoContextProvider } from './context/todoContext/TodoContext';
 import 'bootstrap/dist/css/bootstrap.css';
 
 const App: React.FC = () => (
-    <Container fluid="sm">
-        <Row>
-            <Col md={{ span: 6, offset: 3 }}>
-                <TodoContextProvider>
-                    <TodoList />
-                </TodoContextProvider>
-            </Col>
-        </Row>
-    </Container>
+    <div className="app">
+        <Container fluid="sm">
+            <Row>
+                <Col md={{ span: 8, offset: 2 }}>
+                    <TodoContextProvider>
+                        <TodoList />
+                    </TodoContextProvider>
+                </Col>
+            </Row>
+        </Container>
+    </div>
 );
 
 export default App;
