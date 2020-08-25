@@ -32,3 +32,8 @@
     font-weight: bold;
     text-transform: uppercase;
 }
+
+.todo-list-item__value--tag {
+    color: #999;
+    font-size: 0.9em;
+}

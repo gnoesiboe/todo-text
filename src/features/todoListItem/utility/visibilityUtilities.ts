@@ -1,7 +1,7 @@
 import { isHeading } from './../../../model/TodoListItem';
 import type { TodoListItem } from '../../../model/TodoListItem';
 
-const replaceDeletedSigns = (value: string) => {
+const applyStrikeThrough = (value: string) => {
     return value.replace(
         /~~([^~]+)~~/,
         '<span class="todo-list-item__value--removed">$1</span>',
@@ -10,6 +10,17 @@ const replaceDeletedSigns = (value: string) => {
 
 const applyLineBreaks = (value: string) => {
     return value.replace(/\n/g, '<br />');
+};
+
+const applyStrong = (value: string) => {
+    return value.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+};
+
+const applyTagging = (value: string) => {
+    return value.replace(
+        /(\@[^\s]+)/g,
+        '<i class="todo-list-item__value--tag">$1</i>',
+    );
 };
 
 const formatAsHeading = (value: string) => {
@@ -24,5 +35,7 @@ export const prepareForVisibility = (item: TodoListItem): string => {
         return formatAsHeading(item.value);
     }
 
-    return replaceDeletedSigns(applyLineBreaks(item.value));
+    return applyTagging(
+        applyStrong(applyStrikeThrough(applyLineBreaks(item.value))),
+    );
 };
