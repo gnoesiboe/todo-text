@@ -28,12 +28,17 @@
     text-decoration: line-through;
 }
 
-.todo-list-item__value--heading {
+.todo-list-item__value__heading {
     font-weight: bold;
     text-transform: uppercase;
 }
 
-.todo-list-item__value--tag {
+.todo-list-item__value__tag {
     color: #999;
     font-size: 0.9em;
+}
+
+.todo-list-item__value__link {
+    color: #333;
+    text-decoration: underline;
 }

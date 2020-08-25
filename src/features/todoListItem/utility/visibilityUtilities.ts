@@ -19,14 +19,21 @@ const applyStrong = (value: string) => {
 const applyTagging = (value: string) => {
     return value.replace(
         /(\@[^\s]+)/g,
-        '<i class="todo-list-item__value--tag">$1</i>',
+        '<i class="todo-list-item__value__tag">$1</i>',
+    );
+};
+
+const applyLinks = (value: string) => {
+    return value.replace(
+        /\[([^\]]+)\]\(([^)]+)\)/g,
+        '<a href="$2" class="todo-list-item__value__link" target="_blank" rel="noreferrer">$1</a>',
     );
 };
 
 const formatAsHeading = (value: string) => {
     return value.replace(
         /^# (.+)$/g,
-        '<span class="todo-list-item__value--heading">$1</span>',
+        '<span class="todo-list-item__value__heading">$1</span>',
     );
 };
 
@@ -36,6 +43,8 @@ export const prepareForVisibility = (item: TodoListItem): string => {
     }
 
     return applyTagging(
-        applyStrong(applyStrikeThrough(applyLineBreaks(item.value))),
+        applyLinks(
+            applyStrong(applyStrikeThrough(applyLineBreaks(item.value))),
+        ),
     );
 };
