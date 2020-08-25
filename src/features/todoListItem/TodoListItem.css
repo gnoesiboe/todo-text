@@ -42,3 +42,8 @@
     color: #333;
     text-decoration: underline;
 }
+
+.todo-list-item__value__project {
+    font-weight: bold;
+    text-transform: uppercase;
+}
