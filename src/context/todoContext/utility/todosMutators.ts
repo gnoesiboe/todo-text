@@ -1,3 +1,4 @@
+import { isBeingEdited } from './../../../model/TodoListItem';
 import { NextAction } from './../hooks/useManageTodoListItems';
 import { applyIsEditingAnItemSelector } from './../../../model/selectors/todoListItemSelectors';
 import { createEmptyToEdit } from '../../../model/factory/todoListItemFactory';
@@ -78,5 +79,26 @@ export function applyEditFirst(currentItems: TodoListItem[]): TodoListItem[] {
         }
 
         nextItems[0].mode = Mode.Edit;
+    });
+}
+
+export function applyEditNext(currentItems: TodoListItem[]): TodoListItem[] {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        const indexOfItemThatIsEdited = nextItems.findIndex((item) =>
+            isBeingEdited(item),
+        );
+
+        if (indexOfItemThatIsEdited === -1) {
+            return;
+        }
+
+        const nextIndex = indexOfItemThatIsEdited + 1;
+
+        if (nextItems[nextIndex] === undefined) {
+            return;
+        }
+
+        nextItems[indexOfItemThatIsEdited].mode = Mode.View;
+        nextItems[nextIndex].mode = Mode.Edit;
     });
 }

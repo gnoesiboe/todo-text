@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import './EditTodo.css';
 import TextareaAutosize from 'react-autosize-textarea';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
 import type { TodoListItem } from '../../model/TodoListItem';
+import useSaveAndNavigateToNextItemOnDownKeyPressed from './hooks/useSaveAndNavigateToNextItemOnDownKeyPressed';
 
 export type OnChangeHandler = (newValue: string) => void;
 
@@ -11,6 +12,10 @@ type Props = {
 };
 
 const EditTodo: React.FC<Props> = ({ item }) => {
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+
+    useSaveAndNavigateToNextItemOnDownKeyPressed(textareaRef);
+
     const {
         value,
         onSubmit,
@@ -22,6 +27,7 @@ const EditTodo: React.FC<Props> = ({ item }) => {
     return (
         <form onSubmit={onSubmit} className="edit-todo">
             <TextareaAutosize
+                ref={textareaRef}
                 autoFocus
                 value={value}
                 className="edit-todo__textarea"
