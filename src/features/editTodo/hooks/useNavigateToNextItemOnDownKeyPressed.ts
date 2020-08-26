@@ -1,14 +1,18 @@
-import { KeyCode } from './../../../constants/keyCodes';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { NextAction } from '../../../context/todoContext/hooks/useManageTodoListItems';
+import type { TodoListItem } from '../../../model/TodoListItem';
+import { KeyCode } from '../../../constants/keyCodes';
+import { useTodoContext } from '../../../context/todoContext/TodoContext';
 import { RefObject, useEffect } from 'react';
 
-export default function useSaveAndNavigateToNextItemOnDownKeyPressed(
+export default function useNavigateToNextItemOnDownKeyPressed(
     textareaRef: RefObject<HTMLTextAreaElement>,
+    item: TodoListItem,
+    value: string,
 ) {
-    const { editNext } = useTodoContext();
+    const { changeItem } = useTodoContext();
 
     useEffect(() => {
-        const onKeyDown = (event: WindowEventMap['keydown']) => {
+        const onKeyDown = (event: WindowEventMap['keyup']) => {
             if (event.keyCode !== KeyCode.Down) {
                 return;
             }
@@ -31,11 +35,11 @@ export default function useSaveAndNavigateToNextItemOnDownKeyPressed(
                 return;
             }
 
-            editNext();
+            changeItem(item.id, value, item.done, NextAction.EditNext);
         };
 
-        window.addEventListener('keydown', onKeyDown);
+        window.addEventListener('keyup', onKeyDown);
 
-        return () => window.removeEventListener('keydown', onKeyDown);
-    }, []);
+        return () => window.removeEventListener('keyup', onKeyDown);
+    }, [value, item, textareaRef.current]);
 }

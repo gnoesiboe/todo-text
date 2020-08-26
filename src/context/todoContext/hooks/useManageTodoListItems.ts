@@ -11,8 +11,8 @@ import {
 import { get as getItemsFromStorage } from '../../../model/repository/todoListItemRepository';
 
 export enum NextAction {
-    EditNext,
-    None,
+    EditNext = 'edit_next',
+    None = 'node',
 }
 
 export type ChangeItemHandler = (
