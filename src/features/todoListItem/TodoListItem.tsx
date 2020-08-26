@@ -4,6 +4,7 @@ import {
     Mode,
     isCancelled,
     isHeading,
+    isBeingEdited,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import './TodoListItem.css';
@@ -34,6 +35,7 @@ const TodoListItem: React.FC<Props> = ({ item }) => {
     const className = createClassName('todo-list-item', {
         'todo-list-item--done': item.done,
         'todo-list-item--cancelled': isCancelled(item),
+        'todo-list-item--is-being-edited': isBeingEdited(item),
     });
 
     return (

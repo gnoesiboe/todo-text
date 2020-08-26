@@ -14,3 +14,5 @@ export const isCancelled = (item: TodoListItem) =>
     !!item.value.match(/^~~[^~]+~~$/);
 
 export const isHeading = (item: TodoListItem) => !!item.value.match(/^# .*$/);
+
+export const isBeingEdited = (item: TodoListItem) => item.mode === Mode.Edit;
