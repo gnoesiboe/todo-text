@@ -73,11 +73,7 @@ export function applyModeChange(
 
 export function applyEditFirst(currentItems: TodoListItem[]): TodoListItem[] {
     return produce<TodoListItem[]>(currentItems, (nextItems) => {
-        if (applyIsEditingAnItemSelector(nextItems)) {
-            return;
-        }
-
-        if (nextItems.length === 0) {
+        if (applyIsEditingAnItemSelector(nextItems) || nextItems.length === 0) {
             return;
         }
 

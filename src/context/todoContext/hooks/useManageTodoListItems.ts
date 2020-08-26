@@ -47,7 +47,8 @@ export default function useManageTodoListItems() {
     const setItemMode: SetItemModeHandler = (id, mode) =>
         setItems((items) => applyModeChange(items, id, mode));
 
-    const startEditFirst: StartEditFirstHandler = () => applyEditFirst(items);
+    const startEditFirst: StartEditFirstHandler = () =>
+        setItems((items) => applyEditFirst(items));
 
     return { items, setItemMode, deleteItem, changeItem, startEditFirst };
 }
