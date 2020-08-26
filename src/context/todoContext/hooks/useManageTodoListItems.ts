@@ -12,6 +12,7 @@ import { get as getItemsFromStorage } from '../../../model/repository/todoListIt
 
 export enum NextAction {
     EditNext = 'edit_next',
+    EditPrevious = 'edit_previous',
     None = 'node',
 }
 

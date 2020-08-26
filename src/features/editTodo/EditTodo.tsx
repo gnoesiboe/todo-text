@@ -4,6 +4,7 @@ import TextareaAutosize from 'react-autosize-textarea';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
 import type { TodoListItem } from '../../model/TodoListItem';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
+import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
 
 export type OnChangeHandler = (newValue: string) => void;
 
@@ -23,6 +24,7 @@ const EditTodo: React.FC<Props> = ({ item }) => {
     } = useTodoFormHandlers(item);
 
     useNavigateToNextItemOnDownKeyPressed(textareaRef, item, value);
+    useNavigateToPreviousItemOnUpKeyPressed(textareaRef, item, value);
 
     return (
         <form onSubmit={onSubmit} className="edit-todo">

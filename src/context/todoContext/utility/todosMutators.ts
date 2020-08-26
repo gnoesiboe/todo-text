@@ -23,14 +23,28 @@ export function applyUpdate(
         nextItems[indexToChange].done = done;
         nextItems[indexToChange].mode = Mode.View;
 
-        if (nextAction === NextAction.EditNext) {
-            const nextIndex = indexToChange + 1;
+        switch (nextAction) {
+            case NextAction.EditNext:
+                const nextIndex = indexToChange + 1;
 
-            if (nextIndex >= nextItems.length) {
-                nextItems.push(createEmptyToEdit());
-            } else {
-                nextItems[nextIndex].mode = Mode.Edit;
-            }
+                if (nextIndex >= nextItems.length) {
+                    nextItems.push(createEmptyToEdit());
+                } else {
+                    nextItems[nextIndex].mode = Mode.Edit;
+                }
+                break;
+
+            case NextAction.EditPrevious:
+                const previousIndex = indexToChange - 1;
+
+                if (previousIndex >= 0) {
+                    nextItems[previousIndex].mode = Mode.Edit;
+                }
+                break;
+
+            default:
+                // do nothing
+                break;
         }
     });
 }

@@ -1,3 +1,7 @@
+import {
+    checkIfThereIsTextSelected,
+    checkIfCursorIsAtTheEnd,
+} from './../utility/textareaHelpers';
 import { NextAction } from '../../../context/todoContext/hooks/useManageTodoListItems';
 import type { TodoListItem } from '../../../model/TodoListItem';
 import { KeyCode } from '../../../constants/keyCodes';
@@ -13,25 +17,12 @@ export default function useNavigateToNextItemOnDownKeyPressed(
 
     useEffect(() => {
         const onKeyDown = (event: WindowEventMap['keyup']) => {
-            if (event.keyCode !== KeyCode.Down) {
-                return;
-            }
-
-            if (!textareaRef.current) {
-                return;
-            }
-
-            const selectionStart = textareaRef.current.selectionStart;
-            const selectionEnd = textareaRef.current.selectionEnd;
-
-            // text was selected, don't continue
-            if (selectionStart !== selectionEnd) {
-                return;
-            }
-
-            const noOfCharactersInTextarea = textareaRef.current.value.length;
-
-            if (selectionStart !== noOfCharactersInTextarea) {
+            if (
+                event.keyCode !== KeyCode.Down ||
+                !textareaRef.current ||
+                checkIfThereIsTextSelected(textareaRef.current) ||
+                !checkIfCursorIsAtTheEnd(textareaRef.current)
+            ) {
                 return;
             }
 
