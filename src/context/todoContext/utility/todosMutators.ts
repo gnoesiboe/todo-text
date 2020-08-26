@@ -1,3 +1,4 @@
+import { NextAction } from './../hooks/useManageTodoListItems';
 import { applyIsEditingAnItemSelector } from './../../../model/selectors/todoListItemSelectors';
 import { createEmptyToEdit } from '../../../model/factory/todoListItemFactory';
 import { TodoListItem, Mode } from '../../../model/TodoListItem';
@@ -8,6 +9,7 @@ export function applyUpdate(
     id: string,
     value: string,
     done: boolean,
+    nextAction: NextAction,
 ): TodoListItem[] {
     return produce<TodoListItem[]>(currentItems, (nextItems) => {
         const indexToChange = nextItems.findIndex((item) => item.id === id);
@@ -16,16 +18,18 @@ export function applyUpdate(
             return;
         }
 
-        const nextIndex = indexToChange + 1;
-
         nextItems[indexToChange].value = value;
         nextItems[indexToChange].done = done;
         nextItems[indexToChange].mode = Mode.View;
 
-        if (nextIndex >= nextItems.length) {
-            nextItems.push(createEmptyToEdit());
-        } else {
-            nextItems[nextIndex].mode = Mode.Edit;
+        if (nextAction === NextAction.EditNext) {
+            const nextIndex = indexToChange + 1;
+
+            if (nextIndex >= nextItems.length) {
+                nextItems.push(createEmptyToEdit());
+            } else {
+                nextItems[nextIndex].mode = Mode.Edit;
+            }
         }
     });
 }

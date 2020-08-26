@@ -7,6 +7,7 @@ import {
     KeyboardEventHandler,
     FocusEventHandler,
 } from 'react';
+import { NextAction } from '../../..//context/todoContext/hooks/useManageTodoListItems';
 
 export default function useTodoFormHandlers(item: TodoListItem) {
     const [value, setValue] = useState<string>(item.value);
@@ -16,26 +17,26 @@ export default function useTodoFormHandlers(item: TodoListItem) {
     const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
 
-        handleSubmit();
+        handleSubmit(NextAction.EditNext);
     };
 
     const onDone = () => setItemMode(item.id, Mode.View);
 
-    const handleSubmit = () => {
+    const handleSubmit = (nextAction: NextAction) => {
         const newValue = value.trim();
 
         if (newValue.length === 0) {
             deleteItem(item.id);
         }
 
-        changeItem(item.id, newValue, item.done);
+        changeItem(item.id, newValue, item.done, nextAction);
     };
 
     const onValueKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
         event,
     ) => {
         if (event.keyCode === KeyCode.Enter && event.shiftKey === false) {
-            handleSubmit();
+            handleSubmit(NextAction.EditNext);
 
             event.preventDefault();
         }
@@ -56,7 +57,9 @@ export default function useTodoFormHandlers(item: TodoListItem) {
         setValue(value);
     };
 
-    const onValueBlur: FocusEventHandler<HTMLTextAreaElement> = () => onDone();
+    const onValueBlur: FocusEventHandler<HTMLTextAreaElement> = () => {
+        handleSubmit(NextAction.None);
+    };
 
     return { value, onSubmit, onValueKeyDown, onValueChange, onValueBlur };
 }

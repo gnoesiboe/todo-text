@@ -9,10 +9,16 @@ import {
 } from '../utility/todosMutators';
 import { get as getItemsFromStorage } from '../../../model/repository/todoListItemRepository';
 
+export enum NextAction {
+    EditNext,
+    None,
+}
+
 export type ChangeItemHandler = (
     id: string,
     value: string,
     done: boolean,
+    nextAction: NextAction,
 ) => void;
 
 export type DeleteItemHandler = (id: string) => void;
@@ -30,8 +36,10 @@ export default function useManageTodoListItems() {
         }
     }, [items]);
 
-    const changeItem: ChangeItemHandler = (id, value, done) =>
-        setItems((currentItems) => applyUpdate(currentItems, id, value, done));
+    const changeItem: ChangeItemHandler = (id, value, done, nextAction) =>
+        setItems((currentItems) =>
+            applyUpdate(currentItems, id, value, done, nextAction),
+        );
 
     const deleteItem: DeleteItemHandler = (id) =>
         setItems((currentItems) => applyDelete(currentItems, id));
