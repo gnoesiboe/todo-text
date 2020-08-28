@@ -1,3 +1,4 @@
+import { applyIsEditingAnItemSelector } from './../../../model/selectors/todoListItemSelectors';
 import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { useEffect } from 'react';
@@ -10,6 +11,12 @@ export default function useStartEditFirstOnKeyDown() {
             if (event.keyCode !== KeyCode.Down) {
                 return;
             }
+
+            if (applyIsEditingAnItemSelector(items)) {
+                return;
+            }
+
+            event.preventDefault();
 
             startEditFirst();
         };

@@ -26,6 +26,8 @@ export default function useNavigateToPreviousItemOnUpKeyPressed(
                 return;
             }
 
+            event.preventDefault();
+
             changeItem(item.id, value, item.done, NextAction.EditPrevious);
         };
 

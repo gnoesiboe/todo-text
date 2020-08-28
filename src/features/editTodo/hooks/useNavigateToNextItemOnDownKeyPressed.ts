@@ -26,6 +26,8 @@ export default function useNavigateToNextItemOnDownKeyPressed(
                 return;
             }
 
+            event.preventDefault();
+
             changeItem(item.id, value, item.done, NextAction.EditNext);
         };
 
