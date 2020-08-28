@@ -5,3 +5,9 @@
     background: #fff;
     margin-bottom: 30px;
 }
+
+.todo-list__saving-indicator {
+    float: right;
+    color: #aaa;
+    margin-top: 20px;
+}

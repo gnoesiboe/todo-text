@@ -14,6 +14,8 @@ import useManageTodoListItems, {
 
 type ContextValue = {
     items: TodoListItem[];
+    isFetching: boolean;
+    isSaving: boolean;
     changeItem: ChangeItemHandler;
     deleteItem: DeleteItemHandler;
     setItemMode: SetItemModeHandler;
@@ -25,6 +27,8 @@ type ContextValue = {
 
 const initialValue: ContextValue = {
     items: [],
+    isFetching: false,
+    isSaving: false,
     changeItem: () => {},
     deleteItem: () => {},
     setItemMode: () => {},
@@ -41,6 +45,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
 }) => {
     const {
         items,
+        isFetching,
         changeItem,
         deleteItem,
         setItemMode,
@@ -50,10 +55,12 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         moveItemDown,
     } = useManageTodoListItems();
 
-    usePersistTodoListItemsOnChange(items);
+    const { isSaving } = usePersistTodoListItemsOnChange(items, isFetching);
 
     const value: ContextValue = {
         items,
+        isFetching,
+        isSaving,
         changeItem,
         deleteItem,
         setItemMode,

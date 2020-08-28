@@ -1,3 +1,5 @@
+import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
+import { fetchTodosFromDropbox } from './../../../storage/dropbox/dropboxClient';
 import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
 import { useState, useEffect } from 'react';
 import type { TodoListItem, Mode } from '../../../model/TodoListItem';
@@ -10,7 +12,6 @@ import {
     applyMoveItemUp,
     applyMoveItemDown,
 } from '../utility/todosMutators';
-import { get as getItemsFromStorage } from '../../../model/repository/todoListItemRepository';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -40,13 +41,35 @@ export type MoveItemUpHandler = (id: string, value: string) => void;
 export type MoveItemDownHandler = (id: string, value: string) => void;
 
 export default function useManageTodoListItems() {
-    const [items, setItems] = useState<TodoListItem[]>(getItemsFromStorage);
+    const [items, setItems] = useState<TodoListItem[]>([]);
 
+    const [isFetching, setIsFetching] = useState<boolean>(false);
+
+    const { accessToken } = useAuthenticationContext();
+
+    // fetch initial data from dropbox
+    useEffect(() => {
+        if (isFetching || !accessToken) {
+            return;
+        }
+
+        setIsFetching(true);
+
+        fetchTodosFromDropbox(accessToken)
+            .then((items) => {
+                // @todo validate and normalize items
+
+                setItems(items);
+            })
+            .finally(() => setIsFetching(false));
+    }, [accessToken]);
+
+    // ensure there is always at least one item to select and edit
     useEffect(() => {
         if (items.length === 0) {
             setItems(createInitialCollection());
         }
-    }, [items]);
+    }, [items, isFetching]);
 
     const changeItem: ChangeItemHandler = (id, value, done, nextAction) =>
         setItems((currentItems) =>
@@ -73,6 +96,7 @@ export default function useManageTodoListItems() {
 
     return {
         items,
+        isFetching,
         setItemMode,
         deleteItem,
         changeItem,
