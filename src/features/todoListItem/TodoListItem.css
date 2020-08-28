@@ -5,7 +5,7 @@
     border-radius: 5px;
 }
 
-.todo-list-item__done-status {
+.todo-list-item__status-checkbox {
     position: absolute;
     left: 12px;
     top: 12px;
@@ -15,15 +15,20 @@
     margin-left: 30px;
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
-    color: #333;
+    color: #666;
 }
 
 .todo-list-item--cancelled .todo-list-item__value {
     text-decoration: line-through;
 }
 
-.todo-list-item--done .todo-list-item__value {
-    color: #bbb;
+.todo-list-item--done .todo-list-item__value,
+.todo-list-item--done .todo-list-item__value * {
+    color: #ddd;
+}
+
+.todo-list-item--done .todo-list-item__status-checkbox {
+    opacity: 0.5;
 }
 
 .todo-list-item--is-being-edited {
@@ -35,8 +40,13 @@
 }
 
 .todo-list-item__value__heading {
+    color: #e76f51;
+    display: block;
     font-weight: bold;
     text-transform: uppercase;
+    margin: 30px 0 0;
+    border-bottom: 1px solid #e76f51;
+    margin-left: -30px;
 }
 
 .todo-list-item__value__tag {

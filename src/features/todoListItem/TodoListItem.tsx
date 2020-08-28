@@ -43,7 +43,7 @@ const TodoListItem: React.FC<Props> = ({ item }) => {
             <>
                 {!isCancelled(item) && !isHeading(item) && (
                     <input
-                        className="todo-list-item__done-status"
+                        className="todo-list-item__status-checkbox"
                         type="checkbox"
                         checked={item.done}
                         onChange={onDoneChanged}
