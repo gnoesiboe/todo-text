@@ -5,6 +5,7 @@ import {
     isCancelled,
     isHeading,
     isBeingEdited,
+    isMust,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import './TodoListItem.css';
@@ -36,18 +37,20 @@ const TodoListItem: React.FC<Props> = ({ item }) => {
         'todo-list-item--done': item.done,
         'todo-list-item--cancelled': isCancelled(item),
         'todo-list-item--is-being-edited': isBeingEdited(item),
+        'todo-list-item--must': isMust(item),
     });
 
     return (
         <div className={className}>
             <>
                 {!isCancelled(item) && !isHeading(item) && (
-                    <input
-                        className="todo-list-item__status-checkbox"
-                        type="checkbox"
-                        checked={item.done}
-                        onChange={onDoneChanged}
-                    />
+                    <span className="todo-list-item__status-checkbox-wrapper">
+                        <input
+                            type="checkbox"
+                            checked={item.done}
+                            onChange={onDoneChanged}
+                        />
+                    </span>
                 )}
                 {item.mode === Mode.Edit && <EditTodo item={item} />}
                 {item.mode === Mode.View && (

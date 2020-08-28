@@ -180,6 +180,23 @@ const OperationExplanation: React.FC = () => {
                                     </span>
                                 </ExplanationOutput>
                             </ListItem>
+                            <ListItem code="@must">
+                                <p>
+                                    This is a special tag that can be used to
+                                    mark the todo as a must have for today. When
+                                    applied, the todo's checkbox will receieve
+                                    an outstanding border.
+                                </p>
+                                <p>
+                                    Within the todo text itself, it will be
+                                    formatted like every other tag:
+                                </p>
+                                <ExplanationOutput>
+                                    <span className="todo-list-item__value__tag">
+                                        @must
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
                             <ListItem code="~~some value~~">
                                 <p>
                                     Is displayed as striked through text. Can be
