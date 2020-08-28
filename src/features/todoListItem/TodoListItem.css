@@ -95,11 +95,12 @@
 }
 
 .todo-list-item__value__sub-item {
-    padding-left: 20px;
+    padding-left: 40px;
 }
 
 .todo-list-item__value__sub-item:before {
     content: '◻ ';
+    margin-left: -16px;
 }
 
 .todo-list-item__value__sub-item--checked:before {
