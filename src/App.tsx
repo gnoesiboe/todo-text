@@ -6,6 +6,8 @@ import { TodoContextProvider } from './context/todoContext/TodoContext';
 import 'bootstrap/dist/css/bootstrap.css';
 import OperationExplanation from './features/operationExplanation/OperationExplanation';
 import { AuthenticationContextProvider } from './context/authenticationContext/AuthenticationContext';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const App: React.FC = () => (
     <div className="app">
@@ -21,6 +23,7 @@ const App: React.FC = () => (
                 </Row>
             </Container>
         </AuthenticationContextProvider>
+        <ToastContainer />
     </div>
 );
 

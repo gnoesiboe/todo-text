@@ -10,3 +10,5 @@ export const save = (token: string): void => {
 };
 
 export const get = (): string | null => getFromStorage(storageNamespace, true);
+
+export const clear = () => save('');
