@@ -67,6 +67,17 @@ const OperationExplanation: React.FC = () => {
                                         </p>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <code>alt + down</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            Moves the currently selected item
+                                            down (if possible).
+                                        </p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Section>
