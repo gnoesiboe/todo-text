@@ -1,5 +1,12 @@
 {
     "extends": "@snowpack/app-scripts-react",
-    "plugins": [],
+    "plugins": [
+        [
+            "@snowpack/plugin-webpack",
+            {
+                "sourceMap": true
+            }
+        ]
+    ],
     "install": ["bootstrap/dist/css/bootstrap.css"]
 }
