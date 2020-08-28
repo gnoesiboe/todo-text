@@ -34,7 +34,7 @@ const applyLinks: Formatter = (value) => {
 
 const applyProjects: Formatter = (value) => {
     return value.replace(
-        /(\[[^\]]+\])/g,
+        /^(\[[^\]]+\])/g,
         '<span class="todo-list-item__value__project">$1</span>',
     );
 };

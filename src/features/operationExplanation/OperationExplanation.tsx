@@ -91,7 +91,9 @@ const OperationExplanation: React.FC = () => {
                                     abbrevation, like:
                                 </p>
                                 <ExplanationOutput>
-                                    <strong>[FHD]</strong>
+                                    <span className="todo-list-item__value__project">
+                                        [FHD]
+                                    </span>
                                 </ExplanationOutput>
                             </ListItem>
                             <ListItem code="**some value**">

@@ -54,3 +54,7 @@
     font-weight: bold;
     text-transform: uppercase;
 }
+
+.todo-list-item__value__project:after {
+    content: ' → ';
+}
