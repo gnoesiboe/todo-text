@@ -50,6 +50,10 @@ export default function useTodoFormHandlers(item: TodoListItem) {
             }
         }
 
+        if (event.keyCode === KeyCode.Enter && event.ctrlKey) {
+            pushNewValue(NextAction.None);
+        }
+
         if (
             checkOnlyKeyCodeIsPressed(event, KeyCode.Backspace) &&
             value.length <= 1

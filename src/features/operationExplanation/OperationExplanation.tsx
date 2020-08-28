@@ -116,6 +116,18 @@ const OperationExplanation: React.FC = () => {
                                         </p>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <code>crtl + enter</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When editing a todo, it saves any
+                                            changes you have made and then ends
+                                            the edit mode.
+                                        </p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Section>
