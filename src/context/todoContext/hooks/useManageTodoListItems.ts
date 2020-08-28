@@ -7,6 +7,7 @@ import {
     applyDelete,
     applyEditFirst,
     applyEditNext,
+    applyMoveItemUp,
 } from '../utility/todosMutators';
 import { get as getItemsFromStorage } from '../../../model/repository/todoListItemRepository';
 
@@ -30,6 +31,8 @@ export type SetItemModeHandler = (id: string, mode: Mode) => void;
 export type StartEditFirstHandler = () => void;
 
 export type EditNextHandler = () => void;
+
+export type MoveItemUpHandler = (id: string, value: string) => void;
 
 export default function useManageTodoListItems() {
     const [items, setItems] = useState<TodoListItem[]>(getItemsFromStorage);
@@ -57,6 +60,9 @@ export default function useManageTodoListItems() {
     const editNext: EditNextHandler = () =>
         setItems((items) => applyEditNext(items));
 
+    const moveItemUp: MoveItemUpHandler = (id, value) =>
+        setItems((items) => applyMoveItemUp(items, id, value));
+
     return {
         items,
         setItemMode,
@@ -64,5 +70,6 @@ export default function useManageTodoListItems() {
         changeItem,
         startEditFirst,
         editNext,
+        moveItemUp,
     };
 }

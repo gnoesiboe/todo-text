@@ -17,7 +17,7 @@ export default function useNavigateToNextItemOnDownKeyPressed(
     const { changeItem } = useTodoContext();
 
     useEffect(() => {
-        const onKeyDown = (event: WindowEventMap['keyup']) => {
+        const onKeyUp = (event: WindowEventMap['keyup']) => {
             if (
                 !checkOnlyKeyCodeIsPressed(event, KeyCode.Down) ||
                 !textareaRef.current ||
@@ -32,8 +32,8 @@ export default function useNavigateToNextItemOnDownKeyPressed(
             changeItem(item.id, value, item.done, NextAction.EditNext);
         };
 
-        window.addEventListener('keyup', onKeyDown);
+        window.addEventListener('keyup', onKeyUp);
 
-        return () => window.removeEventListener('keyup', onKeyDown);
+        return () => window.removeEventListener('keyup', onKeyUp);
     }, [value, item, textareaRef.current]);
 }

@@ -8,6 +8,7 @@ import useManageTodoListItems, {
     SetItemModeHandler,
     StartEditFirstHandler,
     EditNextHandler,
+    MoveItemUpHandler,
 } from './hooks/useManageTodoListItems';
 
 type ContextValue = {
@@ -17,6 +18,7 @@ type ContextValue = {
     setItemMode: SetItemModeHandler;
     startEditFirst: StartEditFirstHandler;
     editNext: EditNextHandler;
+    moveItemUp: MoveItemUpHandler;
 };
 
 const initialValue: ContextValue = {
@@ -26,6 +28,7 @@ const initialValue: ContextValue = {
     setItemMode: () => {},
     startEditFirst: () => {},
     editNext: () => {},
+    moveItemUp: () => {},
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -40,6 +43,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         setItemMode,
         startEditFirst,
         editNext,
+        moveItemUp,
     } = useManageTodoListItems();
 
     usePersistTodoListItemsOnChange(items);
@@ -51,6 +55,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         setItemMode,
         startEditFirst,
         editNext,
+        moveItemUp,
     };
 
     return (

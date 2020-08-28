@@ -116,3 +116,33 @@ export function applyEditNext(currentItems: TodoListItem[]): TodoListItem[] {
         nextItems[nextIndex].mode = Mode.Edit;
     });
 }
+
+export function applyMoveItemUp(
+    currentItems: TodoListItem[],
+    id: string,
+    value: string,
+): TodoListItem[] {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        const indexOfItemToBeMoved = nextItems.findIndex(
+            (item) => item.id === id,
+        );
+
+        if (indexOfItemToBeMoved === -1) {
+            return;
+        }
+
+        const nextIndex = indexOfItemToBeMoved - 1;
+
+        if (nextIndex < 0) {
+            return;
+        }
+
+        // first extract item
+        const extractedItem = nextItems.splice(indexOfItemToBeMoved, 1)[0];
+
+        extractedItem.value = value;
+
+        // then re-add it
+        nextItems.splice(nextIndex, 0, extractedItem);
+    });
+}
