@@ -1,7 +1,10 @@
 import React from 'react';
 import useToggleVisibility from '../../hooks/useToggleVisibility';
 import { Button, Table } from 'react-bootstrap';
-import Octicon, { InfoIcon } from '@primer/octicons-react';
+import Octicon, {
+    ChevronDownIcon,
+    ChevronUpIcon,
+} from '@primer/octicons-react';
 import './OperationExplanation.css';
 import SectionTitle from './components/SectionTitle';
 import Section from './components/Section';
@@ -118,8 +121,17 @@ const OperationExplanation: React.FC = () => {
             )}
             <div className="text-center">
                 <Button onClick={() => toggle()} variant="link" size="sm">
-                    <Octicon icon={InfoIcon} />{' '}
-                    {(visible ? 'hide' : 'show') + ' operation information'}
+                    {visible ? (
+                        <>
+                            <Octicon icon={ChevronUpIcon} /> hide operation
+                            information
+                        </>
+                    ) : (
+                        <>
+                            <Octicon icon={ChevronDownIcon} /> show operation
+                            information
+                        </>
+                    )}
                 </Button>
             </div>
         </div>
