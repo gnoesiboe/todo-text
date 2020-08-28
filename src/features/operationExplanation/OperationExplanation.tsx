@@ -84,6 +84,21 @@ const OperationExplanation: React.FC = () => {
                     <Section>
                         <SectionTitle>Formatting syntax</SectionTitle>
                         <ul className="list-unstyled">
+                            <ListItem code="# Some heading">
+                                <p>
+                                    When put at the front of the todo, the todo
+                                    is transformed into a heading. This can used
+                                    to create sections within the todo list.
+                                </p>
+                                <ExplanationOutput>
+                                    <span
+                                        className="todo-list-item__value__heading"
+                                        style={{ marginLeft: 'auto' }}
+                                    >
+                                        Some heading
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
                             <ListItem code="[fhd]">
                                 <p>
                                     When put at the front of the todo, it will
