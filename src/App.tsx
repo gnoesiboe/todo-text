@@ -4,6 +4,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import TodoList from './features/todoList/TodoList';
 import { TodoContextProvider } from './context/todoContext/TodoContext';
 import 'bootstrap/dist/css/bootstrap.css';
+import OperationExplanation from './features/operationExplanation/OperationExplanation';
 
 const App: React.FC = () => (
     <div className="app">
@@ -13,6 +14,7 @@ const App: React.FC = () => (
                     <TodoContextProvider>
                         <TodoList />
                     </TodoContextProvider>
+                    <OperationExplanation />
                 </Col>
             </Row>
         </Container>
