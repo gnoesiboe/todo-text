@@ -1,3 +1,4 @@
+import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import {
     checkIfThereIsTextSelected,
     checkIfCursorIsAtTheStart,
@@ -18,7 +19,7 @@ export default function useNavigateToPreviousItemOnUpKeyPressed(
     useEffect(() => {
         const onKeyUp = (event: WindowEventMap['keyup']) => {
             if (
-                event.keyCode !== KeyCode.Up ||
+                !checkOnlyKeyCodeIsPressed(event, KeyCode.Up) ||
                 !textareaRef.current ||
                 checkIfThereIsTextSelected(textareaRef.current) ||
                 !checkIfCursorIsAtTheStart(textareaRef.current)

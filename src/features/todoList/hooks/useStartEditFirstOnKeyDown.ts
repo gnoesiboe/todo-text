@@ -1,3 +1,4 @@
+import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import { applyIsEditingAnItemSelector } from './../../../model/selectors/todoListItemSelectors';
 import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
@@ -8,7 +9,7 @@ export default function useStartEditFirstOnKeyDown() {
 
     useEffect(() => {
         const onKeyDown = (event: WindowEventMap['keydown']) => {
-            if (event.keyCode !== KeyCode.Down) {
+            if (!checkOnlyKeyCodeIsPressed(event, KeyCode.Down)) {
                 return;
             }
 

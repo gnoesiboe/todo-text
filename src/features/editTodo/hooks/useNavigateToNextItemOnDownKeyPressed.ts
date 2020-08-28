@@ -1,3 +1,4 @@
+import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import {
     checkIfThereIsTextSelected,
     checkIfCursorIsAtTheEnd,
@@ -18,7 +19,7 @@ export default function useNavigateToNextItemOnDownKeyPressed(
     useEffect(() => {
         const onKeyDown = (event: WindowEventMap['keyup']) => {
             if (
-                event.keyCode !== KeyCode.Down ||
+                !checkOnlyKeyCodeIsPressed(event, KeyCode.Down) ||
                 !textareaRef.current ||
                 checkIfThereIsTextSelected(textareaRef.current) ||
                 !checkIfCursorIsAtTheEnd(textareaRef.current)
