@@ -209,6 +209,28 @@ const OperationExplanation: React.FC = () => {
                                     </span>
                                 </ExplanationOutput>
                             </ListItem>
+                            <ListItem code="* [ ] some sub-task">
+                                <p>
+                                    When applied somewhere after the first line,
+                                    it will display a todo list item.
+                                </p>
+                                <ExplanationOutput>
+                                    <span className="todo-list-item__value__sub-item">
+                                        some sub-task
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
+                            <ListItem code="* [x] some sub-task">
+                                <p>
+                                    When applied somewhere after the first line,
+                                    it will display a todo list item.
+                                </p>
+                                <ExplanationOutput>
+                                    <span className="todo-list-item__value__sub-item todo-list-item__value__sub-item--checked">
+                                        some sub-task
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
                         </ul>
                     </Section>
                 </div>

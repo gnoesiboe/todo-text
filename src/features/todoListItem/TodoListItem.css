@@ -85,3 +85,23 @@
 .todo-list-item__value__project:after {
     content: ' → ';
 }
+
+.todo-list-item__value__summary + .todo-list-item__value__note {
+    margin-top: 20px;
+}
+
+.todo-list-item__value__note {
+    font-size: 0.8em !important;
+}
+
+.todo-list-item__value__sub-item {
+    padding-left: 20px;
+}
+
+.todo-list-item__value__sub-item:before {
+    content: '◻ ';
+}
+
+.todo-list-item__value__sub-item--checked:before {
+    content: '⊠ ';
+}

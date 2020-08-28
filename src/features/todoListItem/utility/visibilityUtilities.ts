@@ -46,6 +46,26 @@ const formatAsHeading: Formatter = (value) => {
     );
 };
 
+const applySummaryWrapper: Formatter = (value) => {
+    return `<div class="todo-list-item__value__summary">${value}</div>`;
+};
+
+const applyNoteWrapper: Formatter = (value) => {
+    return `<div class="todo-list-item__value__note">${value}</div>`;
+};
+
+const applySubItem: Formatter = (value) => {
+    return value
+        .replace(
+            /^[\*-]{1,1} \[ \] (.*)$/,
+            '<div class="todo-list-item__value__sub-item">$1</div>',
+        )
+        .replace(
+            /^[\*-]{1,1} \[x\] (.*)$/,
+            '<div class="todo-list-item__value__sub-item todo-list-item__value__sub-item--checked">$1</div>',
+        );
+};
+
 const applyFormatters = (value: string, ...formatters: Formatter[]): string => {
     let out: string = value;
 
@@ -59,13 +79,31 @@ export const prepareForVisibility = (item: TodoListItem): string => {
         return formatAsHeading(item.value);
     }
 
-    return applyFormatters(
-        item.value,
-        applyTagging,
-        applyLinks,
-        applyProjects,
-        applyStrong,
-        applyStrikeThrough,
-        applyLineBreaks,
-    );
+    const lines = item.value.split(/\r?\n/g);
+
+    return lines
+        .filter((value) => value.length > 0)
+        .reduce<string>((accumulator, currentLine, currentIndex) => {
+            const formatters = [
+                applyTagging,
+                applyLinks,
+                applyProjects,
+                applyStrong,
+                applyStrikeThrough,
+                applyLineBreaks,
+            ];
+
+            if (currentIndex === 0) {
+                formatters.push(applySummaryWrapper);
+            } else {
+                formatters.push(applySubItem, applyNoteWrapper);
+            }
+
+            const withFormattersApplied = applyFormatters(
+                currentLine,
+                ...formatters,
+            );
+
+            return accumulator + withFormattersApplied;
+        }, '');
 };
