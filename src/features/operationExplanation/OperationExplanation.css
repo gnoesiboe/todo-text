@@ -1,3 +1,7 @@
+.operation-explanation__button-wrapper {
+    margin-bottom: 20px;
+}
+
 .operation-explanation__explanation {
     background: #2a9d8f;
     border-radius: 8px;

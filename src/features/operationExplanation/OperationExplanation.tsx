@@ -16,6 +16,21 @@ const OperationExplanation: React.FC = () => {
 
     return (
         <div className="operation-explanation">
+            <div className="operation-explanation__button-wrapper text-center">
+                <Button onClick={() => toggle()} variant="link" size="sm">
+                    {visible ? (
+                        <>
+                            <Octicon icon={ChevronUpIcon} /> hide operation
+                            information
+                        </>
+                    ) : (
+                        <>
+                            <Octicon icon={ChevronDownIcon} /> show operation
+                            information
+                        </>
+                    )}
+                </Button>
+            </div>
             {visible && (
                 <div className="operation-explanation__explanation">
                     <Section>
@@ -247,21 +262,6 @@ const OperationExplanation: React.FC = () => {
                     </Section>
                 </div>
             )}
-            <div className="text-center">
-                <Button onClick={() => toggle()} variant="link" size="sm">
-                    {visible ? (
-                        <>
-                            <Octicon icon={ChevronUpIcon} /> hide operation
-                            information
-                        </>
-                    ) : (
-                        <>
-                            <Octicon icon={ChevronDownIcon} /> show operation
-                            information
-                        </>
-                    )}
-                </Button>
-            </div>
         </div>
     );
 };
