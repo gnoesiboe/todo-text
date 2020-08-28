@@ -78,6 +78,44 @@ const OperationExplanation: React.FC = () => {
                                         </p>
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>
+                                        <code>enter</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When editing a todo, it saves any
+                                            changes you have made, and moves to
+                                            edit the next one.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>alt + enter</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When editing a todo, it saves any
+                                            changes you have made. Then it
+                                            creates a new todo beneath and
+                                            allows you to start editing it.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>alt + shift + enter</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When editing a todo, it saves any
+                                            changes you have made. Then it
+                                            creates a new todo above and allows
+                                            you to start editing it.
+                                        </p>
+                                    </td>
+                                </tr>
                             </tbody>
                         </Table>
                     </Section>

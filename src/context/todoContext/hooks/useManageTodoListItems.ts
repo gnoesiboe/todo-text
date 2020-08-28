@@ -16,6 +16,8 @@ export enum NextAction {
     EditNext = 'edit_next',
     EditPrevious = 'edit_previous',
     None = 'node',
+    CreateNewAfter = 'create_new_after',
+    CreateNewBefore = 'create_new_before',
 }
 
 export type ChangeItemHandler = (

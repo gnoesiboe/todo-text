@@ -1,7 +1,8 @@
+import type { KeyboardEvent } from 'react';
 import type { KeyCode } from './../constants/keyCodes';
 
 export const checkOnlyKeyCodeIsPressed = (
-    event: WindowEventMap['keyup'],
+    event: WindowEventMap['keyup'] | WindowEventMap['keydown'] | KeyboardEvent,
     code: KeyCode,
 ) =>
     event.keyCode === code &&

@@ -1,3 +1,4 @@
+import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { TodoListItem, Mode } from './../../../model/TodoListItem';
@@ -14,15 +15,9 @@ export default function useTodoFormHandlers(item: TodoListItem) {
 
     const { deleteItem, changeItem, setItemMode } = useTodoContext();
 
-    const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-        event.preventDefault();
-
-        handleSubmit(NextAction.EditNext);
-    };
-
     const onDone = () => setItemMode(item.id, Mode.View);
 
-    const handleSubmit = (nextAction: NextAction) => {
+    const pushNewValue = (nextAction: NextAction) => {
         const newValue = value.trim();
 
         if (newValue.length === 0) {
@@ -32,20 +27,37 @@ export default function useTodoFormHandlers(item: TodoListItem) {
         changeItem(item.id, newValue, item.done, nextAction);
     };
 
+    const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+        event.preventDefault();
+
+        pushNewValue(NextAction.EditNext);
+    };
+
     const onValueKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
         event,
     ) => {
-        if (event.keyCode === KeyCode.Enter && event.shiftKey === false) {
-            handleSubmit(NextAction.EditNext);
+        if (checkOnlyKeyCodeIsPressed(event, KeyCode.Enter)) {
+            pushNewValue(NextAction.EditNext);
 
             event.preventDefault();
         }
 
-        if (event.keyCode === KeyCode.Backspace && value.length <= 1) {
+        if (event.keyCode === KeyCode.Enter && event.altKey) {
+            if (event.shiftKey) {
+                pushNewValue(NextAction.CreateNewBefore);
+            } else {
+                pushNewValue(NextAction.CreateNewAfter);
+            }
+        }
+
+        if (
+            checkOnlyKeyCodeIsPressed(event, KeyCode.Backspace) &&
+            value.length <= 1
+        ) {
             deleteItem(item.id);
         }
 
-        if (event.keyCode === KeyCode.Escape) {
+        if (checkOnlyKeyCodeIsPressed(event, KeyCode.Escape)) {
             onDone();
         }
     };
@@ -58,7 +70,7 @@ export default function useTodoFormHandlers(item: TodoListItem) {
     };
 
     const onValueBlur: FocusEventHandler<HTMLTextAreaElement> = () => {
-        handleSubmit(NextAction.None);
+        pushNewValue(NextAction.None);
     };
 
     return { value, onSubmit, onValueKeyDown, onValueChange, onValueBlur };

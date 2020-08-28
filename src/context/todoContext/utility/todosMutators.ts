@@ -42,6 +42,14 @@ export function applyUpdate(
                 }
                 break;
 
+            case NextAction.CreateNewAfter:
+                nextItems.splice(indexToChange + 1, 0, createEmptyToEdit());
+                break;
+
+            case NextAction.CreateNewBefore:
+                nextItems.splice(indexToChange, 0, createEmptyToEdit());
+                break;
+
             default:
                 // do nothing
                 break;
