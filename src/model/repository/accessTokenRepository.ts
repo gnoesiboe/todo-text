@@ -1,14 +1,19 @@
-import {
-    get as getFromStorage,
-    write as writeToStorage,
-} from '@freshheads/javascript-essentials/build/storage/localStorage';
-
 const storageNamespace = 'at';
 
 export const save = (token: string): void => {
-    writeToStorage(storageNamespace, token, true);
+    try {
+        localStorage.setItem(storageNamespace, token);
+    } catch (error) {
+        // do nothing
+    }
 };
 
-export const get = (): string | null => getFromStorage(storageNamespace, true);
+export const get = (): string | null => {
+    try {
+        return localStorage.getItem(storageNamespace);
+    } catch (error) {
+        return null;
+    }
+};
 
 export const clear = () => save('');
