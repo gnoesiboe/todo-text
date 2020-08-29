@@ -35,5 +35,6 @@ export default function useNavigateToPreviousItemOnUpKeyPressed(
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [value, item, textareaRef.current]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [value, item, textareaRef.current, changeItem]);
 }

@@ -27,8 +27,8 @@ const EditTodo: React.FC<Props> = ({ item }) => {
 
     useNavigateToNextItemOnDownKeyPressed(textareaRef, item, value);
     useNavigateToPreviousItemOnUpKeyPressed(textareaRef, item, value);
-    useMoveItemUpOnKeyboardShortcutPressed(textareaRef, item, value);
-    useMoveItemDownOnKeyboardShortcutPressed(textareaRef, item, value);
+    useMoveItemUpOnKeyboardShortcutPressed(item, value);
+    useMoveItemDownOnKeyboardShortcutPressed(item, value);
 
     return (
         <form onSubmit={onSubmit} className="edit-todo">

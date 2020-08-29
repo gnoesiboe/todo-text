@@ -20,7 +20,7 @@ const applyStrong: Formatter = (value) => {
 
 const applyTagging: Formatter = (value) => {
     return value.replace(
-        /(\@[^\s]+)/g,
+        /(@[^\s]+)/g,
         '<i class="todo-list-item__value__tag">$1</i>',
     );
 };
@@ -57,11 +57,11 @@ const applyNoteWrapper: Formatter = (value) => {
 const applySubItem: Formatter = (value) => {
     return value
         .replace(
-            /^[\*-]{1,1} \[ \] (.*)$/,
+            /^[*-]{1,1} \[ \] (.*)$/,
             '<div class="todo-list-item__value__sub-item">$1</div>',
         )
         .replace(
-            /^[\*-]{1,1} \[x\] (.*)$/,
+            /^[*-]{1,1} \[x\] (.*)$/,
             '<div class="todo-list-item__value__sub-item todo-list-item__value__sub-item--checked">$1</div>',
         );
 };
