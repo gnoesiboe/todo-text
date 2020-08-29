@@ -1,10 +1,9 @@
 import { useTodoContext } from '../../../context/todoContext/TodoContext';
 import { KeyCode } from '../../../constants/keyCodes';
 import type { TodoListItem } from '../../../model/TodoListItem';
-import { useEffect, RefObject } from 'react';
+import { useEffect } from 'react';
 
 export default function useMoveItemDownOnKeyboardShortcutPressed(
-    textareaRef: RefObject<HTMLTextAreaElement>,
     item: TodoListItem,
     value: string,
 ) {
@@ -30,5 +29,5 @@ export default function useMoveItemDownOnKeyboardShortcutPressed(
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [textareaRef.current, item, value]);
+    }, [item, value, moveItemDown]);
 }

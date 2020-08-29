@@ -26,7 +26,7 @@ export default function useResolveAccessTokenOrRedirect() {
 
     const { code } = parseQueryString(window.location.search);
 
-    const redirectUri = location.origin;
+    const redirectUri = window.location.origin;
 
     // on mount, check if there is an access token or a code to fetch it
     useEffect(() => {
@@ -54,7 +54,7 @@ export default function useResolveAccessTokenOrRedirect() {
             setRedirecting(true);
             redirectToAuthenticate(redirectUri);
         }
-    }, []);
+    }, [accessToken, code, fetching, redirectUri]);
 
     return { accessToken, redirecting };
 }

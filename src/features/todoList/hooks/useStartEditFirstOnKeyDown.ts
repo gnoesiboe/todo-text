@@ -25,5 +25,5 @@ export default function useStartEditFirstOnKeyDown() {
         window.addEventListener('keydown', onKeyDown);
 
         return () => window.removeEventListener('keydown', onKeyDown);
-    }, [items]);
+    }, [items, startEditFirst]);
 }

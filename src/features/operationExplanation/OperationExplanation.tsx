@@ -188,7 +188,7 @@ const OperationExplanation: React.FC = () => {
                                     <a
                                         href="https://www.google.nl"
                                         target="_blank"
-                                        rel="norefferer"
+                                        rel="noopener noreferrer"
                                         className="todo-list-item__value__link"
                                     >
                                         click here
