@@ -133,17 +133,32 @@ export const pollForChanges = async (accessToken: string): Promise<boolean> => {
 
     const url = `${notifyHost}/2/files/list_folder/longpoll`;
 
-    const { data } = await getClient().post(
-        url,
-        {
-            cursor,
-        },
-        {
-            headers: {
-                'Content-Type': 'application/json',
+    try {
+        const body = await getClient().post(
+            url,
+            {
+                cursor,
             },
-        },
-    );
+            {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            },
+        );
 
-    return data.changes || false;
+        if (!body) {
+            return false;
+        }
+
+        return body?.data?.changes || false;
+    } catch (error) {
+        // @todo notify user?!
+
+        console.error(
+            'An error occurred while polling the dropbox api for changes',
+            error,
+        );
+
+        return false;
+    }
 };

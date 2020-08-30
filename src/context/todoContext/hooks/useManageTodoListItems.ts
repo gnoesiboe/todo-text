@@ -1,5 +1,3 @@
-import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
-import { fetchTodosFromDropbox } from './../../../storage/dropbox/dropboxClient';
 import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
 import { useState, useEffect } from 'react';
 import type { TodoListItem, Mode } from '../../../model/TodoListItem';
@@ -13,6 +11,7 @@ import {
     applyMoveItemDown,
 } from '../utility/todosMutators';
 import usePollForChanges from './usePollForChanges';
+import useFetchTodoListItems from './useFetchTodoListItems';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -44,40 +43,9 @@ export type MoveItemDownHandler = (id: string, value: string) => void;
 export default function useManageTodoListItems() {
     const [items, setItems] = useState<TodoListItem[]>([]);
 
-    const [isFetching, setIsFetching] = useState<boolean>(false);
+    const { isFetching, refetchTodos } = useFetchTodoListItems(setItems);
 
-    const { accessToken } = useAuthenticationContext();
-
-    const fetchTodos = async (accessToken: string) => {
-        try {
-            const items = await fetchTodosFromDropbox(accessToken);
-
-            setItems(items);
-        } catch (error) {
-            // @todo notify user?!
-
-            console.error(
-                'An error occurred while fetching the todos from dropbox',
-                error,
-            );
-        }
-
-        setIsFetching(false);
-    };
-
-    // fetch initial data from dropbox
-    useEffect(() => {
-        if (isFetching || !accessToken) {
-            return;
-        }
-
-        setIsFetching(true);
-
-        fetchTodos(accessToken);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accessToken]);
-
-    usePollForChanges(accessToken, fetchTodos);
+    usePollForChanges(refetchTodos);
 
     // ensure there is always at least one item to select and edit
     useEffect(() => {
