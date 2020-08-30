@@ -9,6 +9,8 @@ import { notifyError } from '../..//utility/notifier';
 // @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
 
 const apiHost = 'https://api.dropboxapi.com';
+const contentHost = 'https://content.dropboxapi.com';
+const notifyHost = 'https://notify.dropboxapi.com';
 
 const jsonFilePath = '/item.json';
 
@@ -74,15 +76,15 @@ export const fetchAccessToken = async (
     return data.access_token;
 };
 
-const createAuthorizationToken = (accessToken: string) =>
+const createAuthorizationHeader = (accessToken: string) =>
     `Bearer ${accessToken}`;
 
 export const pushTodosToDropbox = async (accessToken: string, json: string) => {
-    const url = `https://content.dropboxapi.com/2/files/upload`;
+    const url = `${contentHost}/2/files/upload`;
 
     await getClient().post(url, json, {
         headers: {
-            Authorization: createAuthorizationToken(accessToken),
+            Authorization: createAuthorizationHeader(accessToken),
             'Content-Type': 'application/octet-stream',
             'Dropbox-API-Arg': JSON.stringify({
                 path: jsonFilePath,
@@ -93,11 +95,11 @@ export const pushTodosToDropbox = async (accessToken: string, json: string) => {
 };
 
 export const fetchTodosFromDropbox = async (accessToken: string) => {
-    const url = `https://content.dropboxapi.com/2/files/download`;
+    const url = `${contentHost}/2/files/download`;
 
     const { data } = await getClient().post(url, undefined, {
         headers: {
-            Authorization: createAuthorizationToken(accessToken),
+            Authorization: createAuthorizationHeader(accessToken),
             'Dropbox-API-Arg': JSON.stringify({
                 path: jsonFilePath,
             }),
@@ -105,4 +107,43 @@ export const fetchTodosFromDropbox = async (accessToken: string) => {
     });
 
     return data;
+};
+
+const fetchFolderCursor = async (accessToken: string): Promise<string> => {
+    const url = `${apiHost}/2/files/list_folder`;
+
+    const { data } = await getClient().post(
+        url,
+        {
+            path: '',
+        },
+        {
+            headers: {
+                Authorization: createAuthorizationHeader(accessToken),
+                'Content-Type': 'application/json',
+            },
+        },
+    );
+
+    return data.cursor;
+};
+
+export const pollForChanges = async (accessToken: string): Promise<boolean> => {
+    const cursor = await fetchFolderCursor(accessToken);
+
+    const url = `${notifyHost}/2/files/list_folder/longpoll`;
+
+    const { data } = await getClient().post(
+        url,
+        {
+            cursor,
+        },
+        {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        },
+    );
+
+    return data.changes || false;
 };

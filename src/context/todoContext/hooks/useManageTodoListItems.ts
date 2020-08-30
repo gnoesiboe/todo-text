@@ -1,5 +1,8 @@
 import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
-import { fetchTodosFromDropbox } from './../../../storage/dropbox/dropboxClient';
+import {
+    fetchTodosFromDropbox,
+    pollForChanges as pollDropboxForChanges,
+} from './../../../storage/dropbox/dropboxClient';
 import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
 import { useState, useEffect } from 'react';
 import type { TodoListItem, Mode } from '../../../model/TodoListItem';
@@ -47,6 +50,44 @@ export default function useManageTodoListItems() {
 
     const { accessToken } = useAuthenticationContext();
 
+    const fetchTodos = async (accessToken: string) => {
+        try {
+            const items = await fetchTodosFromDropbox(accessToken);
+
+            setItems(items);
+        } catch (error) {
+            // @todo notify user?!
+
+            console.error(
+                'An error occurred while fetching the todos from dropbox',
+                error,
+            );
+        }
+
+        setIsFetching(false);
+    };
+
+    const pollForChanges = async (accessToken: string) => {
+        try {
+            const hasChanges = await pollDropboxForChanges(accessToken);
+
+            if (hasChanges) {
+                fetchTodos(accessToken);
+            }
+
+            pollForChanges(accessToken);
+        } catch (error) {
+            // @todo notify user?!
+
+            console.error(
+                'An error occurred while polling dropbox for changes',
+                error,
+            );
+
+            pollForChanges(accessToken);
+        }
+    };
+
     // fetch initial data from dropbox
     useEffect(() => {
         if (isFetching || !accessToken) {
@@ -55,13 +96,16 @@ export default function useManageTodoListItems() {
 
         setIsFetching(true);
 
-        fetchTodosFromDropbox(accessToken)
-            .then((items) => {
-                // @todo validate and normalize items
+        fetchTodos(accessToken);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [accessToken]);
 
-                setItems(items);
-            })
-            .finally(() => setIsFetching(false));
+    useEffect(() => {
+        if (!accessToken) {
+            return;
+        }
+
+        pollForChanges(accessToken);
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accessToken]);
 
