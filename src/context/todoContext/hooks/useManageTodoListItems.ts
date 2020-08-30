@@ -1,8 +1,5 @@
 import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
-import {
-    fetchTodosFromDropbox,
-    pollForChanges as pollDropboxForChanges,
-} from './../../../storage/dropbox/dropboxClient';
+import { fetchTodosFromDropbox } from './../../../storage/dropbox/dropboxClient';
 import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
 import { useState, useEffect } from 'react';
 import type { TodoListItem, Mode } from '../../../model/TodoListItem';
@@ -15,6 +12,7 @@ import {
     applyMoveItemUp,
     applyMoveItemDown,
 } from '../utility/todosMutators';
+import usePollForChanges from './usePollForChanges';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -67,27 +65,6 @@ export default function useManageTodoListItems() {
         setIsFetching(false);
     };
 
-    const pollForChanges = async (accessToken: string) => {
-        try {
-            const hasChanges = await pollDropboxForChanges(accessToken);
-
-            if (hasChanges) {
-                fetchTodos(accessToken);
-            }
-
-            pollForChanges(accessToken);
-        } catch (error) {
-            // @todo notify user?!
-
-            console.error(
-                'An error occurred while polling dropbox for changes',
-                error,
-            );
-
-            pollForChanges(accessToken);
-        }
-    };
-
     // fetch initial data from dropbox
     useEffect(() => {
         if (isFetching || !accessToken) {
@@ -100,14 +77,7 @@ export default function useManageTodoListItems() {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [accessToken]);
 
-    useEffect(() => {
-        if (!accessToken) {
-            return;
-        }
-
-        pollForChanges(accessToken);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accessToken]);
+    usePollForChanges(accessToken, fetchTodos);
 
     // ensure there is always at least one item to select and edit
     useEffect(() => {
