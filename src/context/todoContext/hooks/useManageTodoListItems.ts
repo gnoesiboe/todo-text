@@ -1,5 +1,4 @@
-import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import type { TodoListItem, Mode } from '../../../model/TodoListItem';
 import {
     applyUpdate,
@@ -12,6 +11,7 @@ import {
 } from '../utility/todosMutators';
 import usePollForChanges from './usePollForChanges';
 import useFetchTodoListItems from './useFetchTodoListItems';
+import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -47,12 +47,7 @@ export default function useManageTodoListItems() {
 
     usePollForChanges(refetchTodos);
 
-    // ensure there is always at least one item to select and edit
-    useEffect(() => {
-        if (items.length === 0) {
-            setItems(createInitialCollection());
-        }
-    }, [items, isFetching]);
+    useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
     const changeItem: ChangeItemHandler = (id, value, done, nextAction) =>
         setItems((currentItems) =>
