@@ -152,12 +152,11 @@ export const pollForChanges = async (accessToken: string): Promise<boolean> => {
 
         return body?.data?.changes || false;
     } catch (error) {
-        // @todo notify user?!
+        const errorMessage =
+            'An error occurred while polling the dropbox api for changes';
 
-        console.error(
-            'An error occurred while polling the dropbox api for changes',
-            error,
-        );
+        notifyError(errorMessage);
+        console.error(errorMessage, error);
 
         return false;
     }

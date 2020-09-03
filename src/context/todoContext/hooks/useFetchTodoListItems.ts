@@ -2,6 +2,7 @@ import { useAuthenticationContext } from './../../authenticationContext/Authenti
 import { useState, useEffect } from 'react';
 import { TodoListItem } from '../../../model/TodoListItem';
 import { fetchTodosFromDropbox } from './../../../storage/dropbox/dropboxClient';
+import { notifyError } from '../../../utility/notifier';
 
 export default function useFetchTodoListItems(
     setItems: React.Dispatch<React.SetStateAction<TodoListItem[]>>,
@@ -16,12 +17,12 @@ export default function useFetchTodoListItems(
 
             setItems(items);
         } catch (error) {
-            // @todo notify user?!
+            const errorMessage =
+                'An error occurred while fetching the todos from dropbox';
 
-            console.error(
-                'An error occurred while fetching the todos from dropbox',
-                error,
-            );
+            notifyError(errorMessage);
+
+            console.error(errorMessage, error);
         }
 
         setIsFetching(false);
