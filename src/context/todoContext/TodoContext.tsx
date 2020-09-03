@@ -5,11 +5,12 @@ import usePersistTodoListItemsOnChange from './hooks/usePersistTodoListItemsOnCh
 import useManageTodoListItems, {
     ChangeItemHandler,
     DeleteItemHandler,
-    SetItemModeHandler,
+    ClearEditModeHandler,
     StartEditFirstHandler,
     EditNextHandler,
     MoveItemUpHandler,
     MoveItemDownHandler,
+    SetCurrentItemHandler,
 } from './hooks/useManageTodoListItems';
 
 type ContextValue = {
@@ -18,11 +19,13 @@ type ContextValue = {
     isSaving: boolean;
     changeItem: ChangeItemHandler;
     deleteItem: DeleteItemHandler;
-    setItemMode: SetItemModeHandler;
+    clearEditMode: ClearEditModeHandler;
     startEditFirst: StartEditFirstHandler;
     editNext: EditNextHandler;
     moveItemUp: MoveItemUpHandler;
     moveItemDown: MoveItemDownHandler;
+    currentItem: string | null;
+    setCurrentItem: SetCurrentItemHandler;
 };
 
 const initialValue: ContextValue = {
@@ -31,11 +34,13 @@ const initialValue: ContextValue = {
     isSaving: false,
     changeItem: () => {},
     deleteItem: () => {},
-    setItemMode: () => {},
+    clearEditMode: () => {},
     startEditFirst: () => {},
     editNext: () => {},
     moveItemUp: () => {},
     moveItemDown: () => {},
+    currentItem: null,
+    setCurrentItem: () => {},
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -48,11 +53,13 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         isFetching,
         changeItem,
         deleteItem,
-        setItemMode,
+        clearEditMode,
         startEditFirst,
         editNext,
         moveItemUp,
         moveItemDown,
+        currentItem,
+        setCurrentItem,
     } = useManageTodoListItems();
 
     const { isSaving } = usePersistTodoListItemsOnChange(items, isFetching);
@@ -63,11 +70,13 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         isSaving,
         changeItem,
         deleteItem,
-        setItemMode,
+        clearEditMode,
         startEditFirst,
         editNext,
         moveItemUp,
         moveItemDown,
+        currentItem,
+        setCurrentItem,
     };
 
     return (

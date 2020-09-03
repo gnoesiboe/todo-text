@@ -1,17 +1,15 @@
 import { useState } from 'react';
-import type { TodoListItem, Mode } from '../../../model/TodoListItem';
+import type { TodoListItem } from '../../../model/TodoListItem';
 import {
     applyUpdate,
-    applyModeChange,
     applyDelete,
-    applyEditFirst,
-    applyEditNext,
     applyMoveItemUp,
     applyMoveItemDown,
 } from '../utility/todosMutators';
 import usePollForChanges from './usePollForChanges';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
+import { determineNextCurrentItem } from '../utility/currentItemResolver';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -30,7 +28,7 @@ export type ChangeItemHandler = (
 
 export type DeleteItemHandler = (id: string) => void;
 
-export type SetItemModeHandler = (id: string, mode: Mode) => void;
+export type ClearEditModeHandler = () => void;
 
 export type StartEditFirstHandler = () => void;
 
@@ -40,7 +38,11 @@ export type MoveItemUpHandler = (id: string, value: string) => void;
 
 export type MoveItemDownHandler = (id: string, value: string) => void;
 
+export type SetCurrentItemHandler = (id: string) => void;
+
 export default function useManageTodoListItems() {
+    const [currentItem, setCurrentItemState] = useState<string | null>(null);
+
     const [items, setItems] = useState<TodoListItem[]>([]);
 
     const { isFetching, refetchTodos } = useFetchTodoListItems(setItems);
@@ -49,22 +51,39 @@ export default function useManageTodoListItems() {
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
-    const changeItem: ChangeItemHandler = (id, value, done, nextAction) =>
-        setItems((currentItems) =>
-            applyUpdate(currentItems, id, value, done, nextAction),
+    const changeItem: ChangeItemHandler = (id, value, done, nextAction) => {
+        const nextItems = applyUpdate(items, id, value, done, nextAction);
+
+        setItems(nextItems);
+
+        setCurrentItemState(
+            determineNextCurrentItem(nextAction, currentItem, nextItems),
+        );
+    };
+
+    const deleteItem: DeleteItemHandler = (id) => {
+        const nextCurrentItem = determineNextCurrentItem(
+            NextAction.EditPrevious,
+            currentItem,
+            items,
         );
 
-    const deleteItem: DeleteItemHandler = (id) =>
-        setItems((currentItems) => applyDelete(currentItems, id));
+        setItems(applyDelete(items, id));
 
-    const setItemMode: SetItemModeHandler = (id, mode) =>
-        setItems((items) => applyModeChange(items, id, mode));
+        setCurrentItemState(nextCurrentItem);
+    };
 
-    const startEditFirst: StartEditFirstHandler = () =>
-        setItems((items) => applyEditFirst(items));
+    const clearEditMode: ClearEditModeHandler = () => setCurrentItemState(null);
 
-    const editNext: EditNextHandler = () =>
-        setItems((items) => applyEditNext(items));
+    const startEditFirst: StartEditFirstHandler = () => {
+        setCurrentItemState(items[0]?.id || null);
+    };
+
+    const editNext: EditNextHandler = () => {
+        setCurrentItemState(
+            determineNextCurrentItem(NextAction.EditNext, currentItem, items),
+        );
+    };
 
     const moveItemUp: MoveItemUpHandler = (id, value) =>
         setItems((items) => applyMoveItemUp(items, id, value));
@@ -72,15 +91,20 @@ export default function useManageTodoListItems() {
     const moveItemDown: MoveItemDownHandler = (id, value) =>
         setItems((items) => applyMoveItemDown(items, id, value));
 
+    const setCurrentItem: SetCurrentItemHandler = (id) =>
+        setCurrentItemState(id);
+
     return {
         items,
         isFetching,
-        setItemMode,
+        clearEditMode,
         deleteItem,
         changeItem,
         startEditFirst,
         editNext,
         moveItemUp,
         moveItemDown,
+        currentItem,
+        setCurrentItem,
     };
 }

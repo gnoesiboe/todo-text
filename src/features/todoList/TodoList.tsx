@@ -6,7 +6,7 @@ import useStartEditFirstOnKeyDown from './hooks/useStartEditFirstOnKeyDown';
 import SavingIndicator from './components/SavingIndicator';
 
 const TodoList: React.FC = () => {
-    const { items, isFetching, isSaving } = useTodoContext();
+    const { items, isFetching, isSaving, currentItem } = useTodoContext();
 
     useStartEditFirstOnKeyDown();
 
@@ -19,7 +19,11 @@ const TodoList: React.FC = () => {
             ) : (
                 <>
                     {items.map((item) => (
-                        <TodoListItem item={item} key={item.id} />
+                        <TodoListItem
+                            key={item.id}
+                            item={item}
+                            current={currentItem === item.id}
+                        />
                     ))}
                 </>
             )}

@@ -1,11 +1,10 @@
 import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { applyIsEditingAnItemSelector } from './../../../model/selectors/todoListItemSelectors';
 import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { useEffect } from 'react';
 
 export default function useStartEditFirstOnKeyDown() {
-    const { items, startEditFirst } = useTodoContext();
+    const { items, startEditFirst, currentItem } = useTodoContext();
 
     useEffect(() => {
         const onKeyDown = (event: WindowEventMap['keydown']) => {
@@ -13,7 +12,7 @@ export default function useStartEditFirstOnKeyDown() {
                 return;
             }
 
-            if (applyIsEditingAnItemSelector(items)) {
+            if (!!currentItem) {
                 return;
             }
 
@@ -25,5 +24,5 @@ export default function useStartEditFirstOnKeyDown() {
         window.addEventListener('keydown', onKeyDown);
 
         return () => window.removeEventListener('keydown', onKeyDown);
-    }, [items, startEditFirst]);
+    }, [items, startEditFirst, currentItem]);
 }

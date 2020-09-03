@@ -1,10 +1,8 @@
 import React from 'react';
 import {
     TodoListItem as ItemModel,
-    Mode,
     isCancelled,
     isHeading,
-    isBeingEdited,
     isMust,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
@@ -22,13 +20,14 @@ export type OnChangeHandler = (
 
 export type OnDeleteHandler = (id: string) => void;
 
-export type OnModeChangeHandler = (id: string, mode: Mode) => void;
+export type OnModeChangeHandler = (id: string) => void;
 
 type Props = {
     item: ItemModel;
+    current: boolean;
 };
 
-const TodoListItem: React.FC<Props> = ({ item }) => {
+const TodoListItem: React.FC<Props> = ({ item, current }) => {
     const { onClick } = useSwitchToEditModeOnSwitch(item);
 
     const { onDoneChanged } = useHandleDoneStatusChange(item);
@@ -36,7 +35,7 @@ const TodoListItem: React.FC<Props> = ({ item }) => {
     const className = createClassName('todo-list-item', {
         'todo-list-item--done': item.done,
         'todo-list-item--cancelled': isCancelled(item),
-        'todo-list-item--is-being-edited': isBeingEdited(item),
+        'todo-list-item--is-being-edited': current,
         'todo-list-item--must': isMust(item),
     });
 
@@ -52,8 +51,9 @@ const TodoListItem: React.FC<Props> = ({ item }) => {
                         />
                     </span>
                 )}
-                {item.mode === Mode.Edit && <EditTodo item={item} />}
-                {item.mode === Mode.View && (
+                {current ? (
+                    <EditTodo item={item} />
+                ) : (
                     <div
                         className="todo-list-item__value"
                         onClick={onClick}

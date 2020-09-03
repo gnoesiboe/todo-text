@@ -1,7 +1,7 @@
 import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
-import { TodoListItem, Mode } from './../../../model/TodoListItem';
+import { TodoListItem } from './../../../model/TodoListItem';
 import {
     useState,
     FormEventHandler,
@@ -13,9 +13,7 @@ import { NextAction } from '../../..//context/todoContext/hooks/useManageTodoLis
 export default function useTodoFormHandlers(item: TodoListItem) {
     const [value, setValue] = useState<string>(item.value);
 
-    const { deleteItem, changeItem, setItemMode } = useTodoContext();
-
-    const onDone = () => setItemMode(item.id, Mode.View);
+    const { deleteItem, changeItem, clearEditMode } = useTodoContext();
 
     const pushNewValue = (nextAction: NextAction) => {
         const newValue = value.trim();
@@ -62,7 +60,7 @@ export default function useTodoFormHandlers(item: TodoListItem) {
         }
 
         if (checkOnlyKeyCodeIsPressed(event, KeyCode.Escape)) {
-            onDone();
+            clearEditMode();
         }
     };
 
