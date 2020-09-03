@@ -43,6 +43,10 @@ export default function useResolveAccessTokenOrRedirect() {
 
             fetchAccessToken(code, redirectUri)
                 .then((token) => setAccessToken(token))
+                .then(() => {
+                    // remove code from url query params
+                    window.location.replace(redirectUri);
+                })
                 .catch((error) => {
                     console.error(
                         'Something went wrong fetching the access token',
