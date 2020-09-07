@@ -1,7 +1,7 @@
 import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
 import { useState, useEffect } from 'react';
 import { TodoListItem } from '../../../model/TodoListItem';
-import { fetchTodosFromDropbox } from './../../../storage/dropbox/dropboxClient';
+import { fetchTodosFromDropbox } from '../../../dropbox/storage/dropboxStorage';
 import { notifyError } from '../../../utility/notifier';
 
 export default function useFetchTodoListItems(

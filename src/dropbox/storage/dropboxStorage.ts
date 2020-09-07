@@ -1,15 +1,12 @@
 import {
     resolveDropboxApiKey,
     resolveDropboxApiSecret,
-    resolveDropboxFileName,
-} from './../../utility/environmentUtlities';
-import { clear as clearTokenStorage } from './../../model/repository/accessTokenRepository';
-import { isLoggedOutError } from './utility/errorIdentificationUtilities';
-import { formatBodyAsFormData } from './../../utility/requestUtilities';
-import axios, { AxiosInstance } from 'axios';
-import { notifyError } from '../..//utility/notifier';
-
-// @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
+} from '../../utility/environmentUtlities';
+import { formatBodyAsFormData } from '../../utility/requestUtilities';
+import { resolveDropboxFileName } from '../../utility/environmentUtlities';
+import { getDropboxClient } from '../client/dropboxClient';
+import { createAuthorizationHeader } from '../utility/headerUtilities';
+import { notifyError } from '../../utility/notifier';
 
 const apiHost = 'https://api.dropboxapi.com';
 const contentHost = 'https://content.dropboxapi.com';
@@ -17,40 +14,10 @@ const notifyHost = 'https://notify.dropboxapi.com';
 
 const jsonFilePath = `/${resolveDropboxFileName()}`;
 
-const reloadTimeoutLength = 3000; // 3 seconds
-
-let clientInstance: AxiosInstance;
-
 const apiKey = resolveDropboxApiKey();
 const apiSecret = resolveDropboxApiSecret();
 
-const getClient = () => {
-    if (clientInstance) {
-        return clientInstance;
-    }
-
-    clientInstance = axios.create();
-
-    clientInstance.interceptors.response.use(
-        (response) => response,
-        (error) => {
-            if (isLoggedOutError(error)) {
-                notifyError(
-                    `Je bent uitgelogd, de pagina wordt over ${
-                        reloadTimeoutLength / 1000
-                    } seconden ververst om je opnieuw in te laten loggen`,
-                );
-
-                // clear token storage so a new token is requested
-                clearTokenStorage();
-
-                setTimeout(() => window.location.reload(), reloadTimeoutLength);
-            }
-        },
-    );
-
-    return clientInstance;
-};
+// @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
 
 export const fetchAccessToken = async (
     code: string,
@@ -62,23 +29,24 @@ export const fetchAccessToken = async (
         redirect_uri: redirectUri,
     });
 
-    const { data } = await getClient().post(`${apiHost}/oauth2/token`, body, {
-        auth: {
-            username: apiKey,
-            password: apiSecret,
+    const { data } = await getDropboxClient().post(
+        `${apiHost}/oauth2/token`,
+        body,
+        {
+            auth: {
+                username: apiKey,
+                password: apiSecret,
+            },
         },
-    });
+    );
 
     return data.access_token;
 };
 
-const createAuthorizationHeader = (accessToken: string) =>
-    `Bearer ${accessToken}`;
-
 export const pushTodosToDropbox = async (accessToken: string, json: string) => {
     const url = `${contentHost}/2/files/upload`;
 
-    await getClient().post(url, json, {
+    await getDropboxClient().post(url, json, {
         headers: {
             Authorization: createAuthorizationHeader(accessToken),
             'Content-Type': 'application/octet-stream',
@@ -93,7 +61,7 @@ export const pushTodosToDropbox = async (accessToken: string, json: string) => {
 export const fetchTodosFromDropbox = async (accessToken: string) => {
     const url = `${contentHost}/2/files/download`;
 
-    const { data } = await getClient().post(url, undefined, {
+    const { data } = await getDropboxClient().post(url, undefined, {
         headers: {
             Authorization: createAuthorizationHeader(accessToken),
             'Dropbox-API-Arg': JSON.stringify({
@@ -108,7 +76,7 @@ export const fetchTodosFromDropbox = async (accessToken: string) => {
 const fetchFolderCursor = async (accessToken: string): Promise<string> => {
     const url = `${apiHost}/2/files/list_folder`;
 
-    const { data } = await getClient().post(
+    const { data } = await getDropboxClient().post(
         url,
         {
             path: '',
@@ -130,7 +98,7 @@ export const pollForChanges = async (accessToken: string): Promise<boolean> => {
     const url = `${notifyHost}/2/files/list_folder/longpoll`;
 
     try {
-        const body = await getClient().post(
+        const body = await getDropboxClient().post(
             url,
             {
                 cursor,
