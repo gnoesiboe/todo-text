@@ -2,6 +2,21 @@ import { NextAction } from './../hooks/useManageTodoListItems';
 import { createEmpty } from '../../../model/factory/todoListItemFactory';
 import { TodoListItem } from '../../../model/TodoListItem';
 import produce from 'immer';
+import { isEqual } from 'lodash';
+
+export function applyNewlyFetched(
+    currentItems: TodoListItem[],
+    incomingItems: TodoListItem[],
+): TodoListItem[] {
+    // ensure that we do not end up in a refetch loop, as an === check tell's
+    // react that there were changes, even when there are none, but only different
+    // instances
+    if (isEqual(currentItems, incomingItems)) {
+        return currentItems;
+    }
+
+    return incomingItems;
+}
 
 export function applyUpdate(
     currentItems: TodoListItem[],

@@ -6,10 +6,10 @@ import {
     applyMoveItemUp,
     applyMoveItemDown,
 } from '../utility/todosMutators';
-import usePollForChanges from './usePollForChanges';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
 import { determineNextCurrentItem } from '../utility/currentItemResolver';
+import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -47,7 +47,7 @@ export default function useManageTodoListItems() {
 
     const { isFetching, refetchTodos } = useFetchTodoListItems(setItems);
 
-    usePollForChanges(refetchTodos);
+    useRefetchAfterLastChangeIsDone(currentItem, refetchTodos, items);
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
