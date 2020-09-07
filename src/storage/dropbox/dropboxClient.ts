@@ -1,8 +1,8 @@
+import { resolveEnvironmentVariableOrThrow } from './../../utility/environmentUtlities';
 import { clear as clearTokenStorage } from './../../model/repository/accessTokenRepository';
 import { isLoggedOutError } from './utility/errorIdentificationUtilities';
 import { formatBodyAsFormData } from './../../utility/requestUtilities';
 import { createQueryString } from '../../utility/requestUtilities';
-import { apiKey, apiSecret } from './../../constants/dropbox';
 import axios, { AxiosInstance } from 'axios';
 import { notifyError } from '../..//utility/notifier';
 
@@ -12,11 +12,18 @@ const apiHost = 'https://api.dropboxapi.com';
 const contentHost = 'https://content.dropboxapi.com';
 const notifyHost = 'https://notify.dropboxapi.com';
 
-const jsonFilePath = '/item.json';
+const jsonFilePath = `/${resolveEnvironmentVariableOrThrow(
+    'REACT_APP_DROPBOX_FILE_NAME',
+)}`;
 
 const reloadTimeoutLength = 3000; // 3 seconds
 
 let clientInstance: AxiosInstance;
+
+const apiKey = resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_API_KEY');
+const apiSecret = resolveEnvironmentVariableOrThrow(
+    'REACT_APP_DROPBOX_API_SECRET',
+);
 
 const getClient = () => {
     if (clientInstance) {
