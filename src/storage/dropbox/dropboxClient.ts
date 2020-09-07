@@ -1,8 +1,11 @@
-import { resolveEnvironmentVariableOrThrow } from './../../utility/environmentUtlities';
+import {
+    resolveDropboxApiKey,
+    resolveDropboxApiSecret,
+    resolveDropboxFileName,
+} from './../../utility/environmentUtlities';
 import { clear as clearTokenStorage } from './../../model/repository/accessTokenRepository';
 import { isLoggedOutError } from './utility/errorIdentificationUtilities';
 import { formatBodyAsFormData } from './../../utility/requestUtilities';
-import { createQueryString } from '../../utility/requestUtilities';
 import axios, { AxiosInstance } from 'axios';
 import { notifyError } from '../..//utility/notifier';
 
@@ -12,18 +15,14 @@ const apiHost = 'https://api.dropboxapi.com';
 const contentHost = 'https://content.dropboxapi.com';
 const notifyHost = 'https://notify.dropboxapi.com';
 
-const jsonFilePath = `/${resolveEnvironmentVariableOrThrow(
-    'REACT_APP_DROPBOX_FILE_NAME',
-)}`;
+const jsonFilePath = `/${resolveDropboxFileName()}`;
 
 const reloadTimeoutLength = 3000; // 3 seconds
 
 let clientInstance: AxiosInstance;
 
-const apiKey = resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_API_KEY');
-const apiSecret = resolveEnvironmentVariableOrThrow(
-    'REACT_APP_DROPBOX_API_SECRET',
-);
+const apiKey = resolveDropboxApiKey();
+const apiSecret = resolveDropboxApiSecret();
 
 const getClient = () => {
     if (clientInstance) {
@@ -51,16 +50,6 @@ const getClient = () => {
     );
 
     return clientInstance;
-};
-
-export const redirectToAuthenticate = (redirectUri: string) => {
-    const queryString = createQueryString({
-        client_id: apiKey,
-        redirect_uri: redirectUri,
-        response_type: 'code',
-    });
-
-    window.location.href = `https://www.dropbox.com/oauth2/authorize?${queryString}`;
 };
 
 export const fetchAccessToken = async (
