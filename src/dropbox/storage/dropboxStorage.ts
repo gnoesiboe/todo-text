@@ -1,3 +1,4 @@
+import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
 import {
     resolveDropboxApiKey,
     resolveDropboxApiSecret,
@@ -61,7 +62,7 @@ export const pushTodosToDropbox = async (accessToken: string, json: string) => {
 export const fetchTodosFromDropbox = async (accessToken: string) => {
     const url = `${contentHost}/2/files/download`;
 
-    const { data } = await getDropboxClient().post(url, undefined, {
+    const { data: todos } = await getDropboxClient().post(url, undefined, {
         headers: {
             Authorization: createAuthorizationHeader(accessToken),
             'Dropbox-API-Arg': JSON.stringify({
@@ -70,7 +71,7 @@ export const fetchTodosFromDropbox = async (accessToken: string) => {
         },
     });
 
-    return data;
+    return normalizeAndValidateTodos(todos);
 };
 
 const fetchFolderCursor = async (accessToken: string): Promise<string> => {
