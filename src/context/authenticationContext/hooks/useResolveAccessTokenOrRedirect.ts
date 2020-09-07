@@ -1,7 +1,5 @@
-import {
-    redirectToAuthenticate,
-    fetchAccessToken,
-} from './../../../storage/dropbox/dropboxClient';
+import { redirectToAuthenticate } from './../../../storage/dropbox/utility/redirectUtilities';
+import { fetchAccessToken } from './../../../storage/dropbox/dropboxClient';
 import { parseQueryString } from '../../../utility/requestUtilities';
 import { useState, useEffect } from 'react';
 import {

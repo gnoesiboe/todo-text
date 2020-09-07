@@ -3,7 +3,7 @@ const environment = process.env.NODE_ENV;
 export const isDevelopmentEnvironment = environment === 'development';
 export const isProductionEnvironment = environment === 'production';
 
-export const resolveEnvironmentVariableOrThrow = (key: string): string => {
+const resolveEnvironmentVariableOrThrow = (key: string): string => {
     const value = process.env[key];
 
     if (!value) {
@@ -14,3 +14,12 @@ export const resolveEnvironmentVariableOrThrow = (key: string): string => {
 
     return value;
 };
+
+export const resolveDropboxApiKey = () =>
+    resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_API_KEY');
+
+export const resolveDropboxApiSecret = () =>
+    resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_API_SECRET');
+
+export const resolveDropboxFileName = () =>
+    resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_FILE_NAME');
