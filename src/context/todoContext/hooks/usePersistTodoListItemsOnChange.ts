@@ -1,5 +1,5 @@
 import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
-import { pushTodosToDropbox } from './../../../storage/dropbox/dropboxClient';
+import { pushTodosToDropbox } from '../../../dropbox/storage/dropboxStorage';
 import { useState } from 'react';
 import type { TodoListItem } from '../../../model/TodoListItem';
 import useThrottledEffect from 'use-throttled-effect';
