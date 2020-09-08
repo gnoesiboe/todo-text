@@ -42,7 +42,7 @@
 }
 
 .todo-list-item--must .todo-list-item__checkbox {
-    border: 1px solid #000;
+    border: 2px solid #000;
 }
 
 .todo-list-item__value__heading {
