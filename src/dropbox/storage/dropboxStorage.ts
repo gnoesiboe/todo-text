@@ -62,7 +62,7 @@ export const pushTodosToDropbox = async (accessToken: string, json: string) => {
 export const fetchTodosFromDropbox = async (accessToken: string) => {
     const url = `${contentHost}/2/files/download`;
 
-    const { data: todos } = await getDropboxClient().post(url, undefined, {
+    const response = await getDropboxClient().post(url, undefined, {
         headers: {
             Authorization: createAuthorizationHeader(accessToken),
             'Dropbox-API-Arg': JSON.stringify({
@@ -70,6 +70,8 @@ export const fetchTodosFromDropbox = async (accessToken: string) => {
             }),
         },
     });
+
+    const todos = response ? response.data || [] : [];
 
     return normalizeAndValidateTodos(todos);
 };
