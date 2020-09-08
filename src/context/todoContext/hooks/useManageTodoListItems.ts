@@ -11,6 +11,7 @@ import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwa
 import { determineNextCurrentItem } from '../utility/currentItemResolver';
 import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 import useRefetchUpdatesAfterMount from './useRefetchUpdatesAfterMount';
+import useRefetchOnWindowFocus from './useRefetchOnWindowFocus';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -53,6 +54,8 @@ export default function useManageTodoListItems() {
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
     useRefetchUpdatesAfterMount(isFetching, currentItem, refetchTodos);
+
+    useRefetchOnWindowFocus(isFetching, currentItem, refetchTodos);
 
     const changeItem: ChangeItemHandler = (id, value, done, nextAction) => {
         const nextItems = applyUpdate(items, id, value, done, nextAction);
