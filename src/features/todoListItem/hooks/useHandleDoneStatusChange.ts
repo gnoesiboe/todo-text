@@ -1,4 +1,3 @@
-import type { ChangeEventHandler } from 'react';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import type { TodoListItem } from './../../../model/TodoListItem';
 import { NextAction } from '../../../context/todoContext/hooks/useManageTodoListItems';
@@ -6,7 +5,7 @@ import { NextAction } from '../../../context/todoContext/hooks/useManageTodoList
 export default function useHandleDoneStatusChange(item: TodoListItem) {
     const { changeItem } = useTodoContext();
 
-    const onDoneChanged: ChangeEventHandler<HTMLInputElement> = () => {
+    const onDoneChanged = () => {
         changeItem(item.id, item.value, !item.done, NextAction.None);
     };
 

@@ -5,27 +5,13 @@
     border-radius: 5px;
 }
 
-.todo-list-item__status-checkbox-wrapper {
-    position: absolute;
-    left: 5px;
-    top: 8px;
-    display: inline-block;
-    padding: 1px 3px 0;
-    border-radius: 4px;
-    width: 22px;
-    height: 21px;
-    overflow: hidden;
-}
-
-.todo-list-item__status-checkbox-wrapper checkbox {
-    margin: 0;
-    padding: 0;
-    width: 16px;
-    height: 16px;
+/* @todo update */
+.todo-list-item__checkbox {
+    margin-top: 10px;
 }
 
 .todo-list-item__value {
-    margin-left: 37px;
+    margin-left: 27px;
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
     color: #666;
@@ -40,9 +26,11 @@
     color: #ddd;
 }
 
-.todo-list-item--done .todo-list-item__status-checkbox-wrapper {
-    opacity: 0.5;
-    background: none !important;
+.todo-list-item--done .todo-list-item__checkbox,
+.todo-list-item--done .todo-list-item__checkbox:after {
+    opacity: 0.4;
+    background: #fff;
+    color: #999;
 }
 
 .todo-list-item--is-being-edited {
@@ -53,8 +41,8 @@
     text-decoration: line-through;
 }
 
-.todo-list-item--must .todo-list-item__status-checkbox-wrapper {
-    background: #333;
+.todo-list-item--must .todo-list-item__checkbox {
+    border: 1px solid #000;
 }
 
 .todo-list-item__value__heading {

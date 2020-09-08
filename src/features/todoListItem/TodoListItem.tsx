@@ -11,6 +11,7 @@ import { prepareForVisibility } from './utility/visibilityUtilities';
 import createClassName from 'classnames';
 import useSwitchToEditModeOnSwitch from './hooks/useSwitchToEditModeOnClick';
 import useHandleDoneStatusChange from './hooks/useHandleDoneStatusChange';
+import Checkbox from '../../primitives/Checkbox/Checkbox';
 
 export type OnChangeHandler = (
     id: string,
@@ -43,13 +44,11 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
         <div className={className}>
             <>
                 {!isCancelled(item) && !isHeading(item) && (
-                    <span className="todo-list-item__status-checkbox-wrapper">
-                        <input
-                            type="checkbox"
-                            checked={item.done}
-                            onChange={onDoneChanged}
-                        />
-                    </span>
+                    <Checkbox
+                        checked={item.done}
+                        onChange={onDoneChanged}
+                        className="todo-list-item__checkbox"
+                    />
                 )}
                 {current ? (
                     <EditTodo item={item} />
