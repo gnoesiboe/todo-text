@@ -19,12 +19,11 @@
 
 .checkbox__replacement:after {
     content: '×';
-    font-size: 30px;
-    /* content: '\2713\0020'; */
+    font-size: 26px;
     position: absolute;
     display: none;
     text-align: center;
-    top: -17px;
+    top: -14px;
     left: -2px;
 }
 
