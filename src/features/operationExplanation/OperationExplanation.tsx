@@ -38,7 +38,7 @@ const OperationExplanation: React.FC = () => {
                         <Table borderless size="sm">
                             <thead>
                                 <tr>
-                                    <th style={{ width: '20%' }}>Shortcut</th>
+                                    <th style={{ width: '25%' }}>Shortcut</th>
                                     <th>Description</th>
                                 </tr>
                             </thead>
