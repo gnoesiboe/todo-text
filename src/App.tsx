@@ -12,9 +12,9 @@ import 'react-toastify/dist/ReactToastify.css';
 const App: React.FC = () => (
     <div className="app">
         <AuthenticationContextProvider>
-            <Container fluid="sm">
+            <Container fluid="lg">
                 <Row>
-                    <Col md={{ span: 8, offset: 2 }}>
+                    <Col lg={{ span: 8, offset: 2 }}>
                         <TodoContextProvider>
                             <TodoList />
                         </TodoContextProvider>
