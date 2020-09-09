@@ -4,7 +4,7 @@ const normalizeAndValidateTodo = (todo: any): TodoListItem => {
     const result = todoSchema.validate(todo);
 
     if (result.error) {
-        throw result.error;
+        console.error('Error validting input from Dropbox: ', result.error);
     }
 
     return result.value;
