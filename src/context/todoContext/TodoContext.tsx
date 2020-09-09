@@ -12,6 +12,8 @@ import useManageTodoListItems, {
     MoveItemDownHandler,
     SetCurrentItemHandler,
 } from './hooks/useManageTodoListItems';
+import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
+import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
 
 type ContextValue = {
     items: TodoListItem[];
@@ -60,9 +62,19 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         moveItemDown,
         currentItem,
         setCurrentItem,
+        refetchTodos,
     } = useManageTodoListItems();
 
     const { isSaving } = usePersistTodoListItemsOnChange(items, isFetching);
+
+    useRefetchUpdatesAfterMount(
+        isFetching,
+        currentItem,
+        refetchTodos,
+        isSaving,
+    );
+
+    useRefetchOnWindowFocus(isFetching, currentItem, refetchTodos, isSaving);
 
     const value: ContextValue = {
         items,

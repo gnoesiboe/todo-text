@@ -27,7 +27,7 @@ export default function usePersistTodoListItemsOnChange(
             );
         },
         pushToDropboxThrottle,
-        [items, accessToken, isFetching],
+        [items, accessToken, isFetching, setIsSaving],
     );
 
     return { isSaving };

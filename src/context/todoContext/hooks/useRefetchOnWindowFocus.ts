@@ -4,9 +4,10 @@ export default function useRefetchOnWindowFocus(
     isFetching: boolean,
     currentItem: string | null,
     refetch: () => void,
+    isSaving: boolean,
 ) {
     useEffect(() => {
-        if (!isFetching && !currentItem) {
+        if (!isFetching && !currentItem && !isSaving) {
             const onWindowFocus = () => refetch();
 
             window.addEventListener('focus', onWindowFocus);
@@ -14,5 +15,5 @@ export default function useRefetchOnWindowFocus(
             return () => window.removeEventListener('focus', onWindowFocus);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isFetching, currentItem]);
+    }, [isFetching, currentItem, isSaving]);
 }

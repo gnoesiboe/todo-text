@@ -6,9 +6,10 @@ export default function useRefetchUpdatesAfterMount(
     isFetching: boolean,
     currentItem: string | null,
     refetch: () => void,
+    isSaving: boolean,
 ) {
     useEffect(() => {
-        if (!isFetching && !currentItem) {
+        if (!isFetching && !currentItem && !isSaving) {
             const handle = setInterval(() => {
                 refetch();
             }, fetchEverySeconds * 1000);
@@ -16,5 +17,5 @@ export default function useRefetchUpdatesAfterMount(
             return () => clearInterval(handle);
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isFetching, currentItem]);
+    }, [isFetching, currentItem, isSaving]);
 }
