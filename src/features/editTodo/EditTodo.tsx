@@ -7,6 +7,7 @@ import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItem
 import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
 import useMoveItemUpOnKeyboardShortcutPressed from './hooks/useMoveItemUpOnKeyboardShortcutPressed';
 import useMoveItemDownOnKeyboardShortcutPressed from './hooks/useMoveItemDownOnKeyboardShortcutPressed';
+import useToggleDoneStatusOnKeyboardShortcut from './hooks/useToggleDoneStatusOnKeyboardShortcut';
 
 export type OnChangeHandler = (newValue: string) => void;
 
@@ -29,6 +30,7 @@ const EditTodo: React.FC<Props> = ({ item }) => {
     useNavigateToPreviousItemOnUpKeyPressed(textareaRef, item, value);
     useMoveItemUpOnKeyboardShortcutPressed(item, value);
     useMoveItemDownOnKeyboardShortcutPressed(item, value);
+    useToggleDoneStatusOnKeyboardShortcut(item, value);
 
     return (
         <form onSubmit={onSubmit} className="edit-todo">

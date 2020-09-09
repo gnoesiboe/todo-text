@@ -48,6 +48,7 @@ export function determineNextCurrentItem(
 
             return items[currentIndex - 1]?.id || null;
 
+        case NextAction.EditCurrent:
         default:
             return currentItem;
     }

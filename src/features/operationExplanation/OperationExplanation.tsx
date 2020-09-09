@@ -133,13 +133,25 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>crtl + enter</code>
+                                        <code>ctrl + enter</code>
                                     </td>
                                     <td>
                                         <p>
                                             When editing a todo, it saves any
                                             changes you have made and then ends
                                             the edit mode.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>ctrl + space</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When editing a todo, it toggles the
+                                            done status of the todo you are
+                                            editing.
                                         </p>
                                     </td>
                                 </tr>
