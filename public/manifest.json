@@ -1,7 +1,11 @@
 {
     "short_name": "Todo text",
     "name": "Todo text",
-    "icons": [],
+    "icons": {
+        "src": "/android-chrome-96x96.png",
+        "sizes": "96x96",
+        "type": "image/png"
+    },
     "start_url": ".",
     "display": "standalone",
     "theme_color": "#000000",
