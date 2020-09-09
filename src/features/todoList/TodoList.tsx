@@ -13,7 +13,6 @@ const TodoList: React.FC = () => {
     return (
         <div className="todo-list">
             {isSaving && <SavingIndicator />}
-            <h1>Todo</h1>
             {isFetching ? (
                 <p>Loading data from dropbox..</p>
             ) : (
