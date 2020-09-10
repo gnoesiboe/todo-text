@@ -1,3 +1,4 @@
+import { isValidValue } from './../utility/inputValidator';
 import { useTodoContext } from '../../../context/todoContext/TodoContext';
 import { KeyCode } from '../../../constants/keyCodes';
 import type { TodoListItem } from '../../../model/TodoListItem';
@@ -16,7 +17,8 @@ export default function useMoveItemDownOnKeyboardShortcutPressed(
                 !event.altKey ||
                 event.shiftKey ||
                 event.metaKey ||
-                event.ctrlKey
+                event.ctrlKey ||
+                !isValidValue(value)
             ) {
                 return;
             }

@@ -1,3 +1,4 @@
+import { isValidValue } from './../utility/inputValidator';
 import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import {
     checkIfThereIsTextSelected,
@@ -22,7 +23,8 @@ export default function useNavigateToNextItemOnDownKeyPressed(
                 !checkOnlyKeyCodeIsPressed(event, KeyCode.Down) ||
                 !textareaRef.current ||
                 checkIfThereIsTextSelected(textareaRef.current) ||
-                !checkIfCursorIsAtTheEnd(textareaRef.current)
+                !checkIfCursorIsAtTheEnd(textareaRef.current) ||
+                !isValidValue(value)
             ) {
                 return;
             }

@@ -1,3 +1,4 @@
+import { isValidValue } from './../utility/inputValidator';
 import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
@@ -28,6 +29,10 @@ export default function useTodoFormHandlers(item: TodoListItem) {
     const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
         event.preventDefault();
 
+        if (!isValidValue(value)) {
+            return;
+        }
+
         pushNewValue(NextAction.EditNext);
     };
 
@@ -35,12 +40,18 @@ export default function useTodoFormHandlers(item: TodoListItem) {
         event,
     ) => {
         if (checkOnlyKeyCodeIsPressed(event, KeyCode.Enter)) {
-            pushNewValue(NextAction.EditNext);
+            if (isValidValue(value)) {
+                pushNewValue(NextAction.EditNext);
+            }
 
             event.preventDefault();
         }
 
-        if (event.keyCode === KeyCode.Enter && event.altKey) {
+        if (
+            event.keyCode === KeyCode.Enter &&
+            event.altKey &&
+            isValidValue(value)
+        ) {
             if (event.shiftKey) {
                 pushNewValue(NextAction.CreateNewBefore);
             } else {
@@ -48,13 +59,17 @@ export default function useTodoFormHandlers(item: TodoListItem) {
             }
         }
 
-        if (event.keyCode === KeyCode.Enter && event.ctrlKey) {
+        if (
+            event.keyCode === KeyCode.Enter &&
+            event.ctrlKey &&
+            isValidValue(value)
+        ) {
             pushNewValue(NextAction.None);
         }
 
         if (
             checkOnlyKeyCodeIsPressed(event, KeyCode.Backspace) &&
-            value.length <= 1
+            value.length === 0
         ) {
             deleteItem(item.id);
         }
