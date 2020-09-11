@@ -1,6 +1,4 @@
 import React, { useRef } from 'react';
-import './EditTodo.css';
-import TextareaAutosize from 'react-autosize-textarea';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
 import type { TodoListItem } from '../../model/TodoListItem';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
@@ -8,6 +6,7 @@ import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPrevio
 import useMoveItemUpOnKeyboardShortcutPressed from './hooks/useMoveItemUpOnKeyboardShortcutPressed';
 import useMoveItemDownOnKeyboardShortcutPressed from './hooks/useMoveItemDownOnKeyboardShortcutPressed';
 import useToggleDoneStatusOnKeyboardShortcut from './hooks/useToggleDoneStatusOnKeyboardShortcut';
+import { Form, TextareaAutosize } from './components/StyledComponents';
 
 export type OnChangeHandler = (newValue: string) => void;
 
@@ -33,18 +32,17 @@ const EditTodo: React.FC<Props> = ({ item }) => {
     useToggleDoneStatusOnKeyboardShortcut(item, value);
 
     return (
-        <form onSubmit={onSubmit} className="edit-todo">
+        <Form onSubmit={onSubmit}>
             <TextareaAutosize
                 ref={textareaRef}
                 autoFocus
                 value={value}
-                className="edit-todo__textarea"
                 rows={1}
                 onKeyDown={onValueKeyDown}
                 onChange={onValueChange}
                 onBlur={onValueBlur}
             />
-        </form>
+        </Form>
     );
 };
 
