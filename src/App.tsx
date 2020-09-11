@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import { Container, Row, Col } from 'react-bootstrap';
 import TodoList from './features/todoList/TodoList';
 import { TodoContextProvider } from './context/todoContext/TodoContext';
@@ -8,9 +7,16 @@ import OperationExplanation from './features/operationExplanation/OperationExpla
 import { AuthenticationContextProvider } from './context/authenticationContext/AuthenticationContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import styled from 'styled-components';
+
+const AppContainer = styled.div`
+    width: 100%;
+    height: 100%;
+    padding-top: 20px;
+`;
 
 const App: React.FC = () => (
-    <div className="app">
+    <AppContainer>
         <AuthenticationContextProvider>
             <Container fluid="lg">
                 <Row>
@@ -24,7 +30,7 @@ const App: React.FC = () => (
             </Container>
         </AuthenticationContextProvider>
         <ToastContainer />
-    </div>
+    </AppContainer>
 );
 
 export default App;
