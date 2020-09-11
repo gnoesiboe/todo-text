@@ -8,6 +8,7 @@ import { AuthenticationContextProvider } from './context/authenticationContext/A
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
+import { ThemeContextProvider } from './context/themeContext/ThemeContext';
 
 const AppContainer = styled.div`
     width: 100%;
@@ -16,21 +17,23 @@ const AppContainer = styled.div`
 `;
 
 const App: React.FC = () => (
-    <AppContainer>
-        <AuthenticationContextProvider>
-            <Container fluid="lg">
-                <Row>
-                    <Col lg={{ span: 8, offset: 2 }}>
-                        <TodoContextProvider>
-                            <TodoList />
-                        </TodoContextProvider>
-                        <OperationExplanation />
-                    </Col>
-                </Row>
-            </Container>
-        </AuthenticationContextProvider>
-        <ToastContainer />
-    </AppContainer>
+    <ThemeContextProvider>
+        <AppContainer>
+            <AuthenticationContextProvider>
+                <Container fluid="lg">
+                    <Row>
+                        <Col lg={{ span: 8, offset: 2 }}>
+                            <TodoContextProvider>
+                                <TodoList />
+                            </TodoContextProvider>
+                            <OperationExplanation />
+                        </Col>
+                    </Row>
+                </Container>
+            </AuthenticationContextProvider>
+            <ToastContainer />
+        </AppContainer>
+    </ThemeContextProvider>
 );
 
 export default App;
