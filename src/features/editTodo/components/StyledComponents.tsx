@@ -1,8 +1,11 @@
-.edit-todo {
-    margin-left: 37px;
-}
+import styled from 'styled-components';
+import ReactTextareaAutosize from 'react-autosize-textarea';
 
-.edit-todo__textarea {
+export const Form = styled.form`
+    margin-left: 37px;
+`;
+
+export const TextareaAutosize = styled(ReactTextareaAutosize)`
     border: none;
     padding: 0;
     margin: 0;
@@ -11,4 +14,4 @@
     font-size: 18px !important;
     font-family: Arial, Helvetica, sans-serif !important;
     resize: none;
-}
+`;
