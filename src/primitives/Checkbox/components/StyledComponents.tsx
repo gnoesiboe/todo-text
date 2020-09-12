@@ -22,7 +22,10 @@ export const Input = styled.input`
     }
 `;
 
-export const CheckboxReplacement = styled.span`
+export const CheckboxReplacement = styled.span<{
+    accented: boolean;
+    muted: boolean;
+}>`
     position: absolute;
     top: 0;
     left: 0;
@@ -31,6 +34,17 @@ export const CheckboxReplacement = styled.span`
     background-color: #eee;
     border: 1px solid #ccc;
     border-radius: 2px;
+
+    ${({ accented }) => accented && `border: 3px solid #000;`}
+
+    ${({ muted }) =>
+        muted &&
+        `
+            opacity: 0.5;
+            background: #fff;
+            color: #999;
+            border: 1px solid #ccc !important;
+        `}
 
     &:hover {
         background-color: #ccc;
@@ -44,7 +58,9 @@ export const CheckboxReplacement = styled.span`
         display: none;
         text-align: center;
         top: -14px;
-        left: -2px;
+        left: -1px;
+
+        ${({ muted }) => muted && `color: #bbb;`}
     }
 
     ${Container}:checked & {

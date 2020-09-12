@@ -6,12 +6,10 @@ import {
     isMust,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
-import './TodoListItem.css';
 import { prepareForVisibility } from './utility/visibilityUtilities';
-import createClassName from 'classnames';
 import useSwitchToEditModeOnSwitch from './hooks/useSwitchToEditModeOnClick';
 import useHandleDoneStatusChange from './hooks/useHandleDoneStatusChange';
-import Checkbox from '../../primitives/Checkbox/Checkbox';
+import { Container, Checkbox, Value } from './components/StyledComponents';
 
 export type OnChangeHandler = (
     id: string,
@@ -33,28 +31,23 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
 
     const { onDoneChanged } = useHandleDoneStatusChange(item);
 
-    const className = createClassName('todo-list-item', {
-        'todo-list-item--done': item.done,
-        'todo-list-item--cancelled': isCancelled(item),
-        'todo-list-item--is-being-edited': current,
-        'todo-list-item--must': isMust(item),
-    });
-
     return (
-        <div className={className}>
+        <Container item={item} current={current}>
             <>
                 {!isCancelled(item) && !isHeading(item) && (
                     <Checkbox
+                        item={item}
+                        accented={isMust(item)}
                         checked={item.done}
+                        muted={item.done}
                         onChange={onDoneChanged}
-                        className="todo-list-item__checkbox"
                     />
                 )}
                 {current ? (
                     <EditTodo item={item} />
                 ) : (
-                    <div
-                        className="todo-list-item__value"
+                    <Value
+                        item={item}
                         onClick={onClick}
                         dangerouslySetInnerHTML={{
                             __html: prepareForVisibility(item),
@@ -62,7 +55,7 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
                     />
                 )}
             </>
-        </div>
+        </Container>
     );
 };
 
