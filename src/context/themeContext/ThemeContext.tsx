@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { ThemeProvider } from 'styled-components';
+import { DefaultTheme, ThemeProvider } from 'styled-components';
 
 /* @see https://coolors.co/264653-2a9d8f-e9c46a-f4a261-e76f51 */
 
@@ -10,16 +10,12 @@ export enum Color {
     Fourth = 'quaternary',
 }
 
-export interface Theme {
-    colors: Record<Color, string>;
-}
-
-const theme: Theme = {
+const theme: DefaultTheme = {
     colors: {
-        [Color.First]: '#264653',
-        [Color.Second]: '#2a9d8f',
-        [Color.Third]: '#e9c46a',
-        [Color.Fourth]: '#e76f51',
+        first: '#264653',
+        second: '#2a9d8f',
+        third: '#e9c46a',
+        fourth: '#e76f51',
     },
 };
 
