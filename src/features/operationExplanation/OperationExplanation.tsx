@@ -5,18 +5,21 @@ import Octicon, {
     ChevronDownIcon,
     ChevronUpIcon,
 } from '@primer/octicons-react';
-import './OperationExplanation.css';
-import SectionTitle from './components/SectionTitle';
-import Section from './components/Section';
-import ExplanationOutput from './components/ExplanationOutput';
 import ListItem from './components/ListItem';
+import {
+    ButtonWrapper,
+    ExplanationContainer,
+    ExplanationSection,
+    ExplanationSectionTitle,
+    ExplanationOutput,
+} from './components/StyledComponents';
 
 const OperationExplanation: React.FC = () => {
     const { visible, toggle } = useToggleVisibility(false);
 
     return (
-        <div className="operation-explanation">
-            <div className="operation-explanation__button-wrapper text-center">
+        <div>
+            <ButtonWrapper>
                 <Button onClick={() => toggle()} variant="link" size="sm">
                     {visible ? (
                         <>
@@ -30,11 +33,13 @@ const OperationExplanation: React.FC = () => {
                         </>
                     )}
                 </Button>
-            </div>
+            </ButtonWrapper>
             {visible && (
-                <div className="operation-explanation__explanation">
-                    <Section>
-                        <SectionTitle>Keyboard shortcuts</SectionTitle>
+                <ExplanationContainer>
+                    <ExplanationSection>
+                        <ExplanationSectionTitle>
+                            Keyboard shortcuts
+                        </ExplanationSectionTitle>
                         <Table borderless size="sm">
                             <thead>
                                 <tr>
@@ -157,9 +162,11 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                             </tbody>
                         </Table>
-                    </Section>
-                    <Section>
-                        <SectionTitle>Formatting syntax</SectionTitle>
+                    </ExplanationSection>
+                    <ExplanationSection>
+                        <ExplanationSectionTitle>
+                            Formatting syntax
+                        </ExplanationSectionTitle>
                         <ul className="list-unstyled">
                             <ListItem code="# Some heading">
                                 <p>
@@ -271,8 +278,8 @@ const OperationExplanation: React.FC = () => {
                                 </ExplanationOutput>
                             </ListItem>
                         </ul>
-                    </Section>
-                </div>
+                    </ExplanationSection>
+                </ExplanationContainer>
             )}
         </div>
     );

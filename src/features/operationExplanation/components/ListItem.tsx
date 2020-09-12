@@ -1,15 +1,20 @@
 import React, { ReactNode } from 'react';
+import styled from 'styled-components';
 
 type Props = {
     code: string;
     children: ReactNode;
 };
 
+const LI = styled.li`
+    margin-bottom: 30px;
+`;
+
 const ListItem: React.FC<Props> = ({ code, children }) => (
-    <li className="explanation-explanantion__list-item">
+    <LI>
         <pre>{code}</pre>
         {children}
-    </li>
+    </LI>
 );
 
 export default ListItem;
