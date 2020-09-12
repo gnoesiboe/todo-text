@@ -6,7 +6,7 @@ type Formatter = (value: string) => string;
 const applyStrikeThrough: Formatter = (value) => {
     return value.replace(
         /~~([^~]+)~~/,
-        '<span class="todo-list-item__value--removed">$1</span>',
+        '<span class="todo-list-item__value__removed">$1</span>',
     );
 };
 

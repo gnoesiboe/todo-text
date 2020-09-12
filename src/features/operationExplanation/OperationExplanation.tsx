@@ -243,7 +243,7 @@ const OperationExplanation: React.FC = () => {
                                     no longer executable.
                                 </p>
                                 <ExplanationOutput>
-                                    <span className="todo-list-item__value--removed">
+                                    <span className="todo-list-item__value__removed">
                                         some value
                                     </span>
                                 </ExplanationOutput>
