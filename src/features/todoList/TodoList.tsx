@@ -1,9 +1,8 @@
 import React from 'react';
 import TodoListItem from '../todoListItem/TodoListItem';
-import './TodoList.css';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import useStartEditFirstOnKeyDown from './hooks/useStartEditFirstOnKeyDown';
-import SavingIndicator from './components/SavingIndicator';
+import { Container, SavingIndicator } from './components/StyledComponents';
 
 const TodoList: React.FC = () => {
     const { items, isFetching, isSaving, currentItem } = useTodoContext();
@@ -11,8 +10,8 @@ const TodoList: React.FC = () => {
     useStartEditFirstOnKeyDown();
 
     return (
-        <div className="todo-list">
-            {isSaving && <SavingIndicator />}
+        <Container>
+            {isSaving && <SavingIndicator>saving..</SavingIndicator>}
             <h1>TODO</h1>
             {isFetching ? (
                 <p>Loading data from dropbox..</p>
@@ -27,7 +26,7 @@ const TodoList: React.FC = () => {
                     ))}
                 </>
             )}
-        </div>
+        </Container>
     );
 };
 
