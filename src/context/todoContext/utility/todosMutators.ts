@@ -32,7 +32,10 @@ export function applyUpdate(
             return;
         }
 
-        nextItems[indexToChange].value = value;
+        const normalizedValue =
+            value && value.trim().length > 0 ? value : '...';
+
+        nextItems[indexToChange].value = normalizedValue;
         nextItems[indexToChange].done = done;
 
         switch (nextAction) {
