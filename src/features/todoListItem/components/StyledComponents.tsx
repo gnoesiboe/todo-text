@@ -67,6 +67,10 @@ export const Value = styled.div<ItemContextProps>`
         text-decoration: underline;
     }
 
+    .todo-list-item__value__deadline {
+        color: ${({ theme }) => theme.colors.third};
+    }
+
     .todo-list-item__value__project {
         font-weight: bold;
         text-transform: uppercase;

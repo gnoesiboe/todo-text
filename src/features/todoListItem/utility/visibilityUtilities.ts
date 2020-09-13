@@ -46,6 +46,13 @@ const formatAsHeading: Formatter = (value) => {
     );
 };
 
+const applyDeadline: Formatter = (value) => {
+    return value.replace(
+        /(\(DL: [^)]+\))/g,
+        '<span class="todo-list-item__value__deadline">$1</span>',
+    );
+};
+
 const applySummaryWrapper: Formatter = (value) => {
     return `<div class="todo-list-item__value__summary">${value}</div>`;
 };
@@ -86,6 +93,7 @@ export const prepareForVisibility = (item: TodoListItem): string => {
         .reduce<string>((accumulator, currentLine, currentIndex) => {
             const formatters = [
                 applyTagging,
+                applyDeadline,
                 applyLinks,
                 applyProjects,
                 applyStrong,
