@@ -48,7 +48,7 @@ export const Value = styled.div<ItemContextProps>`
     }
 
     .todo-list-item__value__heading {
-        color: #e76f51;
+        color: ${({ theme }) => theme.colors.fourth};
         display: block;
         font-weight: bold;
         text-transform: uppercase;

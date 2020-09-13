@@ -16,7 +16,7 @@ export const ExplanationContainer = styled.div`
 
     code,
     pre {
-        color: #e9c46a !important;
+        color: ${({ theme }) => theme.colors.third} !important;
         font-size: 1.1em;
     }
 
@@ -30,7 +30,7 @@ export const ExplanationSection = styled.section`
 `;
 
 export const ExplanationSectionTitle = styled.h3`
-    color: #e9c46a !important;
+    color: ${({ theme }) => theme.colors.third} !important;
 `;
 
 export const ExplanationOutput = styled.div`
