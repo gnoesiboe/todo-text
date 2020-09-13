@@ -3,13 +3,6 @@ import { DefaultTheme, ThemeProvider } from 'styled-components';
 
 /* @see https://coolors.co/264653-2a9d8f-e9c46a-f4a261-e76f51 */
 
-export enum Color {
-    First = 'primary',
-    Second = 'secondary',
-    Third = 'tertiary',
-    Fourth = 'quaternary',
-}
-
 const theme: DefaultTheme = {
     colors: {
         first: '#264653',
