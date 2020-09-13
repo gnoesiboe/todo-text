@@ -1,3 +1,4 @@
+import { TodoListItem } from './../../model/TodoListItem';
 import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
 import {
     resolveDropboxApiKey,
@@ -59,7 +60,9 @@ export const pushTodosToDropbox = async (accessToken: string, json: string) => {
     });
 };
 
-export const fetchTodosFromDropbox = async (accessToken: string) => {
+export const fetchTodosFromDropbox = async (
+    accessToken: string,
+): Promise<TodoListItem[] | null> => {
     const url = `${contentHost}/2/files/download`;
 
     const response = await getDropboxClient().post(url, undefined, {
@@ -71,9 +74,11 @@ export const fetchTodosFromDropbox = async (accessToken: string) => {
         },
     });
 
-    const todos = response ? response.data || [] : [];
+    if (!response || !response.data) {
+        return null;
+    }
 
-    return normalizeAndValidateTodos(todos);
+    return normalizeAndValidateTodos(response.data);
 };
 
 const fetchFolderCursor = async (accessToken: string): Promise<string> => {

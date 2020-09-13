@@ -16,9 +16,11 @@ export default function useFetchTodoListItems(
         try {
             const incomingItems = await fetchTodosFromDropbox(accessToken);
 
-            setItems((currentItems) =>
-                applyNewlyFetched(currentItems, incomingItems),
-            );
+            if (Array.isArray(incomingItems)) {
+                setItems((currentItems) =>
+                    applyNewlyFetched(currentItems, incomingItems),
+                );
+            }
         } catch (error) {
             const errorMessage =
                 'An error occurred while fetching the todos from dropbox';
