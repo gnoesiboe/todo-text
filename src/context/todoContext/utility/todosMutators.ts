@@ -33,7 +33,7 @@ export function applyUpdate(
         }
 
         const normalizedValue =
-            value && value.trim().length > 0 ? value : '...';
+            value && value.trim().length > 0 ? value.trim() : '...';
 
         nextItems[indexToChange].value = normalizedValue;
         nextItems[indexToChange].done = done;
