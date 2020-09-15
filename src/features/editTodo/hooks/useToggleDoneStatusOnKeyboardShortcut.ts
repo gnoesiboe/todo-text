@@ -1,7 +1,7 @@
 import { isValidValue } from './../utility/inputValidator';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { KeyCode } from './../../../constants/keyCodes';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { TodoListItem, isActionable } from './../../../model/TodoListItem';
 import { useEffect } from 'react';
 import { NextAction } from '../../../context/todoContext/hooks/useManageTodoListItems';
 
@@ -19,7 +19,8 @@ export default function useToggleDoneStatusOnKeyboardShortcut(
                 event.altKey ||
                 event.shiftKey ||
                 event.metaKey ||
-                !isValidValue(value)
+                !isValidValue(value) ||
+                !isActionable(item)
             ) {
                 return;
             }

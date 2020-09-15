@@ -1,6 +1,13 @@
 import styled from 'styled-components';
 import BaseCheckbox from '../../../primitives/Checkbox/Checkbox';
-import { isCancelled, TodoListItem } from '../../../model/TodoListItem';
+import {
+    isCancelled,
+    isHeading,
+    isQuickfix,
+    isWaiting,
+    TodoListItem,
+} from '../../../model/TodoListItem';
+import { QuestionIcon, AlertIcon } from '@primer/octicons-react';
 
 interface ItemContextProps {
     item: TodoListItem;
@@ -10,30 +17,48 @@ interface ItemCurrentContextProps extends ItemContextProps {
     current: boolean;
 }
 
+const statusTop: string = '11px';
+const valueMarginLeft: string = '45px';
+const statusIconLeft: string = `calc(${valueMarginLeft} - 1px)`;
+
 export const Container = styled.div<ItemCurrentContextProps>`
     position: relative;
-    margin: 0 0 5px -10px;
+    margin: 0 0 10px -10px;
     padding: 5px 3px 3px 0;
     border-radius: 5px;
 
     ${({ item }) => item.done && ``};
-    ${({ current }) => current && `background: rgba(231, 111, 81, 0.3);`};
+    ${({ current }) =>
+        current && `background: rgba(231, 111, 81, 0.3) !important;`};
+
+    &:hover {
+        background: #eee;
+    }
 `;
+
+const hasPrefixStatus = (item: TodoListItem) =>
+    isWaiting(item) || isQuickfix(item);
 
 export const Checkbox = styled(BaseCheckbox)<ItemContextProps>`
     position: absolute;
     left: 10px;
-    top: 11px;
+    top: ${statusTop};
 `;
 
 export const Value = styled.div<ItemContextProps>`
-    margin-left: 37px;
+    margin-left: ${valueMarginLeft};
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
     color: #666;
+    padding: 0 0 15px;
 
-    ${({ item }) => isCancelled(item) && `text-decoration: line-through;`}
+    ${({ item }) => !isHeading(item) && `border-bottom: 1px dashed #eee;`}
+
     ${({ item }) =>
+        isCancelled(item) && `text-decoration: line-through;`}
+    ${({
+        item,
+    }) =>
         item.done &&
         `
             color: #ddd;
@@ -42,6 +67,10 @@ export const Value = styled.div<ItemContextProps>`
                 color: #ddd !important;
             }
         `}
+
+    ${({ item }) =>
+        hasPrefixStatus(item) &&
+        'text-indent: 25px;'}
 
     .todo-list-item__value__removed {
         text-decoration: line-through;
@@ -54,7 +83,9 @@ export const Value = styled.div<ItemContextProps>`
         text-transform: uppercase;
         margin: 30px 0 0;
         border-bottom: 1px solid #e76f51;
-        margin-left: -30px;
+        margin-left: -34px;
+        margin-bottom: -15px;
+        padding: 0;
     }
 
     .todo-list-item__value__tag {
@@ -99,5 +130,23 @@ export const Value = styled.div<ItemContextProps>`
 
     .todo-list-item__value__sub-item--checked:before {
         content: '⊠ ';
+    }
+`;
+
+export const WaitingIcon = styled(QuestionIcon)`
+    position: absolute;
+    left: ${statusIconLeft};
+    top: ${statusTop};
+    color: ${({ theme }) => theme.colors.third};
+`;
+
+export const QuickfixIcon = styled(AlertIcon)`
+    position: absolute;
+    left: ${statusIconLeft};
+    top: ${statusTop};
+    color: ${({ theme }) => theme.colors.fourth};
+
+    &:after {
+        content: ' - ';
     }
 `;

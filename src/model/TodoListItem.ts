@@ -23,3 +23,12 @@ export const isCancelled = (item: TodoListItem) =>
 export const isHeading = (item: TodoListItem) => !!item.value.match(/^# .*$/);
 
 export const isMust = (item: TodoListItem) => !!item.value.match(/@must/);
+
+export const isWaiting = (item: TodoListItem) =>
+    !!item.value.match(/^.*@waiting/);
+
+export const isQuickfix = (item: TodoListItem) =>
+    !!item.value.match(/^.*@quickfix/);
+
+export const isActionable = (item: TodoListItem) =>
+    !isWaiting(item) && !isCancelled(item) && !isHeading(item);

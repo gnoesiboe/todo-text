@@ -1,15 +1,22 @@
 import React from 'react';
 import {
     TodoListItem as ItemModel,
-    isCancelled,
-    isHeading,
     isMust,
+    isWaiting,
+    isQuickfix,
+    isActionable,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
 import useSwitchToEditModeOnSwitch from './hooks/useSwitchToEditModeOnClick';
 import useHandleDoneStatusChange from './hooks/useHandleDoneStatusChange';
-import { Container, Checkbox, Value } from './components/StyledComponents';
+import {
+    Container,
+    Checkbox,
+    Value,
+    WaitingIcon,
+    QuickfixIcon,
+} from './components/StyledComponents';
 
 export type OnChangeHandler = (
     id: string,
@@ -34,7 +41,17 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
     return (
         <Container item={item} current={current}>
             <>
-                {!isCancelled(item) && !isHeading(item) && (
+                {isWaiting(item) && !current && (
+                    <span title="Waiting..">
+                        <WaitingIcon />
+                    </span>
+                )}
+                {isQuickfix(item) && !current && (
+                    <span title="Quickfix">
+                        <QuickfixIcon />
+                    </span>
+                )}
+                {isActionable(item) && (
                     <Checkbox
                         item={item}
                         accented={isMust(item)}
