@@ -70,6 +70,7 @@ export const Value = styled.div<ItemContextProps>`
 
     ${({ item }) =>
         hasPrefixStatus(item) &&
+        !item.done &&
         'text-indent: 25px;'}
 
     .todo-list-item__value__removed {

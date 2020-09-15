@@ -41,12 +41,12 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
     return (
         <Container item={item} current={current}>
             <>
-                {isWaiting(item) && !current && (
+                {isWaiting(item) && !current && !item.done && (
                     <span title="Waiting..">
                         <WaitingIcon />
                     </span>
                 )}
-                {isQuickfix(item) && !current && (
+                {isQuickfix(item) && !current && !item.done && (
                     <span title="Quickfix">
                         <QuickfixIcon />
                     </span>
