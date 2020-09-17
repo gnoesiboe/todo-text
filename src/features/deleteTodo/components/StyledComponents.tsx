@@ -1,17 +1,16 @@
 import styled from 'styled-components';
+import { Container as TodoListItemContainer } from '../../todoListItem/components/StyledComponents';
 
-import { Container } from '../../todoListItem/components/StyledComponents';
-
-export const Button = styled.button`
+export const Button = styled.button<{ isTouchDevice: boolean }>`
     padding: 2px;
     border-radius: 4px;
     margin: 0;
     border: none;
     background: #fff;
     position: absolute;
-    right: 3px;
-    top: 3px;
-    display: none;
+    right: -7px;
+    top: -9px;
+    display: ${({ isTouchDevice }) => (isTouchDevice ? 'inline' : 'none')};
     border: 1px solid #ddd;
     transition: 1s;
 
@@ -20,7 +19,7 @@ export const Button = styled.button`
         border-color: #333;
     }
 
-    ${Container}:hover & {
+    ${TodoListItemContainer}:hover & {
         display: inline;
     }
 `;
