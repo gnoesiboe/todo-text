@@ -18,6 +18,7 @@ import {
     WaitingIcon,
     QuickfixIcon,
 } from './components/StyledComponents';
+import DeleteTodo from '../deleteTodo/DeleteTodo';
 
 export type OnChangeHandler = (
     id: string,
@@ -74,6 +75,7 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
                         }}
                     />
                 )}
+                <DeleteTodo item={item} />
             </>
         </Container>
     );
