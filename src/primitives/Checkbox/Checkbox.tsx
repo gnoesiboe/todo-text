@@ -10,6 +10,7 @@ type Props = {
     accented?: boolean;
     muted?: boolean;
     className?: string;
+    disabled?: boolean;
     onChange: () => void;
 };
 
@@ -19,11 +20,18 @@ const Checkbox: React.FC<Props> = ({
     className,
     accented = false,
     muted = false,
+    disabled = false,
 }) => (
     <Container className={className}>
-        <Input type="checkbox" checked={checked} onChange={() => onChange()} />
+        <Input
+            disabled={disabled}
+            type="checkbox"
+            checked={checked}
+            onChange={() => onChange()}
+        />
         <CheckboxReplacement
-            onClick={() => onChange()}
+            onClick={() => !disabled && onChange()}
+            disabled={disabled}
             accented={accented}
             muted={muted}
         />

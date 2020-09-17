@@ -5,6 +5,7 @@ import {
     isWaiting,
     isQuickfix,
     isActionable,
+    isHeading,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
@@ -51,15 +52,17 @@ const TodoListItem: React.FC<Props> = ({ item, current }) => {
                         <QuickfixIcon />
                     </span>
                 )}
-                {isActionable(item) && (
+                {!isHeading(item) && (
                     <Checkbox
                         item={item}
                         accented={isMust(item)}
                         checked={item.done}
                         muted={item.done}
                         onChange={onDoneChanged}
+                        disabled={!isActionable(item)}
                     />
                 )}
+
                 {current ? (
                     <EditTodo item={item} />
                 ) : (

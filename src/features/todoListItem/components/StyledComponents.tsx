@@ -2,7 +2,6 @@ import styled from 'styled-components';
 import BaseCheckbox from '../../../primitives/Checkbox/Checkbox';
 import {
     isCancelled,
-    isHeading,
     isQuickfix,
     isWaiting,
     TodoListItem,
@@ -50,15 +49,10 @@ export const Value = styled.div<ItemContextProps>`
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
     color: #666;
-    padding: 0 0 15px;
+    padding: 0 0 5px;
 
-    ${({ item }) => !isHeading(item) && `border-bottom: 1px dashed #eee;`}
-
+    ${({ item }) => isCancelled(item) && `text-decoration: line-through;`}
     ${({ item }) =>
-        isCancelled(item) && `text-decoration: line-through;`}
-    ${({
-        item,
-    }) =>
         item.done &&
         `
             color: #ddd;

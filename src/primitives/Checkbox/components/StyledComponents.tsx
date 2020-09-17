@@ -25,6 +25,7 @@ export const Input = styled.input`
 export const CheckboxReplacement = styled.span<{
     accented: boolean;
     muted: boolean;
+    disabled: boolean;
 }>`
     position: absolute;
     top: 0;
@@ -35,7 +36,8 @@ export const CheckboxReplacement = styled.span<{
     border: 1px solid #ccc;
     border-radius: 2px;
 
-    ${({ accented }) => accented && `border: 3px solid #000;`}
+    ${({ accented, disabled }) =>
+        accented && !disabled && `border: 3px solid #000;`}
 
     ${({ muted }) =>
         muted &&
@@ -46,9 +48,13 @@ export const CheckboxReplacement = styled.span<{
             border: 1px solid #ccc !important;
         `}
 
+    ${({ disabled }) =>
+        disabled && `cursor: not-allowed; opacity: 0.7;`}
+
     &:hover {
-        background-color: #ccc;
-        border-color: #999;
+        &:not([disabled]) {
+            border-color: #999;
+        }
     }
 
     &:after {
@@ -61,6 +67,16 @@ export const CheckboxReplacement = styled.span<{
         left: -1px;
 
         ${({ muted }) => muted && `color: #bbb;`}
+
+        ${({ disabled }) =>
+            disabled &&
+            `
+                content: '˜';
+                display: initial;
+                top: -5px;
+                left: 0;
+                color: #bbb;
+            `}
     }
 
     ${Container}:checked & {
