@@ -22,7 +22,7 @@ const App: React.FC = () => (
             <AuthenticationContextProvider>
                 <Container fluid="lg">
                     <Row>
-                        <Col lg={{ span: 8, offset: 2 }}>
+                        <Col lg={{ span: 10, offset: 1 }}>
                             <TodoContextProvider>
                                 <TodoList />
                             </TodoContextProvider>
