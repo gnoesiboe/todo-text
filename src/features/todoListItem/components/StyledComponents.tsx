@@ -25,6 +25,7 @@ export const Container = styled.div<ItemCurrentContextProps>`
     margin: 0 0 10px -10px;
     padding: 5px 3px 3px 0;
     border-radius: 5px;
+    transition: 0.4s;
 
     ${({ item }) => item.done && ``};
     ${({ current }) =>
