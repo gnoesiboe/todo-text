@@ -2,7 +2,7 @@ import React from 'react';
 import TodoListItem from '../todoListItem/TodoListItem';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import useStartEditFirstOnKeyDown from './hooks/useStartEditFirstOnKeyDown';
-import { Container, SavingIndicator } from './components/StyledComponents';
+import { Container, ConnectionIndicator } from './components/StyledComponents';
 
 const TodoList: React.FC = () => {
     const { items, isFetching, isSaving, currentItem } = useTodoContext();
@@ -11,21 +11,17 @@ const TodoList: React.FC = () => {
 
     return (
         <Container>
-            {isSaving && <SavingIndicator>saving..</SavingIndicator>}
+            {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
+            {isFetching && <ConnectionIndicator>loading..</ConnectionIndicator>}
             <h1>TODO</h1>
-            {isFetching ? (
-                <p>Loading data from dropbox..</p>
-            ) : (
-                <>
-                    {items.map((item) => (
-                        <TodoListItem
-                            key={item.id}
-                            item={item}
-                            current={currentItem === item.id}
-                        />
-                    ))}
-                </>
-            )}
+            {items.map((item, index) => (
+                <TodoListItem
+                    key={item.id}
+                    index={index}
+                    item={item}
+                    current={currentItem === item.id}
+                />
+            ))}
         </Container>
     );
 };

@@ -5,11 +5,13 @@ import {
     applyDelete,
     applyMoveItemUp,
     applyMoveItemDown,
+    applyMoveToIndex,
 } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
 import { determineNextCurrentItem } from '../utility/currentItemResolver';
 import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
+import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 
 export enum NextAction {
     EditNext = 'edit_next',
@@ -39,6 +41,11 @@ export type MoveItemUpHandler = (id: string, value: string) => void;
 
 export type MoveItemDownHandler = (id: string, value: string) => void;
 
+export type MoveToIndexHandler = (
+    previousIndex: number,
+    nextIndex: number,
+) => void;
+
 export type SetCurrentItemHandler = (id: string) => void;
 
 export default function useManageTodoListItems() {
@@ -48,7 +55,17 @@ export default function useManageTodoListItems() {
 
     const { isFetching, refetchTodos } = useFetchTodoListItems(setItems);
 
-    useRefetchAfterLastChangeIsDone(currentItem, refetchTodos, items);
+    const { hasOpenChanges, isSaving } = usePersistTodoListItemsOnChange(
+        items,
+        isFetching,
+    );
+
+    useRefetchAfterLastChangeIsDone(
+        currentItem,
+        refetchTodos,
+        items,
+        hasOpenChanges,
+    );
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
@@ -92,6 +109,9 @@ export default function useManageTodoListItems() {
     const moveItemDown: MoveItemDownHandler = (id, value) =>
         setItems((items) => applyMoveItemDown(items, id, value));
 
+    const moveToIndex: MoveToIndexHandler = (previousIndex, nextIndex) =>
+        setItems((items) => applyMoveToIndex(items, previousIndex, nextIndex));
+
     const setCurrentItem: SetCurrentItemHandler = (id) =>
         setCurrentItemState(id);
 
@@ -105,8 +125,11 @@ export default function useManageTodoListItems() {
         editNext,
         moveItemUp,
         moveItemDown,
+        moveToIndex,
         currentItem,
         setCurrentItem,
         refetchTodos,
+        hasOpenChanges,
+        isSaving,
     };
 }

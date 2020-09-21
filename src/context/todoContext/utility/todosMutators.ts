@@ -137,3 +137,19 @@ export function applyMoveItemDown(
         nextItems.splice(nextIndex, 0, extractedItem);
     });
 }
+
+export function applyMoveToIndex(
+    currentItems: TodoListItem[],
+    previousIndex: number,
+    nextIndex: number,
+): TodoListItem[] {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        if (!currentItems[previousIndex]) {
+            return currentItems;
+        }
+
+        const itemToMove = nextItems.splice(previousIndex, 1)[0];
+
+        nextItems.splice(nextIndex, 0, itemToMove);
+    });
+}

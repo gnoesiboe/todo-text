@@ -8,7 +8,7 @@ export const Container = styled.div`
     margin-bottom: 30px;
 `;
 
-export const SavingIndicator = styled.div`
+export const ConnectionIndicator = styled.div`
     float: right;
     color: #aaa;
     margin-top: 20px;

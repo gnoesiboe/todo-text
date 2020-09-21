@@ -1,7 +1,6 @@
 import React from 'react';
 import type { TodoListItem } from './../../model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
-import usePersistTodoListItemsOnChange from './hooks/usePersistTodoListItemsOnChange';
 import useManageTodoListItems, {
     ChangeItemHandler,
     DeleteItemHandler,
@@ -11,6 +10,7 @@ import useManageTodoListItems, {
     MoveItemUpHandler,
     MoveItemDownHandler,
     SetCurrentItemHandler,
+    MoveToIndexHandler,
 } from './hooks/useManageTodoListItems';
 import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
@@ -18,6 +18,7 @@ import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
 type ContextValue = {
     items: TodoListItem[];
     isFetching: boolean;
+    hasOpenChanges: boolean;
     isSaving: boolean;
     changeItem: ChangeItemHandler;
     deleteItem: DeleteItemHandler;
@@ -26,6 +27,7 @@ type ContextValue = {
     editNext: EditNextHandler;
     moveItemUp: MoveItemUpHandler;
     moveItemDown: MoveItemDownHandler;
+    moveToIndex: MoveToIndexHandler;
     currentItem: string | null;
     setCurrentItem: SetCurrentItemHandler;
 };
@@ -33,6 +35,7 @@ type ContextValue = {
 const initialValue: ContextValue = {
     items: [],
     isFetching: false,
+    hasOpenChanges: false,
     isSaving: false,
     changeItem: () => {},
     deleteItem: () => {},
@@ -41,6 +44,7 @@ const initialValue: ContextValue = {
     editNext: () => {},
     moveItemUp: () => {},
     moveItemDown: () => {},
+    moveToIndex: () => {},
     currentItem: null,
     setCurrentItem: () => {},
 };
@@ -60,25 +64,32 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         editNext,
         moveItemUp,
         moveItemDown,
+        moveToIndex,
         currentItem,
         setCurrentItem,
         refetchTodos,
+        hasOpenChanges,
+        isSaving,
     } = useManageTodoListItems();
-
-    const { isSaving } = usePersistTodoListItemsOnChange(items, isFetching);
 
     useRefetchUpdatesAfterMount(
         isFetching,
         currentItem,
         refetchTodos,
-        isSaving,
+        hasOpenChanges,
     );
 
-    useRefetchOnWindowFocus(isFetching, currentItem, refetchTodos, isSaving);
+    useRefetchOnWindowFocus(
+        isFetching,
+        currentItem,
+        refetchTodos,
+        hasOpenChanges,
+    );
 
     const value: ContextValue = {
         items,
         isFetching,
+        hasOpenChanges,
         isSaving,
         changeItem,
         deleteItem,
@@ -87,6 +98,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         editNext,
         moveItemUp,
         moveItemDown,
+        moveToIndex,
         currentItem,
         setCurrentItem,
     };

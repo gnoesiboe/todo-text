@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import {
     TodoListItem as ItemModel,
     isMust,
@@ -19,6 +19,9 @@ import {
     QuickfixIcon,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
+import { DragObjectWithType } from 'react-dnd';
+import useDragItem from './hooks/useDragItem';
+import useDropItem from './hooks/useDropItem';
 
 export type OnChangeHandler = (
     id: string,
@@ -33,15 +36,36 @@ export type OnModeChangeHandler = (id: string) => void;
 type Props = {
     item: ItemModel;
     current: boolean;
+    index: number;
 };
 
-const TodoListItem: React.FC<Props> = ({ item, current }) => {
+export interface DragObject extends DragObjectWithType {
+    id: string;
+    index: number; // remove if not needed
+}
+
+export const dragDropItemType = 'only';
+
+const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
+    const ref = useRef<HTMLDivElement>(null);
+
     const { onClick } = useSwitchToEditModeOnSwitch(item);
 
     const { onDoneChanged } = useHandleDoneStatusChange(item);
 
+    const { isDragging, applyDrag } = useDragItem(item, index);
+
+    const { applyDrop } = useDropItem(ref, index);
+
+    applyDrag(applyDrop(ref));
+
     return (
-        <Container item={item} current={current}>
+        <Container
+            item={item}
+            current={current}
+            ref={ref}
+            isDragging={isDragging}
+        >
             <>
                 {isWaiting(item) && !current && !item.done && (
                     <span title="Waiting..">

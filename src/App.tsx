@@ -9,6 +9,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components';
 import { ThemeContextProvider } from './context/themeContext/ThemeContext';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const AppContainer = styled.div`
     width: 100%;
@@ -24,7 +26,9 @@ const App: React.FC = () => (
                     <Row>
                         <Col lg={{ span: 10, offset: 1 }}>
                             <TodoContextProvider>
-                                <TodoList />
+                                <DndProvider backend={HTML5Backend}>
+                                    <TodoList />
+                                </DndProvider>
                             </TodoContextProvider>
                             <OperationExplanation />
                         </Col>

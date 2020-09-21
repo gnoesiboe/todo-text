@@ -12,7 +12,13 @@ export default function useFetchTodoListItems(
 
     const { accessToken } = useAuthenticationContext();
 
-    const fetchTodos = async (accessToken: string) => {
+    const fetchTodos = async () => {
+        if (isFetching || !accessToken) {
+            return;
+        }
+
+        setIsFetching(true);
+
         try {
             const incomingItems = await fetchTodosFromDropbox(accessToken);
 
@@ -33,26 +39,11 @@ export default function useFetchTodoListItems(
         setIsFetching(false);
     };
 
+    // initial fetch on mount
     useEffect(() => {
-        if (isFetching || !accessToken) {
-            return;
-        }
-
-        setIsFetching(true);
-
-        fetchTodos(accessToken);
+        fetchTodos();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [accessToken]);
+    }, []);
 
-    const refetchTodos = () => {
-        if (!accessToken) {
-            throw new Error(
-                'Expecting access token to be available at this point',
-            );
-        }
-
-        fetchTodos(accessToken);
-    };
-
-    return { isFetching, refetchTodos };
+    return { isFetching, refetchTodos: fetchTodos };
 }

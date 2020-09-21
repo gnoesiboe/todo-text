@@ -8,9 +8,10 @@ export default function useRefetchAfterLastChangeIsDone(
     currentItem: string | null,
     refetchTodos: () => void,
     currentItems: TodoListItem[],
+    hasOpenChanges: boolean,
 ) {
     useEffect(() => {
-        if (currentItem) {
+        if (currentItem || hasOpenChanges) {
             return;
         }
 
@@ -20,5 +21,6 @@ export default function useRefetchAfterLastChangeIsDone(
         );
 
         return () => clearTimeout(timeoutHandle);
-    }, [currentItems, currentItem, refetchTodos]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [currentItems, currentItem, hasOpenChanges]);
 }

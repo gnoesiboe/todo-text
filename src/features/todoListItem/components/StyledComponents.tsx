@@ -12,15 +12,15 @@ interface ItemContextProps {
     item: TodoListItem;
 }
 
-interface ItemCurrentContextProps extends ItemContextProps {
-    current: boolean;
-}
-
 const statusTop: string = '11px';
 const valueMarginLeft: string = '45px';
 const statusIconLeft: string = `calc(${valueMarginLeft} - 1px)`;
 
-export const Container = styled.div<ItemCurrentContextProps>`
+export const Container = styled.div<{
+    item: TodoListItem;
+    current: boolean;
+    isDragging: boolean;
+}>`
     position: relative;
     margin: 0 0 10px -10px;
     padding: 5px 3px 3px 0;
@@ -30,6 +30,8 @@ export const Container = styled.div<ItemCurrentContextProps>`
     ${({ item }) => item.done && ``};
     ${({ current }) =>
         current && `background: rgba(231, 111, 81, 0.3) !important;`};
+
+    ${({ isDragging }) => isDragging && `opacity: 0;`}
 
     &:hover {
         background: #eee;
