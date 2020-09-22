@@ -142,7 +142,7 @@ export const QuickfixIcon = styled(AlertIcon)`
     position: absolute;
     left: ${statusIconLeft};
     top: ${statusTop};
-    color: ${({ theme }) => theme.colors.fourth};
+    color: ${({ theme }) => theme.colors.success};
 
     &:after {
         content: ' - ';

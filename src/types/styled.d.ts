@@ -2,6 +2,9 @@ import 'styled-components';
 
 declare module 'styled-components' {
     export interface DefaultTheme {
-        colors: Record<'first' | 'second' | 'third' | 'fourth', string>;
+        colors: Record<
+            'first' | 'second' | 'third' | 'fourth' | 'success',
+            string
+        >;
     }
 }

@@ -9,6 +9,7 @@ const theme: DefaultTheme = {
         second: '#2a9d8f',
         third: '#e9c46a',
         fourth: '#e76f51',
+        success: '#1eb047',
     },
 };
 
