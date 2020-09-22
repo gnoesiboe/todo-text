@@ -39,6 +39,7 @@ type Props = {
     item: ItemModel;
     current: boolean;
     index: number;
+    hidden: boolean;
 };
 
 export interface DragObject extends DragObjectWithType {
@@ -48,7 +49,7 @@ export interface DragObject extends DragObjectWithType {
 
 export const dragDropItemType = 'only';
 
-const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
+const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
     const dragPreviewRef = useRef<HTMLDivElement>(null);
     const dragHandleRef = useRef<HTMLDivElement>(null);
 
@@ -75,6 +76,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
             current={current}
             ref={dragPreviewRef}
             isDragging={isDragging}
+            hidden={hidden}
         >
             <>
                 {/* @ts-ignore don't know how to fix ref */}
