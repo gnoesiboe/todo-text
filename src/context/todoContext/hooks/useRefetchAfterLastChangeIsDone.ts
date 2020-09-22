@@ -15,10 +15,11 @@ export default function useRefetchAfterLastChangeIsDone(
             return;
         }
 
-        const timeoutHandle = setTimeout(
-            () => refetchTodos(),
-            noOfSecondsAfterLastChange * 1000,
-        );
+        const timeoutHandle = setTimeout(() => {
+            if (!hasOpenChanges) {
+                refetchTodos();
+            }
+        }, noOfSecondsAfterLastChange * 1000);
 
         return () => clearTimeout(timeoutHandle);
         // eslint-disable-next-line react-hooks/exhaustive-deps
