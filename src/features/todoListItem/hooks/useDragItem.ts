@@ -6,15 +6,22 @@ type CollectedProps = {
     isDragging: boolean;
 };
 
-export default function useDragItem(item: TodoListItem, index: number) {
-    const [{ isDragging }, applyDrag] = useDrag<DragObject, {}, CollectedProps>(
-        {
-            item: { id: item.id, index, type: dragDropItemType },
-            collect: (monitor) => ({
-                isDragging: monitor.isDragging(),
-            }),
-        },
-    );
+export default function useDragItem(
+    item: TodoListItem,
+    index: number,
+    enabled: boolean,
+) {
+    const [{ isDragging }, applyDragHandle, applyDragPreview] = useDrag<
+        DragObject,
+        {},
+        CollectedProps
+    >({
+        item: { id: item.id, index, type: dragDropItemType },
+        canDrag: enabled,
+        collect: (monitor) => ({
+            isDragging: monitor.isDragging(),
+        }),
+    });
 
-    return { isDragging, applyDrag };
+    return { isDragging, applyDragHandle, applyDragPreview };
 }

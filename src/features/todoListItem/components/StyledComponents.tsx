@@ -10,6 +10,7 @@ import { QuestionIcon, AlertIcon } from '@primer/octicons-react';
 
 interface ItemContextProps {
     item: TodoListItem;
+    isDragging: boolean;
 }
 
 const statusTop: string = '11px';
@@ -31,7 +32,12 @@ export const Container = styled.div<{
     ${({ current }) =>
         current && `background: rgba(231, 111, 81, 0.3) !important;`};
 
-    ${({ isDragging }) => isDragging && `opacity: 0;`}
+    ${({ isDragging, theme }) =>
+        isDragging &&
+        `
+            color: white !important;
+            background: ${theme.colors.third};
+        `}
 
     &:hover {
         background: #eee;
@@ -45,6 +51,8 @@ export const Checkbox = styled(BaseCheckbox)<ItemContextProps>`
     position: absolute;
     left: 10px;
     top: ${statusTop};
+
+    ${({ isDragging }) => isDragging && `visibility: hidden;`}
 `;
 
 export const Value = styled.div<ItemContextProps>`
@@ -65,7 +73,11 @@ export const Value = styled.div<ItemContextProps>`
             }
         `}
 
-    ${({ item }) =>
+    ${({ isDragging }) => isDragging && `visibility: hidden;`}
+
+    ${({
+        item,
+    }) =>
         hasPrefixStatus(item) &&
         !item.done &&
         'text-indent: 25px;'}
@@ -146,5 +158,25 @@ export const QuickfixIcon = styled(AlertIcon)`
 
     &:after {
         content: ' - ';
+    }
+`;
+
+export const DragHandle = styled.div`
+    display: none;
+    position: absolute;
+    left: -17px;
+    top: 0px;
+    cursor: pointer;
+    height: 100%;
+    background: ${({ theme }) => theme.colors.fifth};
+    color: #fff;
+    padding: 0 4px;
+    box-sizing: content-box;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    ${Container}:hover & {
+        display: flex;
     }
 `;

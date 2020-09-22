@@ -17,11 +17,13 @@ import {
     Value,
     WaitingIcon,
     QuickfixIcon,
+    DragHandle,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
 import { DragObjectWithType } from 'react-dnd';
 import useDragItem from './hooks/useDragItem';
 import useDropItem from './hooks/useDropItem';
+import { UnfoldIcon } from '@primer/octicons-react';
 
 export type OnChangeHandler = (
     id: string,
@@ -47,32 +49,44 @@ export interface DragObject extends DragObjectWithType {
 export const dragDropItemType = 'only';
 
 const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
-    const ref = useRef<HTMLDivElement>(null);
+    const dragPreviewRef = useRef<HTMLDivElement>(null);
+    const dragHandleRef = useRef<HTMLDivElement>(null);
 
     const { onClick } = useSwitchToEditModeOnSwitch(item);
 
     const { onDoneChanged } = useHandleDoneStatusChange(item);
 
-    const { isDragging, applyDrag } = useDragItem(item, index);
+    const allowDragDrop = !current;
 
-    const { applyDrop } = useDropItem(ref, index);
+    const { isDragging, applyDragHandle, applyDragPreview } = useDragItem(
+        item,
+        index,
+        allowDragDrop,
+    );
 
-    applyDrag(applyDrop(ref));
+    const { applyDrop } = useDropItem(dragPreviewRef, index);
+
+    applyDragPreview(applyDrop(dragPreviewRef));
+    applyDragHandle(dragHandleRef);
 
     return (
         <Container
             item={item}
             current={current}
-            ref={ref}
+            ref={dragPreviewRef}
             isDragging={isDragging}
         >
             <>
-                {isWaiting(item) && !current && !item.done && (
+                {/* @ts-ignore don't know how to fix ref */}
+                <DragHandle ref={dragHandleRef}>
+                    <UnfoldIcon />
+                </DragHandle>
+                {isWaiting(item) && !current && !item.done && !isDragging && (
                     <span title="Waiting..">
                         <WaitingIcon />
                     </span>
                 )}
-                {isQuickfix(item) && !current && !item.done && (
+                {isQuickfix(item) && !current && !item.done && !isDragging && (
                     <span title="Quickfix">
                         <QuickfixIcon />
                     </span>
@@ -80,6 +94,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 {!isHeading(item) && (
                     <Checkbox
                         item={item}
+                        isDragging={isDragging}
                         accented={isMust(item)}
                         checked={item.done}
                         muted={item.done}
@@ -93,6 +108,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 ) : (
                     <Value
                         item={item}
+                        isDragging={isDragging}
                         onClick={onClick}
                         dangerouslySetInnerHTML={{
                             __html: prepareForVisibility(item),
