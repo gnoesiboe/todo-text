@@ -22,6 +22,7 @@ export const FilterButton = styled.button<{ active: boolean }>`
 
     background: transparent;
     padding: 4px 10px;
+    margin-right: 10px;
 
     &:before {
         content: ' ';

@@ -10,7 +10,12 @@ import { FilterButton } from './components/StyledComponents';
 const TodoList: React.FC = () => {
     const { items, isFetching, isSaving, currentItem } = useTodoContext();
 
-    const { hideWaiting, onHideWaitingClick } = useToggleFilters();
+    const {
+        hideWaiting,
+        onHideWaitingClick,
+        hideDone,
+        onHideDoneClick,
+    } = useToggleFilters();
 
     useStartEditFirstOnKeyDown();
 
@@ -22,13 +27,19 @@ const TodoList: React.FC = () => {
             <FilterButton onClick={onHideWaitingClick} active={hideWaiting}>
                 {hideWaiting ? 'show' : 'hide'} waiting
             </FilterButton>
+            <FilterButton onClick={onHideDoneClick} active={hideDone}>
+                {hideDone ? 'show' : 'hide'} done
+            </FilterButton>
             {items.map((item, index) => (
                 <TodoListItem
                     key={item.id}
                     index={index}
                     item={item}
                     current={currentItem === item.id}
-                    hidden={isWaiting(item) && hideWaiting}
+                    hidden={
+                        (isWaiting(item) && hideWaiting) ||
+                        (item.done && hideDone)
+                    }
                 />
             ))}
         </Container>
