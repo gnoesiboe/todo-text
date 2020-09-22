@@ -171,7 +171,7 @@ export const DragHandle = styled.div`
     top: 0px;
     cursor: pointer;
     height: 100%;
-    background: ${({ theme }) => theme.colors.fifth};
+    background: #ccc;
     color: #fff;
     padding: 0 4px;
     box-sizing: content-box;
