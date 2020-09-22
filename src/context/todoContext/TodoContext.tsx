@@ -14,6 +14,7 @@ import useManageTodoListItems, {
 } from './hooks/useManageTodoListItems';
 import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
+import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 
 type ContextValue = {
     items: TodoListItem[];
@@ -85,6 +86,8 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         refetchTodos,
         hasOpenChanges,
     );
+
+    useConfirmCloseWhenThereAreOpenChanges(hasOpenChanges);
 
     const value: ContextValue = {
         items,
