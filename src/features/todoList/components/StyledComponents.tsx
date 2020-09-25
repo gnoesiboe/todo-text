@@ -13,18 +13,3 @@ export const ConnectionIndicator = styled.div`
     color: #aaa;
     margin-top: 20px;
 `;
-
-export const FilterButton = styled.button<{ active: boolean }>`
-    ${({ active, theme }) =>
-        active
-            ? `border: 1px solid ${theme.colors.first};`
-            : `border: 1px dashed #ddd;`};
-
-    background: transparent;
-    padding: 4px 10px;
-    margin-right: 10px;
-
-    &:before {
-        content: ' ';
-    }
-`;

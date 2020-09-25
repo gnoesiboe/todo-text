@@ -5,7 +5,7 @@ import useStartEditFirstOnKeyDown from './hooks/useStartEditFirstOnKeyDown';
 import { Container, ConnectionIndicator } from './components/StyledComponents';
 import useToggleFilters from './hooks/useToggleFilters';
 import { isWaiting } from '../../model/TodoListItem';
-import { FilterButton } from './components/StyledComponents';
+import FilterButton from '../../primitives/FilterButton/FilterButton';
 
 const TodoList: React.FC = () => {
     const { items, isFetching, isSaving, currentItem } = useTodoContext();
@@ -24,12 +24,16 @@ const TodoList: React.FC = () => {
             {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
             {isFetching && <ConnectionIndicator>loading..</ConnectionIndicator>}
             <h1>TODO</h1>
-            <FilterButton onClick={onHideWaitingClick} active={hideWaiting}>
-                {hideWaiting ? 'show' : 'hide'} waiting
-            </FilterButton>
-            <FilterButton onClick={onHideDoneClick} active={hideDone}>
-                {hideDone ? 'show' : 'hide'} done
-            </FilterButton>
+            <FilterButton
+                onClick={onHideWaitingClick}
+                active={hideWaiting}
+                title="hide waiting"
+            />
+            <FilterButton
+                onClick={onHideDoneClick}
+                active={hideDone}
+                title="hide done"
+            />
             {items.map((item, index) => (
                 <TodoListItem
                     key={item.id}
