@@ -1,12 +1,11 @@
+import { isDevelopmentEnvironment } from './../../../utility/environmentUtlities';
 import { useEffect } from 'react';
 
 export default function useConfirmCloseWhenThereAreOpenChanges(
     hasOpenChanges: boolean,
 ) {
     useEffect(() => {
-        console.log('hier!', hasOpenChanges);
-
-        if (hasOpenChanges) {
+        if (hasOpenChanges && !isDevelopmentEnvironment) {
             window.onbeforeunload = () =>
                 'You have pending changes. Are you sure?';
 
