@@ -70,6 +70,9 @@ const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
     applyDragPreview(applyDrop(dragPreviewRef));
     applyDragHandle(dragHandleRef);
 
+    const waiting = isWaiting(item);
+    const showStatusIcon = !current && !item.done && !isDragging;
+
     return (
         <Container
             item={item}
@@ -83,12 +86,12 @@ const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
                 <DragHandle ref={dragHandleRef}>
                     <UnfoldIcon />
                 </DragHandle>
-                {isWaiting(item) && !current && !item.done && !isDragging && (
+                {waiting && showStatusIcon && (
                     <span title="Waiting..">
                         <WaitingIcon />
                     </span>
                 )}
-                {isQuickfix(item) && !current && !item.done && !isDragging && (
+                {isQuickfix(item) && !waiting && showStatusIcon && (
                     <span title="Quickfix">
                         <QuickfixIcon />
                     </span>
