@@ -124,12 +124,9 @@ export const Value = styled.div<ItemContextProps>`
         content: ' → ';
     }
 
-    .todo-list-item__value__summary + .todo-list-item__value__note {
-        margin-top: 20px;
-    }
-
     .todo-list-item__value__note {
         font-size: 0.8em !important;
+        min-height: 1em;
     }
 
     .todo-list-item__value__sub-item {

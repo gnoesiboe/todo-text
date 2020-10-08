@@ -86,10 +86,8 @@ export const prepareForVisibility = (item: TodoListItem): string => {
         return formatAsHeading(item.value);
     }
 
-    const lines = item.value.split(/\r?\n/g);
-
-    return lines
-        .filter((value) => value.length > 0)
+    return item.value
+        .split(/\r?\n/g)
         .reduce<string>((accumulator, currentLine, currentIndex) => {
             const formatters = [
                 applyTagging,
