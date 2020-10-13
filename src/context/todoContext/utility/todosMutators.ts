@@ -1,7 +1,7 @@
 import { isActionable } from './../../../model/TodoListItem';
 import { createEmpty } from './../../../model/factory/todoListItemFactory';
 import { TodoListItem } from '../../../model/TodoListItem';
-import produce, { current } from 'immer';
+import produce from 'immer';
 import { isEqual } from 'lodash';
 
 export function applyNewlyFetched(
