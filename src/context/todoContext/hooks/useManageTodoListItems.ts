@@ -1,55 +1,65 @@
+import { generateId } from './../../../utility/idGenerator';
 import { useState } from 'react';
 import type { TodoListItem } from '../../../model/TodoListItem';
 import {
     applyUpdate,
     applyDelete,
-    applyMoveItemUp,
-    applyMoveItemDown,
+    applyMoveCurrentItemUp,
+    applyMoveCurrentItemDown,
     applyMoveToIndex,
+    applyCreateNewItemAfter,
+    applyCreateNewItemBefore,
+    applyToggleDoneStatus,
 } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
-import { determineNextCurrentItem } from '../utility/currentItemResolver';
+import {
+    determineNextCurrentItem,
+    determinePreviousCurrentItem,
+} from '../utility/currentItemResolver';
 import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 
-export enum NextAction {
-    EditNext = 'edit_next',
-    EditPrevious = 'edit_previous',
-    None = 'node',
-    CreateNewAfter = 'create_new_after',
-    CreateNewBefore = 'create_new_before',
-    EditCurrent = 'edit_current',
-}
-
-export type ChangeItemHandler = (
+export type SaveValueHandler = (
     id: string,
     value: string,
     done: boolean,
-    nextAction: NextAction,
 ) => void;
 
 export type DeleteItemHandler = (id: string) => void;
 
-export type ClearEditModeHandler = () => void;
+export type StopEditHandler = () => void;
 
-export type StartEditFirstHandler = () => void;
+export type MoveToNextHandler = () => void;
 
-export type EditNextHandler = () => void;
+export type MoveToPreviousHandler = () => void;
 
-export type MoveItemUpHandler = (id: string, value: string) => void;
+export type StartEditHandler = () => void;
 
-export type MoveItemDownHandler = (id: string, value: string) => void;
+export type MoveCurrentItemUpHandler = () => void;
+
+export type MoveCurrentItemDownHandler = () => void;
 
 export type MoveToIndexHandler = (
     previousIndex: number,
     nextIndex: number,
 ) => void;
 
-export type SetCurrentItemHandler = (id: string) => void;
+export type ToggleCurrentItemHandler = (id: string) => void;
+
+export type MarkCurrentItemHandler = (id: string) => void;
+
+export type ClearCurrentItemHandler = () => void;
+
+export type CreateNewItemAfterCurrentHandler = () => void;
+
+export type CreateNewItemBeforeCurrentHandler = () => void;
+
+export type ToggleDoneStatusHandler = () => void;
 
 export default function useManageTodoListItems() {
     const [currentItem, setCurrentItemState] = useState<string | null>(null);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const [items, setItems] = useState<TodoListItem[]>([]);
 
@@ -69,67 +79,141 @@ export default function useManageTodoListItems() {
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
-    const changeItem: ChangeItemHandler = (id, value, done, nextAction) => {
-        const nextItems = applyUpdate(items, id, value, done, nextAction);
-
-        setItems(nextItems);
-
-        setCurrentItemState(
-            determineNextCurrentItem(nextAction, currentItem, nextItems),
-        );
+    const saveValue: SaveValueHandler = (id, value, done) => {
+        setItems((currentItems) => applyUpdate(currentItems, id, value, done));
     };
 
     const deleteItem: DeleteItemHandler = (id) => {
-        const nextCurrentItem = determineNextCurrentItem(
-            NextAction.EditPrevious,
-            currentItem,
-            items,
-        );
+        const nextCurrentItem = determineNextCurrentItem(currentItem, items);
 
         setItems(applyDelete(items, id));
 
         setCurrentItemState(nextCurrentItem);
     };
 
-    const clearEditMode: ClearEditModeHandler = () => setCurrentItemState(null);
+    const stopEdit: StopEditHandler = () => setIsEditing(false);
 
-    const startEditFirst: StartEditFirstHandler = () => {
-        setCurrentItemState(items[0]?.id || null);
+    const startEdit: StartEditHandler = () => {
+        if (currentItem) {
+            setIsEditing(true);
+        }
     };
 
-    const editNext: EditNextHandler = () => {
-        setCurrentItemState(
-            determineNextCurrentItem(NextAction.EditNext, currentItem, items),
-        );
+    const moveToNext: MoveToNextHandler = () => {
+        if (isEditing) {
+            return;
+        }
+
+        setCurrentItemState(determineNextCurrentItem(currentItem, items));
     };
 
-    const moveItemUp: MoveItemUpHandler = (id, value) =>
-        setItems((items) => applyMoveItemUp(items, id, value));
+    const moveToPrevious: MoveToPreviousHandler = () => {
+        if (isEditing) {
+            return;
+        }
 
-    const moveItemDown: MoveItemDownHandler = (id, value) =>
-        setItems((items) => applyMoveItemDown(items, id, value));
+        setCurrentItemState(determinePreviousCurrentItem(currentItem, items));
+    };
+
+    const moveCurrentItemUp: MoveCurrentItemUpHandler = () => {
+        if (isEditing) {
+            return;
+        }
+
+        setItems((items) => applyMoveCurrentItemUp(items, currentItem));
+    };
+
+    const moveCurrentItemDown: MoveCurrentItemDownHandler = () => {
+        if (isEditing) {
+            return;
+        }
+
+        setItems((items) => applyMoveCurrentItemDown(items, currentItem));
+    };
 
     const moveToIndex: MoveToIndexHandler = (previousIndex, nextIndex) =>
         setItems((items) => applyMoveToIndex(items, previousIndex, nextIndex));
 
-    const setCurrentItem: SetCurrentItemHandler = (id) =>
+    const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
+        setCurrentItemState((currentId) => (currentId === id ? null : id));
+    };
+
+    const markCurrentItem: MarkCurrentItemHandler = (id) => {
         setCurrentItemState(id);
+    };
+
+    const clearCurrentItem: ClearCurrentItemHandler = () => {
+        if (isEditing || !currentItem) {
+            return;
+        }
+
+        setCurrentItemState(null);
+    };
+
+    const createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler = () => {
+        if (!currentItem) {
+            throw new Error(
+                'Expecting there to be a current value at this point',
+            );
+        }
+
+        const id = generateId();
+
+        setItems((currentItems) =>
+            applyCreateNewItemAfter(currentItems, currentItem, id),
+        );
+
+        setCurrentItemState(id);
+    };
+
+    const createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler = () => {
+        if (!currentItem) {
+            throw new Error(
+                'Expecting there to be a current value at this point',
+            );
+        }
+
+        const id = generateId();
+
+        setItems((currentItems) =>
+            applyCreateNewItemBefore(currentItems, currentItem, id),
+        );
+
+        setCurrentItemState(id);
+    };
+
+    const toggleDoneStatus: ToggleDoneStatusHandler = () => {
+        if (!currentItem || isEditing) {
+            return;
+        }
+
+        setItems((currentItems) =>
+            applyToggleDoneStatus(currentItems, currentItem),
+        );
+    };
 
     return {
         items,
         isFetching,
-        clearEditMode,
+        stopEdit,
+        startEdit,
+        saveValue,
         deleteItem,
-        changeItem,
-        startEditFirst,
-        editNext,
-        moveItemUp,
-        moveItemDown,
+        moveToNext,
+        moveToPrevious,
+        moveCurrentItemUp,
+        moveCurrentItemDown,
         moveToIndex,
         currentItem,
-        setCurrentItem,
+        toggleCurrentItem,
+        markCurrentItem,
+        clearCurrentItem,
         refetchTodos,
         hasOpenChanges,
         isSaving,
+        isEditing,
+        createNewItemAfterCurrent,
+        createNewItemBeforeCurrent,
+        toggleDoneStatus,
     };
 }

@@ -2,15 +2,21 @@ import React from 'react';
 import type { TodoListItem } from './../../model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
-    ChangeItemHandler,
     DeleteItemHandler,
-    ClearEditModeHandler,
-    StartEditFirstHandler,
-    EditNextHandler,
-    MoveItemUpHandler,
-    MoveItemDownHandler,
-    SetCurrentItemHandler,
+    StopEditHandler,
+    MoveToNextHandler,
+    MoveCurrentItemUpHandler,
+    MoveCurrentItemDownHandler,
+    ToggleCurrentItemHandler,
     MoveToIndexHandler,
+    StartEditHandler,
+    SaveValueHandler,
+    MoveToPreviousHandler,
+    MarkCurrentItemHandler,
+    CreateNewItemAfterCurrentHandler,
+    CreateNewItemBeforeCurrentHandler,
+    ClearCurrentItemHandler,
+    ToggleDoneStatusHandler,
 } from './hooks/useManageTodoListItems';
 import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
@@ -21,33 +27,47 @@ type ContextValue = {
     isFetching: boolean;
     hasOpenChanges: boolean;
     isSaving: boolean;
-    changeItem: ChangeItemHandler;
+    saveValue: SaveValueHandler;
     deleteItem: DeleteItemHandler;
-    clearEditMode: ClearEditModeHandler;
-    startEditFirst: StartEditFirstHandler;
-    editNext: EditNextHandler;
-    moveItemUp: MoveItemUpHandler;
-    moveItemDown: MoveItemDownHandler;
+    stopEdit: StopEditHandler;
+    startEdit: StartEditHandler;
+    moveToNext: MoveToNextHandler;
+    moveToPrevious: MoveToPreviousHandler;
+    moveCurrentItemUp: MoveCurrentItemUpHandler;
+    moveCurrentItemDown: MoveCurrentItemDownHandler;
     moveToIndex: MoveToIndexHandler;
     currentItem: string | null;
-    setCurrentItem: SetCurrentItemHandler;
+    toggleCurrentItem: ToggleCurrentItemHandler;
+    markCurrentItem: MarkCurrentItemHandler;
+    clearCurrentItem: ClearCurrentItemHandler;
+    createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler;
+    createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler;
+    toggleDoneStatus: ToggleDoneStatusHandler;
+    isEditing: boolean;
 };
 
 const initialValue: ContextValue = {
     items: [],
     isFetching: false,
     hasOpenChanges: false,
+    saveValue: () => {},
     isSaving: false,
-    changeItem: () => {},
     deleteItem: () => {},
-    clearEditMode: () => {},
-    startEditFirst: () => {},
-    editNext: () => {},
-    moveItemUp: () => {},
-    moveItemDown: () => {},
+    stopEdit: () => {},
+    startEdit: () => {},
+    moveToNext: () => {},
+    moveToPrevious: () => {},
+    moveCurrentItemUp: () => {},
+    moveCurrentItemDown: () => {},
     moveToIndex: () => {},
     currentItem: null,
-    setCurrentItem: () => {},
+    toggleCurrentItem: () => {},
+    markCurrentItem: () => {},
+    clearCurrentItem: () => {},
+    createNewItemAfterCurrent: () => {},
+    createNewItemBeforeCurrent: () => {},
+    toggleDoneStatus: () => {},
+    isEditing: false,
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -58,19 +78,26 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
     const {
         items,
         isFetching,
-        changeItem,
         deleteItem,
-        clearEditMode,
-        startEditFirst,
-        editNext,
-        moveItemUp,
-        moveItemDown,
+        stopEdit,
+        startEdit,
+        saveValue,
+        moveToNext,
+        moveToPrevious,
+        moveCurrentItemUp,
+        moveCurrentItemDown,
         moveToIndex,
         currentItem,
-        setCurrentItem,
+        toggleCurrentItem,
+        markCurrentItem,
+        clearCurrentItem,
         refetchTodos,
         hasOpenChanges,
         isSaving,
+        isEditing,
+        createNewItemAfterCurrent,
+        createNewItemBeforeCurrent,
+        toggleDoneStatus,
     } = useManageTodoListItems();
 
     useRefetchUpdatesAfterMount(
@@ -93,17 +120,24 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         items,
         isFetching,
         hasOpenChanges,
+        saveValue,
         isSaving,
-        changeItem,
         deleteItem,
-        clearEditMode,
-        startEditFirst,
-        editNext,
-        moveItemUp,
-        moveItemDown,
+        stopEdit,
+        startEdit,
+        moveToNext,
+        moveToPrevious,
+        moveCurrentItemUp,
+        moveCurrentItemDown,
         moveToIndex,
         currentItem,
-        setCurrentItem,
+        toggleCurrentItem,
+        markCurrentItem,
+        clearCurrentItem,
+        createNewItemAfterCurrent,
+        createNewItemBeforeCurrent,
+        toggleDoneStatus,
+        isEditing,
     };
 
     return (

@@ -1,5 +1,4 @@
-import { NextAction } from './../hooks/useManageTodoListItems';
-import { createEmpty } from '../../../model/factory/todoListItemFactory';
+import { createEmpty } from './../../../model/factory/todoListItemFactory';
 import { TodoListItem } from '../../../model/TodoListItem';
 import produce from 'immer';
 import { isEqual } from 'lodash';
@@ -23,7 +22,6 @@ export function applyUpdate(
     id: string,
     value: string,
     done: boolean,
-    nextAction: NextAction,
 ): TodoListItem[] {
     return produce<TodoListItem[]>(currentItems, (nextItems) => {
         const indexToChange = nextItems.findIndex((item) => item.id === id);
@@ -37,29 +35,6 @@ export function applyUpdate(
 
         nextItems[indexToChange].value = normalizedValue;
         nextItems[indexToChange].done = done;
-
-        switch (nextAction) {
-            case NextAction.EditNext:
-                const nextIndex = indexToChange + 1;
-
-                if (nextIndex >= nextItems.length) {
-                    nextItems.push(createEmpty());
-                }
-                break;
-
-            case NextAction.CreateNewAfter:
-                const nextAfterIndex = indexToChange + 1;
-                nextItems.splice(nextAfterIndex, 0, createEmpty());
-                break;
-
-            case NextAction.CreateNewBefore:
-                nextItems.splice(indexToChange, 0, createEmpty());
-                break;
-
-            default:
-                // do nothing
-                break;
-        }
     });
 }
 
@@ -78,14 +53,17 @@ export function applyDelete(
     });
 }
 
-export function applyMoveItemUp(
+export function applyMoveCurrentItemUp(
     currentItems: TodoListItem[],
-    id: string,
-    value: string,
+    currentId: string | null,
 ): TodoListItem[] {
+    if (!currentId) {
+        return currentItems;
+    }
+
     return produce<TodoListItem[]>(currentItems, (nextItems) => {
         const indexOfItemToBeMoved = nextItems.findIndex(
-            (item) => item.id === id,
+            (item) => item.id === currentId,
         );
 
         if (indexOfItemToBeMoved === -1) {
@@ -101,21 +79,22 @@ export function applyMoveItemUp(
         // first extract item
         const extractedItem = nextItems.splice(indexOfItemToBeMoved, 1)[0];
 
-        extractedItem.value = value;
-
         // then re-add it
         nextItems.splice(nextIndex, 0, extractedItem);
     });
 }
 
-export function applyMoveItemDown(
+export function applyMoveCurrentItemDown(
     currentItems: TodoListItem[],
-    id: string,
-    value: string,
+    currentId: string | null,
 ): TodoListItem[] {
+    if (!currentId) {
+        return currentItems;
+    }
+
     return produce<TodoListItem[]>(currentItems, (nextItems) => {
         const indexOfItemToBeMoved = nextItems.findIndex(
-            (item) => item.id === id,
+            (item) => item.id === currentId,
         );
 
         if (indexOfItemToBeMoved === -1) {
@@ -130,8 +109,6 @@ export function applyMoveItemDown(
 
         // first extract item
         const extractedItem = nextItems.splice(indexOfItemToBeMoved, 1)[0];
-
-        extractedItem.value = value;
 
         // then re-add it
         nextItems.splice(nextIndex, 0, extractedItem);
@@ -151,5 +128,56 @@ export function applyMoveToIndex(
         const itemToMove = nextItems.splice(previousIndex, 1)[0];
 
         nextItems.splice(nextIndex, 0, itemToMove);
+    });
+}
+
+export function applyCreateNewItemAfter(
+    currentItems: TodoListItem[],
+    currentItemId: string,
+    id: string,
+): TodoListItem[] {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        const currentIndex = nextItems.findIndex(
+            (item) => item.id === currentItemId,
+        );
+
+        if (currentIndex === -1) {
+            return;
+        }
+
+        nextItems.splice(currentIndex + 1, 0, createEmpty(id));
+    });
+}
+
+export function applyCreateNewItemBefore(
+    currentItems: TodoListItem[],
+    currentItemId: string,
+    id: string,
+): TodoListItem[] {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        const currentIndex = nextItems.findIndex(
+            (item) => item.id === currentItemId,
+        );
+
+        if (currentIndex === -1) {
+            return;
+        }
+
+        nextItems.splice(currentIndex, 0, createEmpty(id));
+    });
+}
+
+export function applyToggleDoneStatus(
+    currentItems: TodoListItem[],
+    currentItemId: string,
+) {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        const currentItem = nextItems.find((item) => item.id === currentItemId);
+
+        if (!currentItem) {
+            return;
+        }
+
+        currentItem.done = !currentItem.done;
     });
 }

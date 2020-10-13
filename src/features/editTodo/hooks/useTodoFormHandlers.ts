@@ -1,6 +1,12 @@
+import {
+    deleteItemInForm,
+    stopEditWithoutSave,
+    submitAndCreateNewItemAfterCurrent,
+    submitAndCreateNewItemBeforeCurrent,
+    submitItemForm,
+} from './../../../constants/keyDefnitions';
+import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import { isValidValue } from './../utility/inputValidator';
-import { checkOnlyKeyCodeIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { KeyCode } from './../../../constants/keyCodes';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { TodoListItem } from './../../../model/TodoListItem';
 import {
@@ -9,21 +15,27 @@ import {
     KeyboardEventHandler,
     FocusEventHandler,
 } from 'react';
-import { NextAction } from '../../..//context/todoContext/hooks/useManageTodoListItems';
 
 export default function useTodoFormHandlers(item: TodoListItem) {
     const [value, setValue] = useState<string>(item.value);
 
-    const { deleteItem, changeItem, clearEditMode } = useTodoContext();
+    const {
+        deleteItem,
+        saveValue,
+        stopEdit,
+        createNewItemAfterCurrent,
+        createNewItemBeforeCurrent,
+        startEdit,
+    } = useTodoContext();
 
-    const pushNewValue = (nextAction: NextAction) => {
+    const persistCurrentValue = () => {
         const newValue = value.trim();
 
         if (newValue.length === 0) {
             deleteItem(item.id);
         }
 
-        changeItem(item.id, newValue, item.done, nextAction);
+        saveValue(item.id, newValue, item.done);
     };
 
     const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
@@ -33,49 +45,53 @@ export default function useTodoFormHandlers(item: TodoListItem) {
             return;
         }
 
-        pushNewValue(NextAction.EditNext);
+        persistCurrentValue();
+        stopEdit();
     };
 
     const onValueKeyDown: KeyboardEventHandler<HTMLTextAreaElement> = (
         event,
     ) => {
-        if (checkOnlyKeyCodeIsPressed(event, KeyCode.Enter)) {
-            if (isValidValue(value)) {
-                pushNewValue(NextAction.EditNext);
+        if (isValidValue(value)) {
+            if (
+                checkKeyDefinitionIsPressed(
+                    submitAndCreateNewItemAfterCurrent,
+                    event,
+                )
+            ) {
+                saveValue(item.id, value, item.done);
+                stopEdit();
+                createNewItemAfterCurrent();
+                startEdit();
             }
 
-            event.preventDefault();
-        }
+            if (
+                checkKeyDefinitionIsPressed(
+                    submitAndCreateNewItemBeforeCurrent,
+                    event,
+                )
+            ) {
+                saveValue(item.id, value, item.done);
+                stopEdit();
+                createNewItemBeforeCurrent();
+                startEdit();
+            }
 
-        if (
-            event.keyCode === KeyCode.Enter &&
-            event.altKey &&
-            isValidValue(value)
-        ) {
-            if (event.shiftKey) {
-                pushNewValue(NextAction.CreateNewBefore);
-            } else {
-                pushNewValue(NextAction.CreateNewAfter);
+            if (checkKeyDefinitionIsPressed(submitItemForm, event)) {
+                persistCurrentValue();
+                stopEdit();
             }
         }
 
         if (
-            event.keyCode === KeyCode.Enter &&
-            event.ctrlKey &&
-            isValidValue(value)
-        ) {
-            pushNewValue(NextAction.None);
-        }
-
-        if (
-            checkOnlyKeyCodeIsPressed(event, KeyCode.Backspace) &&
+            checkKeyDefinitionIsPressed(deleteItemInForm, event) &&
             value.length === 0
         ) {
             deleteItem(item.id);
         }
 
-        if (checkOnlyKeyCodeIsPressed(event, KeyCode.Escape)) {
-            clearEditMode();
+        if (checkKeyDefinitionIsPressed(stopEditWithoutSave, event)) {
+            stopEdit();
         }
     };
 
@@ -87,7 +103,8 @@ export default function useTodoFormHandlers(item: TodoListItem) {
     };
 
     const onValueBlur: FocusEventHandler<HTMLTextAreaElement> = () => {
-        pushNewValue(NextAction.None);
+        persistCurrentValue();
+        stopEdit();
     };
 
     return { value, onSubmit, onValueKeyDown, onValueChange, onValueBlur };

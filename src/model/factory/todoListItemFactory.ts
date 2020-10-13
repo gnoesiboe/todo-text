@@ -1,8 +1,8 @@
 import { TodoListItem } from './../TodoListItem';
 import { generateId } from './../../utility/idGenerator';
 
-export const createEmpty = () => ({
-    id: generateId(),
+export const createEmpty = (id: string = generateId()) => ({
+    id,
     value: '',
     done: false,
 });

@@ -1,12 +1,19 @@
 import type { KeyboardEvent } from 'react';
-import type { KeyCode } from './../constants/keyCodes';
 
-export const checkOnlyKeyCodeIsPressed = (
+export type KeyDefinition = {
+    key: string;
+    shiftKey: boolean;
+    ctrlKey: boolean;
+    altKey: boolean;
+    metaKey: boolean;
+};
+
+export const checkKeyDefinitionIsPressed = (
+    definition: KeyDefinition,
     event: WindowEventMap['keyup'] | WindowEventMap['keydown'] | KeyboardEvent,
-    code: KeyCode,
-) =>
-    event.keyCode === code &&
-    !event.ctrlKey &&
-    !event.altKey &&
-    !event.metaKey &&
-    !event.shiftKey;
+): boolean =>
+    event.key === definition.key &&
+    event.shiftKey === definition.shiftKey &&
+    event.ctrlKey === definition.ctrlKey &&
+    event.altKey === definition.altKey &&
+    event.metaKey === definition.metaKey;

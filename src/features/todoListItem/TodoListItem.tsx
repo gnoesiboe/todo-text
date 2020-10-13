@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import {
     TodoListItem as ItemModel,
     isMust,
@@ -9,7 +9,7 @@ import {
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
-import useSwitchToEditModeOnSwitch from './hooks/useSwitchToEditModeOnClick';
+import useToggleCurrentOnClick from './hooks/useToggleCurrentOnClick';
 import useHandleDoneStatusChange from './hooks/useHandleDoneStatusChange';
 import {
     Container,
@@ -20,20 +20,11 @@ import {
     DragHandle,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
-import { DragObjectWithType } from 'react-dnd';
-import useDragItem from './hooks/useDragItem';
-import useDropItem from './hooks/useDropItem';
 import { UnfoldIcon } from '@primer/octicons-react';
-
-export type OnChangeHandler = (
-    id: string,
-    value: string,
-    done: boolean,
-) => void;
-
-export type OnDeleteHandler = (id: string) => void;
-
-export type OnModeChangeHandler = (id: string) => void;
+import { useTodoContext } from '../../context/todoContext/TodoContext';
+import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
+import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
+import useDragAndDrop from './hooks/useDragAndDrop';
 
 type Props = {
     item: ItemModel;
@@ -42,41 +33,32 @@ type Props = {
     hidden: boolean;
 };
 
-export interface DragObject extends DragObjectWithType {
-    id: string;
-    index: number; // remove if not needed
-}
-
-export const dragDropItemType = 'only';
-
 const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
-    const dragPreviewRef = useRef<HTMLDivElement>(null);
-    const dragHandleRef = useRef<HTMLDivElement>(null);
+    const { isEditing } = useTodoContext();
 
-    const { onClick } = useSwitchToEditModeOnSwitch(item);
+    const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
+        current,
+        index,
+        item,
+    );
+
+    const { onClick } = useToggleCurrentOnClick(item);
+
+    const { onDoubleClick } = useStartEditOnDoubleClick(item);
 
     const { onDoneChanged } = useHandleDoneStatusChange(item);
 
-    const allowDragDrop = !current;
-
-    const { isDragging, applyDragHandle, applyDragPreview } = useDragItem(
-        item,
-        index,
-        allowDragDrop,
-    );
-
-    const { applyDrop } = useDropItem(dragPreviewRef, index);
-
-    applyDragPreview(applyDrop(dragPreviewRef));
-    applyDragHandle(dragHandleRef);
+    useStartEditingOnKeyDown(current);
 
     const waiting = isWaiting(item);
-    const showStatusIcon = !current && !item.done && !isDragging;
+    const showStatusIcon =
+        ((!isEditing && current) || !current) && !item.done && !isDragging;
 
     return (
         <Container
             item={item}
             current={current}
+            isEditing={isEditing}
             ref={dragPreviewRef}
             isDragging={isDragging}
             hidden={hidden}
@@ -108,12 +90,13 @@ const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
                     />
                 )}
 
-                {current ? (
+                {current && isEditing ? (
                     <EditTodo item={item} />
                 ) : (
                     <Value
                         item={item}
                         isDragging={isDragging}
+                        onDoubleClick={onDoubleClick}
                         onClick={onClick}
                         dangerouslySetInnerHTML={{
                             __html: prepareForVisibility(item),

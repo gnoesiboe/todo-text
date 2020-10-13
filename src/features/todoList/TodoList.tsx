@@ -1,11 +1,17 @@
 import React from 'react';
 import TodoListItem from '../todoListItem/TodoListItem';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
-import useStartEditFirstOnKeyDown from './hooks/useStartEditFirstOnKeyDown';
 import { Container, ConnectionIndicator } from './components/StyledComponents';
 import useToggleFilters from './hooks/useToggleFilters';
 import { isWaiting } from '../../model/TodoListItem';
 import FilterButton from '../../primitives/FilterButton/FilterButton';
+import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
+import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
+import useMoveItemUpOnKeyboardShortcutPressed from './hooks/useMoveItemUpOnKeyboardShortcutPressed';
+import useMoveItemDownOnKeyboardShortcutPressed from './hooks/useMoveItemDownOnKeyboardShortcutPressed';
+import useClearCurrentOnKeyPressed from './hooks/useClearCurrentOnKeyPressed';
+import useDeleteCurrentOnKeyPressed from './hooks/useDeleteCurrentOnKeyPressed';
+import useToggleDoneStatusOnKeyPressed from './hooks/useToggleDoneStatusOnKeyPressed';
 
 const TodoList: React.FC = () => {
     const { items, isFetching, isSaving, currentItem } = useTodoContext();
@@ -17,7 +23,13 @@ const TodoList: React.FC = () => {
         onHideDoneClick,
     } = useToggleFilters();
 
-    useStartEditFirstOnKeyDown();
+    useNavigateToNextItemOnDownKeyPressed();
+    useNavigateToPreviousItemOnUpKeyPressed();
+    useMoveItemUpOnKeyboardShortcutPressed();
+    useMoveItemDownOnKeyboardShortcutPressed();
+    useClearCurrentOnKeyPressed();
+    useDeleteCurrentOnKeyPressed();
+    useToggleDoneStatusOnKeyPressed();
 
     return (
         <Container>

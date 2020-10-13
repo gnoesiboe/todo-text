@@ -1,6 +1,6 @@
+import { DragObject, dragDropItemType } from './useDragAndDrop';
 import { TodoListItem } from './../../../model/TodoListItem';
 import { useDrag } from 'react-dnd';
-import { DragObject, dragDropItemType } from '../TodoListItem';
 
 type CollectedProps = {
     isDragging: boolean;

@@ -22,16 +22,22 @@ export const Container = styled.div<{
     current: boolean;
     isDragging: boolean;
     hidden: boolean;
+    isEditing: boolean;
 }>`
     position: relative;
     margin: 0 0 10px -10px;
     padding: 5px 3px 3px 0;
     border-radius: 5px;
-    transition: 0.4s;
 
-    ${({ item }) => item.done && ``};
-    ${({ current }) =>
-        current && `background: rgba(231, 111, 81, 0.3) !important;`};
+    ${({ isEditing, current }) => {
+        if (!current) {
+            return null;
+        }
+
+        return isEditing
+            ? 'background: rgba(231, 111, 81, 0.3) !important;'
+            : 'background: #eee;';
+    }}
 
     ${({ isDragging, theme }) =>
         isDragging &&
@@ -78,12 +84,7 @@ export const Value = styled.div<ItemContextProps>`
 
     ${({ isDragging }) => isDragging && `visibility: hidden;`}
 
-    ${({
-        item,
-    }) =>
-        hasPrefixStatus(item) &&
-        !item.done &&
-        'text-indent: 25px;'}
+    ${({ item }) => hasPrefixStatus(item) && !item.done && 'text-indent: 25px;'}
 
     .todo-list-item__value__removed {
         text-decoration: line-through;
