@@ -7,6 +7,10 @@ export default function useToggleDoneStatusOnKeyPressed() {
     const { currentItem, isEditing, toggleDoneStatus } = useTodoContext();
 
     useEffect(() => {
+        if (!currentItem || isEditing) {
+            return;
+        }
+
         const onKeyUp = (event: WindowEventMap['keyup']) => {
             if (
                 !checkKeyDefinitionIsPressed(

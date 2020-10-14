@@ -10,6 +10,7 @@ import useMoveItemDownOnKeyboardShortcutPressed from './hooks/useMoveItemDownOnK
 import useClearCurrentOnKeyPressed from './hooks/useClearCurrentOnKeyPressed';
 import useDeleteCurrentOnKeyPressed from './hooks/useDeleteCurrentOnKeyPressed';
 import useToggleDoneStatusOnKeyPressed from './hooks/useToggleDoneStatusOnKeyPressed';
+import useAddNewItemOnKeyboardShortcutPressed from './hooks/useAddNewItemOnKeyboardShortcutPressed';
 
 const TodoList: React.FC = () => {
     const {
@@ -30,6 +31,7 @@ const TodoList: React.FC = () => {
     useClearCurrentOnKeyPressed();
     useDeleteCurrentOnKeyPressed();
     useToggleDoneStatusOnKeyPressed();
+    useAddNewItemOnKeyboardShortcutPressed();
 
     return (
         <Container>

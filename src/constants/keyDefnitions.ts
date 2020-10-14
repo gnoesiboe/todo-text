@@ -14,10 +14,21 @@ export const submitAndCreateNewItemAfterCurrent: KeyDefinition = {
     altKey: true,
 };
 
+export const createNewItemAfterCurrent: KeyDefinition = {
+    ...baseKeyDefinition,
+    key: 'a',
+};
+
 export const submitAndCreateNewItemBeforeCurrent: KeyDefinition = {
     ...baseKeyDefinition,
     key: 'Enter',
     altKey: true,
+    shiftKey: true,
+};
+
+export const createNewItemBeforeCurrent: KeyDefinition = {
+    ...baseKeyDefinition,
+    key: 'A',
     shiftKey: true,
 };
 
