@@ -21,7 +21,7 @@ export const Header = styled.div`
     background: ${({ theme }) => theme.colors.fourth};
     display: block;
     z-index: 1000;
-    padding: 5px 10px;
+    padding: 5px 10px 5px 0;
     border-radius: 4px;
     margin-top: 20px;
     display: flex;
@@ -31,9 +31,16 @@ export const Header = styled.div`
 
 export const Heading = styled.h1`
     padding: 0;
-    margin: 0;
+    margin: 0 0 0 -8px;
+    font-weight: bold;
     flex: 1;
     color: #fff;
+
+    &::first-letter {
+        background: #000;
+        padding: 0 10px 0 7px;
+        margin-right: 3px;
+    }
 `;
 
 export const FilterContainer = styled.div`

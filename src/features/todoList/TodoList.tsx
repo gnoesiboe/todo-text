@@ -44,7 +44,7 @@ const TodoList: React.FC = () => {
             {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
             {isFetching && <ConnectionIndicator>loading..</ConnectionIndicator>}
             <Header>
-                <Heading>TODO</Heading>
+                <Heading>ToDo</Heading>
                 <FilterContainer>
                     <FilterButton
                         onClick={() => toggleHideNotActionable()}
