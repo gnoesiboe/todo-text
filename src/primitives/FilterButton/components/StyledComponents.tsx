@@ -8,6 +8,7 @@ export const Button = styled.button<{ active: boolean }>`
     background: transparent;
     padding: 4px 10px;
     margin-right: 10px;
+    margin-bottom: 10px;
     border: 1px solid #ddd;
     color: #ddd;
 

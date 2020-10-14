@@ -1,7 +1,11 @@
 import React from 'react';
 import TodoListItem from '../todoListItem/TodoListItem';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
-import { Container, ConnectionIndicator } from './components/StyledComponents';
+import {
+    Container,
+    ConnectionIndicator,
+    Title,
+} from './components/StyledComponents';
 import FilterButton from '../../primitives/FilterButton/FilterButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
 import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
@@ -37,7 +41,7 @@ const TodoList: React.FC = () => {
         <Container>
             {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
             {isFetching && <ConnectionIndicator>loading..</ConnectionIndicator>}
-            <h1>TODO</h1>
+            <Title>TODO</Title>
             <FilterButton
                 onClick={() => toggleHideNotActionable()}
                 active={hideNotActionable}
