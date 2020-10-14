@@ -4,7 +4,9 @@ import { useTodoContext } from '../../context/todoContext/TodoContext';
 import {
     Container,
     ConnectionIndicator,
-    Title,
+    Header,
+    FilterContainer,
+    Heading,
 } from './components/StyledComponents';
 import FilterButton from '../../primitives/FilterButton/FilterButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
@@ -41,17 +43,21 @@ const TodoList: React.FC = () => {
         <Container>
             {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
             {isFetching && <ConnectionIndicator>loading..</ConnectionIndicator>}
-            <Title>TODO</Title>
-            <FilterButton
-                onClick={() => toggleHideNotActionable()}
-                active={hideNotActionable}
-                title="hide not-actionable"
-            />
-            <FilterButton
-                onClick={() => toggleHideDone()}
-                active={hideDone}
-                title="hide done"
-            />
+            <Header>
+                <Heading>TODO</Heading>
+                <FilterContainer>
+                    <FilterButton
+                        onClick={() => toggleHideNotActionable()}
+                        active={hideNotActionable}
+                        title="hide not-actionable"
+                    />
+                    <FilterButton
+                        onClick={() => toggleHideDone()}
+                        active={hideDone}
+                        title="hide done"
+                    />
+                </FilterContainer>
+            </Header>
             {filteredItems.map((item, index) => (
                 <TodoListItem
                     key={item.id}

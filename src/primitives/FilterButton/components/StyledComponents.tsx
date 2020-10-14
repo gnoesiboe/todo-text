@@ -1,16 +1,15 @@
 import styled from 'styled-components';
 
 export const Button = styled.button<{ active: boolean }>`
-    ${({ active, theme }) =>
-        active && `border-color: ${theme.colors.first} !important;`};
+    ${({ active }) => active && `border-color: #fff !important;`};
 
     border-radius: 2px;
     background: transparent;
     padding: 4px 10px;
-    margin-right: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ddd;
-    color: #ddd;
+    margin-left: 10px;
+    margin-bottom: 5px;
+    border: 1px solid ${({ theme }) => theme.colors.fourth};
+    color: #fff;
 
     &:before {
         content: ' ';
