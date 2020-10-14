@@ -21,9 +21,14 @@ import useManageTodoListItems, {
 import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
+import {
+    ToggleHideDoneHandler,
+    ToggleHideNotWaitingHandler,
+} from './hooks/useToggleFilters';
 
 type ContextValue = {
     items: TodoListItem[];
+    filteredItems: TodoListItem[];
     isFetching: boolean;
     hasOpenChanges: boolean;
     isSaving: boolean;
@@ -44,10 +49,15 @@ type ContextValue = {
     createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler;
     toggleDoneStatus: ToggleDoneStatusHandler;
     isEditing: boolean;
+    hideDone: boolean;
+    toggleHideDone: ToggleHideDoneHandler;
+    hideNotActionable: boolean;
+    toggleHideNotActionable: ToggleHideNotWaitingHandler;
 };
 
 const initialValue: ContextValue = {
     items: [],
+    filteredItems: [],
     isFetching: false,
     hasOpenChanges: false,
     saveValue: () => {},
@@ -68,6 +78,10 @@ const initialValue: ContextValue = {
     createNewItemBeforeCurrent: () => {},
     toggleDoneStatus: () => {},
     isEditing: false,
+    hideDone: false,
+    toggleHideDone: () => {},
+    hideNotActionable: false,
+    toggleHideNotActionable: () => {},
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -98,6 +112,11 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleDoneStatus,
+        hideNotActionable,
+        toggleHideNotActionable,
+        hideDone,
+        toggleHideDone,
+        filteredItems,
     } = useManageTodoListItems();
 
     useRefetchUpdatesAfterMount(
@@ -138,6 +157,11 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         createNewItemBeforeCurrent,
         toggleDoneStatus,
         isEditing,
+        hideNotActionable,
+        toggleHideNotActionable,
+        hideDone,
+        toggleHideDone,
+        filteredItems,
     };
 
     return (

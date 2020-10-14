@@ -19,6 +19,7 @@ import {
 } from '../utility/currentItemResolver';
 import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
+import useToggleFilters from './useToggleFilters';
 
 export type SaveValueHandler = (
     id: string,
@@ -69,6 +70,8 @@ export default function useManageTodoListItems() {
         items,
         isFetching,
     );
+
+    const toggleFilterProps = useToggleFilters(items);
 
     useRefetchAfterLastChangeIsDone(
         currentItem,
@@ -215,5 +218,6 @@ export default function useManageTodoListItems() {
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleDoneStatus,
+        ...toggleFilterProps,
     };
 }

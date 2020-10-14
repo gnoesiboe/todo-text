@@ -30,10 +30,9 @@ type Props = {
     item: ItemModel;
     current: boolean;
     index: number;
-    hidden: boolean;
 };
 
-const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
+const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     const { isEditing } = useTodoContext();
 
     const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
@@ -61,7 +60,6 @@ const TodoListItem: React.FC<Props> = ({ item, current, index, hidden }) => {
             isEditing={isEditing}
             ref={dragPreviewRef}
             isDragging={isDragging}
-            hidden={hidden}
         >
             <>
                 {/* @ts-ignore don't know how to fix ref */}

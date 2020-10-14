@@ -21,7 +21,6 @@ export const Container = styled.div<{
     item: TodoListItem;
     current: boolean;
     isDragging: boolean;
-    hidden: boolean;
     isEditing: boolean;
 }>`
     position: relative;
@@ -49,8 +48,6 @@ export const Container = styled.div<{
     &:hover {
         background: #eee;
     }
-
-    ${({ hidden }) => hidden && `display: none;`}
 `;
 
 const hasPrefixStatus = (item: TodoListItem) =>
