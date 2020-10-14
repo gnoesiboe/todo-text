@@ -61,7 +61,11 @@ export const Checkbox = styled(BaseCheckbox)<ItemContextProps>`
     ${({ isDragging }) => isDragging && `visibility: hidden;`}
 `;
 
-export const Value = styled.div<ItemContextProps>`
+export const Value = styled.div<{
+    item: TodoListItem;
+    isDragging: boolean;
+    current: boolean;
+}>`
     margin-left: ${valueMarginLeft};
     font-size: 18px;
     font-family: Arial, Helvetica, sans-serif;
@@ -125,6 +129,9 @@ export const Value = styled.div<ItemContextProps>`
     .todo-list-item__value__note {
         font-size: 0.8em !important;
         min-height: 1em;
+        display: none;
+
+        ${({ current }) => current && 'display: block;'}
     }
 
     .todo-list-item__value__sub-item {

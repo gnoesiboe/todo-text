@@ -99,6 +99,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         dangerouslySetInnerHTML={{
                             __html: prepareForVisibility(item),
                         }}
+                        current={current}
                     />
                 )}
                 <DeleteTodo item={item} />
