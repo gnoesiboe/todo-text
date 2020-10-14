@@ -71,7 +71,13 @@ export default function useManageTodoListItems() {
         isFetching,
     );
 
-    const toggleFilterProps = useToggleFilters(items);
+    const {
+        filteredItems,
+        hideDone,
+        hideNotActionable,
+        toggleHideDone,
+        toggleHideNotActionable,
+    } = useToggleFilters(items);
 
     useRefetchAfterLastChangeIsDone(
         currentItem,
@@ -107,7 +113,11 @@ export default function useManageTodoListItems() {
             return;
         }
 
-        setCurrentItemState(determineNextCurrentItem(currentItem, items));
+        // use filteredItems to determine next, to make sure the cursor
+        // does not fall on a hidden item
+        setCurrentItemState(
+            determineNextCurrentItem(currentItem, filteredItems),
+        );
     };
 
     const moveToPrevious: MoveToPreviousHandler = () => {
@@ -115,7 +125,11 @@ export default function useManageTodoListItems() {
             return;
         }
 
-        setCurrentItemState(determinePreviousCurrentItem(currentItem, items));
+        // use filteredItems to determine previous, to make sure the cursor
+        // does not fall on a hidden item
+        setCurrentItemState(
+            determinePreviousCurrentItem(currentItem, filteredItems),
+        );
     };
 
     const moveCurrentItemUp: MoveCurrentItemUpHandler = () => {
@@ -218,6 +232,10 @@ export default function useManageTodoListItems() {
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleDoneStatus,
-        ...toggleFilterProps,
+        filteredItems,
+        hideDone,
+        hideNotActionable,
+        toggleHideDone,
+        toggleHideNotActionable,
     };
 }
