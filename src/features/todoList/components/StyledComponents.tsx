@@ -26,6 +26,7 @@ export const Header = styled.div`
     margin-top: 20px;
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     flex-wrap: wrap;
 `;
 
@@ -33,7 +34,6 @@ export const Heading = styled.h1`
     padding: 0;
     margin: 0 0 0 -8px;
     font-weight: bold;
-    flex: 1;
     color: #fff;
 
     &::first-letter {
@@ -44,9 +44,6 @@ export const Heading = styled.h1`
 `;
 
 export const FilterContainer = styled.div`
-    flex: 2;
-    text-align: right;
-
     ${Button} {
         margin-top: 5px;
     }

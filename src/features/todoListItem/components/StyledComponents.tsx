@@ -31,6 +31,7 @@ export const Container = styled.div<{
     margin: 0 0 10px -10px;
     padding: 5px 0 3px 0;
     border-radius: 5px;
+    transition: max-height 1s ease-in;
 
     ${({ isEditing, current }) => {
         if (!current) {
