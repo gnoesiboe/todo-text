@@ -3,10 +3,11 @@ import TodoListItem from '../todoListItem/TodoListItem';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import {
     Container,
-    ConnectionIndicator,
     Header,
     FilterContainer,
     Heading,
+    SavingIdicator,
+    FetchingIndicator,
 } from './components/StyledComponents';
 import FilterButton from '../../primitives/FilterButton/FilterButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
@@ -41,10 +42,8 @@ const TodoList: React.FC = () => {
 
     return (
         <Container>
-            {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
-            {isFetching && (
-                <ConnectionIndicator>fetching..</ConnectionIndicator>
-            )}
+            {isSaving && <SavingIdicator />}
+            {isFetching && <FetchingIndicator />}
             <Header>
                 <Heading>ToDo</Heading>
                 <FilterContainer>
