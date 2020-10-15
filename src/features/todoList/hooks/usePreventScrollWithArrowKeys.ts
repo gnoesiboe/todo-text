@@ -18,5 +18,5 @@ export default function usePreventScrollWithArrowKeys() {
         window.addEventListener('keydown', onKeyDown, false);
 
         return () => window.removeEventListener('keydown', onKeyDown, false);
-    }, []);
+    }, [isEditing]);
 }
