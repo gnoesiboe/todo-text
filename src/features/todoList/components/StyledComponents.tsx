@@ -1,5 +1,5 @@
 import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
-import styled, { keyframes } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components';
 import { Button } from '../../../primitives/FilterButton/components/StyledComponents';
 
 export const Container = styled.div`
@@ -25,28 +25,26 @@ const wobble = keyframes`
    100% { transform: rotate(0deg); }
 `;
 
-export const FetchingIndicator = styled(SyncIcon)`
+const connectionIndicatorCss = css`
     margin-top: 20px;
     position: fixed;
     top: 0;
     right: 20px;
-    animation: ${rotate} 2s linear infinite;
 
-    @media (max-width: 1005px) {
-        display: none;
+    @media (max-width: 992px) {
+        top: 10px;
+        right: 25px;
     }
 `;
 
-export const SavingIdicator = styled(DatabaseIcon)`
-    margin-top: 20px;
-    position: fixed;
-    top: 0;
-    right: 20px;
-    animation: ${wobble} 2s linear infinite;
+export const FetchingIndicator = styled(SyncIcon)`
+    ${connectionIndicatorCss}
+    animation: ${rotate} 2s linear infinite;
+`;
 
-    @media (max-width: 1005px) {
-        display: none;
-    }
+export const SavingIdicator = styled(DatabaseIcon)`
+    ${connectionIndicatorCss}
+    animation: ${wobble} 2s linear infinite;
 `;
 
 export const Header = styled.div`
