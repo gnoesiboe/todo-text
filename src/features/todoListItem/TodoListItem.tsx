@@ -27,6 +27,7 @@ import { useTodoContext } from '../../context/todoContext/TodoContext';
 import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
 import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
 import useDragAndDrop from './hooks/useDragAndDrop';
+import useScrollIntoView from './hooks/useScrollIntoView';
 
 type Props = {
     item: ItemModel;
@@ -48,6 +49,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     const { onDoubleClick } = useStartEditOnDoubleClick(item);
 
     const { onDoneChanged } = useHandleDoneStatusChange(item);
+
+    useScrollIntoView(dragPreviewRef, current);
 
     useStartEditingOnKeyDown(current);
 
