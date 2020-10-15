@@ -3,7 +3,7 @@ import styled from 'styled-components';
 export const Button = styled.button<{ active: boolean }>`
     border-radius: 2px;
     background: transparent;
-    padding: 4px 0 4px 1px;
+    padding: 4px 4px 4px 1px;
     margin-left: 10px;
     margin-bottom: 5px;
     border: none;

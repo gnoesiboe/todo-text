@@ -48,12 +48,13 @@ export const SavingIdicator = styled(DatabaseIcon)`
 `;
 
 export const Header = styled.div`
+    background: #ddd;
     position: sticky;
     top: 0;
     display: block;
     z-index: 1000;
-    padding: 5px 0 5px;
-    margin-top: 20px;
+    padding: 5px 0px 5px 0;
+    margin: 20px -40px 0 -40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -63,19 +64,20 @@ export const Header = styled.div`
 export const Heading = styled.h1`
     border-radius: 4px;
     padding: 0 5px 0 0;
-    margin: 0 0 0 -42px;
+    margin: 0 0 0 0;
     font-weight: bold;
     color: #fff;
     background: ${({ theme }) => theme.colors.fourth};
 
     &::first-letter {
-        background: #000;
+        background: #264653;
         padding: 0 10px 0 7px;
         margin-right: 3px;
     }
 `;
 
 export const FilterContainer = styled.div`
+    margin-right: 38px;
     ${Button} {
         margin-top: 5px;
     }
