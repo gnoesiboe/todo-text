@@ -8,6 +8,10 @@ export const Wrapper = styled.div`
     right: -100px;
     top: 10px;
     opacity: 0.5;
+
+    @media (max-width: 992px) {
+        display: none;
+    }
 `;
 
 export const Bar = styled.div<{ percentage: number }>`
