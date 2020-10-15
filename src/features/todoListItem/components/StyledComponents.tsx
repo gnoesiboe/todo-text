@@ -128,7 +128,7 @@ export const Value = styled.div<{
     }
 
     .todo-list-item__value__summary {
-        padding-right: 5px;
+        padding-right: 15px;
     }
 
     .todo-list-item__value__note {

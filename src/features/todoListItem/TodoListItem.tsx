@@ -28,6 +28,8 @@ import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
 import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
 import useDragAndDrop from './hooks/useDragAndDrop';
 import useScrollIntoView from './hooks/useScrollIntoView';
+import { determineProgress } from './utility/selectors';
+import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
 
 type Props = {
     item: ItemModel;
@@ -57,6 +59,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     const waiting = isWaiting(item);
     const showStatusIcon =
         ((!isEditing && current) || !current) && !item.done && !isDragging;
+
+    const { done, todo, total } = determineProgress(item);
 
     return (
         <Container
@@ -107,6 +111,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         current={current}
                     />
                 )}
+                <ProgressBar done={done} todo={todo} total={total} />
                 {hasNotes(item) && !current && <HasNotesIndicator />}
                 <DeleteTodo item={item} visible={current} />
             </>
