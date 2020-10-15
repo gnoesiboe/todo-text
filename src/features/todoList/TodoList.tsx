@@ -47,7 +47,7 @@ const TodoList: React.FC = () => {
             {isSaving && <SavingIdicator />}
             {isFetching && <FetchingIndicator />}
             <Header>
-                <Heading>ToDo</Heading>
+                <Heading>Tød□</Heading>
                 <FilterContainer>
                     <FilterButton
                         onClick={() => toggleHideNotActionable()}
