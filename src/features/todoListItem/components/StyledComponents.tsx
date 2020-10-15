@@ -127,10 +127,15 @@ export const Value = styled.div<{
         content: ' → ';
     }
 
+    .todo-list-item__value__summary {
+        padding-right: 5px;
+    }
+
     .todo-list-item__value__note {
         font-size: 0.8em !important;
         min-height: 1em;
         display: none;
+        padding-right: 5px;
 
         ${({ current }) => current && 'display: block;'}
     }
