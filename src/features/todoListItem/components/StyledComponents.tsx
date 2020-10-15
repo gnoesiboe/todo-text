@@ -100,7 +100,7 @@ export const Value = styled.div<{
         margin: 30px 0 0;
         border-bottom: 1px solid #e76f51;
         margin-left: -34px;
-        margin-bottom: -15px;
+        margin-bottom: 0px;
         padding: 0;
     }
 
