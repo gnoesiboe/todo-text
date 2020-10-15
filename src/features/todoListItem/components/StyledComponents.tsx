@@ -72,6 +72,7 @@ export const Value = styled.div<{
     font-family: Arial, Helvetica, sans-serif;
     color: #666;
     padding: 0 0 5px;
+    cursor: pointer;
 
     ${({ item }) => isCancelled(item) && `text-decoration: line-through;`}
     ${({ item }) =>
