@@ -10,9 +10,14 @@ export const Container = styled.div`
 `;
 
 export const ConnectionIndicator = styled.div`
-    float: right;
-    color: #aaa;
     margin-top: 20px;
+    position: fixed;
+    top: 0;
+    right: 20px;
+
+    @media (max-width: 1005px) {
+        display: none;
+    }
 `;
 
 export const Header = styled.div`

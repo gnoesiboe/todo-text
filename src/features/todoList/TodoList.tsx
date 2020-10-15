@@ -42,7 +42,9 @@ const TodoList: React.FC = () => {
     return (
         <Container>
             {isSaving && <ConnectionIndicator>saving..</ConnectionIndicator>}
-            {isFetching && <ConnectionIndicator>loading..</ConnectionIndicator>}
+            {isFetching && (
+                <ConnectionIndicator>fetching..</ConnectionIndicator>
+            )}
             <Header>
                 <Heading>ToDo</Heading>
                 <FilterContainer>
