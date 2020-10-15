@@ -12,14 +12,14 @@ export interface DragObject extends DragObjectWithType {
 export const dragDropItemType = 'only';
 
 export default function useDragAndDrop(
-    current: boolean,
+    isEditing: boolean,
     index: number,
     item: TodoListItem,
 ) {
     const dragPreviewRef = useRef<HTMLDivElement>(null);
     const dragHandleRef = useRef<HTMLDivElement>(null);
 
-    const allowDragDrop = !current;
+    const allowDragDrop = !isEditing;
 
     const { isDragging, applyDragHandle, applyDragPreview } = useDragItem(
         item,

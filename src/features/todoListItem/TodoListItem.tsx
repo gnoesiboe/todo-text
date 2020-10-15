@@ -38,7 +38,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     const { isEditing } = useTodoContext();
 
     const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
-        current,
+        isEditing,
         index,
         item,
     );
