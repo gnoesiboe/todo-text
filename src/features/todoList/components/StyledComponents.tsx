@@ -50,11 +50,9 @@ export const SavingIdicator = styled(DatabaseIcon)`
 export const Header = styled.div`
     position: sticky;
     top: 0;
-    background: ${({ theme }) => theme.colors.fourth};
     display: block;
     z-index: 1000;
-    padding: 5px 10px 5px 0;
-    border-radius: 4px;
+    padding: 5px 0 5px;
     margin-top: 20px;
     display: flex;
     flex-direction: row;
@@ -63,10 +61,12 @@ export const Header = styled.div`
 `;
 
 export const Heading = styled.h1`
-    padding: 0;
-    margin: 0 0 0 -8px;
+    border-radius: 4px;
+    padding: 0 5px 0 0;
+    margin: 0 0 0 -42px;
     font-weight: bold;
     color: #fff;
+    background: ${({ theme }) => theme.colors.fourth};
 
     &::first-letter {
         background: #000;

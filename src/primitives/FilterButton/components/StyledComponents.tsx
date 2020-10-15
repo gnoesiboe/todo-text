@@ -1,15 +1,13 @@
 import styled from 'styled-components';
 
 export const Button = styled.button<{ active: boolean }>`
-    ${({ active }) => active && `border-color: #fff !important;`};
-
     border-radius: 2px;
     background: transparent;
-    padding: 4px 10px;
+    padding: 4px 0 4px 1px;
     margin-left: 10px;
     margin-bottom: 5px;
-    border: 1px solid ${({ theme }) => theme.colors.fourth};
-    color: #fff;
+    border: none;
+    color: ${({ active }) => (active ? '#999' : '#aaa')};
 
     &:before {
         content: ' ';
@@ -25,7 +23,7 @@ export const Input = styled.input`
 `;
 
 export const Title = styled.div<{ active: boolean }>`
-    margin-left: 22px;
+    margin-left: 28px;
 
     ${({ active }) => active && `color: #333;`};
 `;
