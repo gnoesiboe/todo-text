@@ -13,5 +13,6 @@ export const Wrapper = styled.div`
 export const Bar = styled.div<{ percentage: number }>`
     background: green;
     width: ${({ percentage }) => percentage}%;
+    transition: width 1s;
     height: 100%;
 `;
