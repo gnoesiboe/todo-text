@@ -30,6 +30,7 @@ import useDragAndDrop from './hooks/useDragAndDrop';
 import useScrollIntoView from './hooks/useScrollIntoView';
 import { determineProgress } from './utility/selectors';
 import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
+import { AutoHeightAnimate } from 'react-animate-auto-height';
 
 type Props = {
     item: ItemModel;
@@ -100,16 +101,18 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 {current && isEditing ? (
                     <EditTodo item={item} />
                 ) : (
-                    <Value
-                        item={item}
-                        isDragging={isDragging}
-                        onDoubleClick={onDoubleClick}
-                        onClick={onClick}
-                        dangerouslySetInnerHTML={{
-                            __html: prepareForVisibility(item),
-                        }}
-                        current={current}
-                    />
+                    <AutoHeightAnimate heightState={current}>
+                        <Value
+                            item={item}
+                            isDragging={isDragging}
+                            onDoubleClick={onDoubleClick}
+                            onClick={onClick}
+                            dangerouslySetInnerHTML={{
+                                __html: prepareForVisibility(item),
+                            }}
+                            current={current}
+                        />
+                    </AutoHeightAnimate>
                 )}
                 <ProgressBar done={done} todo={todo} total={total} />
                 {hasNotes(item) && !current && <HasNotesIndicator />}
