@@ -1,5 +1,6 @@
 import { generateId } from './../utility/idGenerator';
 import Joi from 'joi';
+import { splitAtLineBreak } from '../utility/stringUtilities';
 
 export interface TodoListItem {
     id: string;
@@ -32,3 +33,6 @@ export const isQuickfix = (item: TodoListItem) =>
 
 export const isActionable = (item: TodoListItem) =>
     !isWaiting(item) && !isCancelled(item) && !isHeading(item);
+
+export const hasNotes = (item: TodoListItem) =>
+    splitAtLineBreak(item.value).length > 1;

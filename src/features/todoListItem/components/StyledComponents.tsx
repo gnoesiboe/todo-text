@@ -6,7 +6,11 @@ import {
     isWaiting,
     TodoListItem,
 } from '../../../model/TodoListItem';
-import { QuestionIcon, AlertIcon } from '@primer/octicons-react';
+import {
+    QuestionIcon,
+    AlertIcon,
+    ChevronDownIcon,
+} from '@primer/octicons-react';
 
 interface ItemContextProps {
     item: TodoListItem;
@@ -25,7 +29,7 @@ export const Container = styled.div<{
 }>`
     position: relative;
     margin: 0 0 10px -10px;
-    padding: 5px 3px 3px 0;
+    padding: 5px 0 3px 0;
     border-radius: 5px;
 
     ${({ isEditing, current }) => {
@@ -44,10 +48,6 @@ export const Container = styled.div<{
             color: white !important;
             background: ${theme.colors.third};
         `}
-
-    &:hover {
-        background: #eee;
-    }
 `;
 
 const hasPrefixStatus = (item: TodoListItem) =>
@@ -166,8 +166,7 @@ export const QuickfixIcon = styled(AlertIcon)`
     }
 `;
 
-export const DragHandle = styled.div`
-    display: none;
+export const DragHandle = styled.div<{ current: boolean }>`
     position: absolute;
     left: -17px;
     top: 0px;
@@ -180,8 +179,12 @@ export const DragHandle = styled.div`
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    display: ${({ current }) => (current ? 'flex' : 'none')};
+`;
 
-    ${Container}:hover & {
-        display: flex;
-    }
+export const HasNotesIndicator = styled(ChevronDownIcon)`
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    opacity: 0.3;
 `;

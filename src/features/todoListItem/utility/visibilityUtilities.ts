@@ -1,5 +1,6 @@
 import { isHeading } from './../../../model/TodoListItem';
 import type { TodoListItem } from '../../../model/TodoListItem';
+import { splitAtLineBreak } from '../../../utility/stringUtilities';
 
 type Formatter = (value: string) => string;
 
@@ -86,9 +87,8 @@ export const prepareForVisibility = (item: TodoListItem): string => {
         return formatAsHeading(item.value);
     }
 
-    return item.value
-        .split(/\r?\n/g)
-        .reduce<string>((accumulator, currentLine, currentIndex) => {
+    return splitAtLineBreak(item.value).reduce<string>(
+        (accumulator, currentLine, currentIndex) => {
             const formatters = [
                 applyTagging,
                 applyDeadline,
@@ -111,5 +111,7 @@ export const prepareForVisibility = (item: TodoListItem): string => {
             );
 
             return accumulator + withFormattersApplied;
-        }, '');
+        },
+        '',
+    );
 };

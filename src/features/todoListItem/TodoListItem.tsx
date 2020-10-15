@@ -6,6 +6,7 @@ import {
     isQuickfix,
     isActionable,
     isHeading,
+    hasNotes,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
@@ -18,6 +19,7 @@ import {
     WaitingIcon,
     QuickfixIcon,
     DragHandle,
+    HasNotesIndicator,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
 import { UnfoldIcon } from '@primer/octicons-react';
@@ -63,7 +65,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
         >
             <>
                 {/* @ts-ignore don't know how to fix ref */}
-                <DragHandle ref={dragHandleRef}>
+                <DragHandle ref={dragHandleRef} current={current}>
                     <UnfoldIcon />
                 </DragHandle>
                 {waiting && showStatusIcon && (
@@ -102,7 +104,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         current={current}
                     />
                 )}
-                <DeleteTodo item={item} />
+                {hasNotes(item) && !current && <HasNotesIndicator />}
+                <DeleteTodo item={item} visible={current} />
             </>
         </Container>
     );
