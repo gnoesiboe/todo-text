@@ -54,7 +54,7 @@ export const Header = styled.div`
     display: block;
     z-index: 1000;
     padding: 5px 0px 5px 0;
-    margin: 20px -40px 0 -40px;
+    margin: 20px -40px 20px -40px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
