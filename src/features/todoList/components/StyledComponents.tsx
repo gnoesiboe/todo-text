@@ -2,15 +2,17 @@ import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
 import styled, { keyframes, css } from 'styled-components/macro';
 import { Button } from '../../../primitives/FilterButton/components/StyledComponents';
 
+const containerPaddingRightLeft = 20;
+
 export const Container = styled.div`
     border: 3px solid #264653;
-    padding: 30px 40px 40px;
+    padding: 30px ${containerPaddingRightLeft * 2}px 40px;
     border-radius: 8px;
     background: #fff;
     margin-bottom: 30px;
 
     @media (max-width: 768px) {
-        padding: 15px 20px 20px;
+        padding: 15px ${containerPaddingRightLeft}px 20px;
     }
 `;
 
@@ -60,11 +62,17 @@ export const Header = styled.div`
     display: block;
     z-index: 1000;
     padding: 5px 0px 5px 0;
-    margin: 20px -40px 20px -40px;
+    margin: 20px -${containerPaddingRightLeft * 2}px 20px -${containerPaddingRightLeft *
+        2}px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+
+    @media (max-width: 768px) {
+        margin-left: -${containerPaddingRightLeft}px;
+        margin-right: -${containerPaddingRightLeft}px;
+    }
 `;
 
 export const Heading = styled.h1`
