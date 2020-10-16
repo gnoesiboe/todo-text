@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import ReactTextareaAutosize from 'react-autosize-textarea';
 
 export const Form = styled.form`

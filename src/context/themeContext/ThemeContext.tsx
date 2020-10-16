@@ -1,5 +1,5 @@
 import React, { ReactNode } from 'react';
-import { DefaultTheme, ThemeProvider } from 'styled-components';
+import { DefaultTheme, ThemeProvider } from 'styled-components/macro';
 
 /* @see https://coolors.co/264653-2a9d8f-e9c46a-f4a261-e76f51 */
 

@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 
 export const Container = styled.span``;
 
@@ -48,8 +48,7 @@ export const CheckboxReplacement = styled.span<{
             border: 1px solid #ccc !important;
         `}
 
-    ${({ disabled }) =>
-        disabled && `cursor: not-allowed; opacity: 0.7;`}
+    ${({ disabled }) => disabled && `cursor: not-allowed; opacity: 0.7;`}
 
     &:hover {
         &:not([disabled]) {

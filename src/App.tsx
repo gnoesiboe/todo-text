@@ -7,7 +7,7 @@ import OperationExplanation from './features/operationExplanation/OperationExpla
 import { AuthenticationContextProvider } from './context/authenticationContext/AuthenticationContext';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { ThemeContextProvider } from './context/themeContext/ThemeContext';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';

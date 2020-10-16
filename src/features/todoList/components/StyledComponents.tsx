@@ -1,5 +1,5 @@
 import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
-import styled, { keyframes, css } from 'styled-components';
+import styled, { keyframes, css } from 'styled-components/macro';
 import { Button } from '../../../primitives/FilterButton/components/StyledComponents';
 
 export const Container = styled.div`
