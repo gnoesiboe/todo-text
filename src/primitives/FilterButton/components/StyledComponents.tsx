@@ -7,7 +7,7 @@ export const Button = styled.button<{ active: boolean }>`
     margin-left: 10px;
     margin-bottom: 5px;
     border: none;
-    color: ${({ active }) => (active ? '#999' : '#aaa')};
+    color: ${({ active }) => (active ? '#333' : '#666')};
 
     &:before {
         content: ' ';
