@@ -8,6 +8,10 @@ export const Container = styled.div`
     border-radius: 8px;
     background: #fff;
     margin-bottom: 30px;
+
+    @media (max-width: 768px) {
+        padding: 15px 20px 20px;
+    }
 `;
 
 const rotate = keyframes`
