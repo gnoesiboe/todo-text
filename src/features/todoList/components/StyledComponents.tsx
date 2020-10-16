@@ -53,6 +53,8 @@ export const SavingIdicator = styled(DatabaseIcon)`
 
 export const Header = styled.div`
     background: #ddd;
+    border-bottom: 1px solid #aaa;
+    border-top: 1px solid #aaa;
     position: sticky;
     top: 0;
     display: block;
