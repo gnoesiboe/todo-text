@@ -132,6 +132,15 @@ export function applyMoveToIndex(
     });
 }
 
+export function applyCreateNewItemAtTheStart(
+    currentItems: TodoListItem[],
+    id: string,
+): TodoListItem[] {
+    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+        nextItems.splice(0, 0, createEmpty(id));
+    });
+}
+
 export function applyCreateNewItemAfter(
     currentItems: TodoListItem[],
     currentItemId: string,

@@ -17,6 +17,7 @@ import useManageTodoListItems, {
     CreateNewItemBeforeCurrentHandler,
     ClearCurrentItemHandler,
     ToggleDoneStatusHandler,
+    CreateNewItemAtTheStartHandler,
 } from './hooks/useManageTodoListItems';
 import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
@@ -53,6 +54,7 @@ type ContextValue = {
     toggleHideDone: ToggleHideDoneHandler;
     hideNotActionable: boolean;
     toggleHideNotActionable: ToggleHideNotWaitingHandler;
+    createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
 };
 
 const initialValue: ContextValue = {
@@ -82,6 +84,7 @@ const initialValue: ContextValue = {
     toggleHideDone: () => {},
     hideNotActionable: false,
     toggleHideNotActionable: () => {},
+    createNewItemAtTheStart: () => {},
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -117,6 +120,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         hideDone,
         toggleHideDone,
         filteredItems,
+        createNewItemAtTheStart,
     } = useManageTodoListItems();
 
     useRefetchUpdatesAfterMount(
@@ -162,6 +166,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         hideDone,
         toggleHideDone,
         filteredItems,
+        createNewItemAtTheStart,
     };
 
     return (

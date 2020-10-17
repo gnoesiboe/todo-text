@@ -8,6 +8,7 @@ import {
     Heading,
     SavingIdicator,
     FetchingIndicator,
+    AddTodoContainer,
 } from './components/StyledComponents';
 import FilterButton from '../../primitives/FilterButton/FilterButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
@@ -19,6 +20,7 @@ import useDeleteCurrentOnKeyPressed from './hooks/useDeleteCurrentOnKeyPressed';
 import useToggleDoneStatusOnKeyPressed from './hooks/useToggleDoneStatusOnKeyPressed';
 import useAddNewItemOnKeyboardShortcutPressed from './hooks/useAddNewItemOnKeyboardShortcutPressed';
 import usePreventScrollWithArrowKeys from './hooks/usePreventScrollWithArrowKeys';
+import AddTodo from '../addTodo/AddTodo';
 
 const TodoList: React.FC = () => {
     const {
@@ -48,6 +50,9 @@ const TodoList: React.FC = () => {
             {isFetching && <FetchingIndicator />}
             <Header>
                 <Heading>Tød□</Heading>
+                <AddTodoContainer>
+                    <AddTodo />
+                </AddTodoContainer>
                 <FilterContainer>
                     <FilterButton
                         onClick={() => toggleHideNotActionable()}

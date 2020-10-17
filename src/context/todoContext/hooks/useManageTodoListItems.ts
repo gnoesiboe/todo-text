@@ -10,6 +10,7 @@ import {
     applyCreateNewItemAfter,
     applyCreateNewItemBefore,
     applyToggleDoneStatus,
+    applyCreateNewItemAtTheStart,
 } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
@@ -57,6 +58,8 @@ export type CreateNewItemAfterCurrentHandler = () => void;
 export type CreateNewItemBeforeCurrentHandler = () => void;
 
 export type ToggleDoneStatusHandler = () => void;
+
+export type CreateNewItemAtTheStartHandler = () => void;
 
 export default function useManageTodoListItems() {
     const [currentItem, setCurrentItemState] = useState<string | null>(null);
@@ -167,6 +170,17 @@ export default function useManageTodoListItems() {
         setCurrentItemState(null);
     };
 
+    const createNewItemAtTheStart: CreateNewItemAtTheStartHandler = () => {
+        const id = generateId();
+
+        setItems((currentItems) =>
+            applyCreateNewItemAtTheStart(currentItems, id),
+        );
+
+        setCurrentItemState(id);
+        setIsEditing(true);
+    };
+
     const createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler = () => {
         if (!currentItem) {
             throw new Error(
@@ -237,5 +251,6 @@ export default function useManageTodoListItems() {
         hideNotActionable,
         toggleHideDone,
         toggleHideNotActionable,
+        createNewItemAtTheStart,
     };
 }

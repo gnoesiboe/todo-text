@@ -90,6 +90,11 @@ export const Heading = styled.h1`
     }
 `;
 
+export const AddTodoContainer = styled.div`
+    flex: 1;
+    margin-left: 20px;
+`;
+
 export const FilterContainer = styled.div`
     margin-right: 38px;
     ${Button} {
