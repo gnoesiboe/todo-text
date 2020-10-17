@@ -91,6 +91,11 @@ export default function useTodoFormHandlers(item: TodoListItem) {
         }
 
         if (checkKeyDefinitionIsPressed(stopEditWithoutSave, event)) {
+            // ensure that we don't end up with an invalid value
+            if (!isValidValue(value)) {
+                deleteItem(item.id);
+            }
+
             stopEdit();
         }
     };
