@@ -116,7 +116,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 )}
                 <ProgressBar done={done} todo={todo} total={total} />
                 {hasNotes(item) && !current && <HasNotesIndicator />}
-                <DeleteTodo item={item} visible={current} />
+                <DeleteTodo item={item} visible={current && !isEditing} />
             </>
         </Container>
     );

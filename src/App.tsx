@@ -9,8 +9,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components/macro';
 import { ThemeContextProvider } from './context/themeContext/ThemeContext';
-import { DndProvider } from 'react-dnd';
-import useDetermineDragAndDropBackend from './hooks/useDetermineDragAndDropBackend';
+import { DndProvider } from 'react-dnd-multi-backend';
+import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'; // or any other pipeline
 
 const AppContainer = styled.div`
     width: 100%;
@@ -18,30 +18,26 @@ const AppContainer = styled.div`
     padding-top: 20px;
 `;
 
-const App: React.FC = () => {
-    const dndBackend = useDetermineDragAndDropBackend();
-
-    return (
-        <ThemeContextProvider>
-            <AppContainer>
-                <AuthenticationContextProvider>
-                    <Container fluid="lg">
-                        <Row>
-                            <Col lg={{ span: 10, offset: 1 }}>
-                                <TodoContextProvider>
-                                    <DndProvider backend={dndBackend}>
-                                        <TodoList />
-                                    </DndProvider>
-                                </TodoContextProvider>
-                                <OperationExplanation />
-                            </Col>
-                        </Row>
-                    </Container>
-                </AuthenticationContextProvider>
-                <ToastContainer />
-            </AppContainer>
-        </ThemeContextProvider>
-    );
-};
+const App: React.FC = () => (
+    <ThemeContextProvider>
+        <AppContainer>
+            <AuthenticationContextProvider>
+                <Container fluid="lg">
+                    <Row>
+                        <Col lg={{ span: 10, offset: 1 }}>
+                            <TodoContextProvider>
+                                <DndProvider options={HTML5toTouch}>
+                                    <TodoList />
+                                </DndProvider>
+                            </TodoContextProvider>
+                            <OperationExplanation />
+                        </Col>
+                    </Row>
+                </Container>
+            </AuthenticationContextProvider>
+            <ToastContainer />
+        </AppContainer>
+    </ThemeContextProvider>
+);
 
 export default App;
