@@ -4,14 +4,12 @@ import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
     DeleteItemHandler,
     StopEditHandler,
-    MoveToNextHandler,
     MoveCurrentItemUpHandler,
     MoveCurrentItemDownHandler,
     ToggleCurrentItemHandler,
     MoveToIndexHandler,
     StartEditHandler,
     SaveValueHandler,
-    MoveToPreviousHandler,
     MarkCurrentItemHandler,
     CreateNewItemAfterCurrentHandler,
     CreateNewItemBeforeCurrentHandler,
@@ -26,6 +24,10 @@ import {
     ToggleHideDoneHandler,
     ToggleHideNotWaitingHandler,
 } from './hooks/useToggleFilters';
+import {
+    MoveToNextHandler,
+    MoveToPreviousHandler,
+} from './hooks/useNavigateThroughItems';
 
 type ContextValue = {
     items: TodoListItem[];

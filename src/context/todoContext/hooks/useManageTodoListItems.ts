@@ -14,13 +14,11 @@ import {
 } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
-import {
-    determineNextCurrentItem,
-    determinePreviousCurrentItem,
-} from '../utility/currentItemResolver';
+import { determineNextCurrentItem } from '../utility/currentItemResolver';
 import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 import useToggleFilters from './useToggleFilters';
+import useNavigateThroughItems from './useNavigateThroughItems';
 
 export type SaveValueHandler = (
     id: string,
@@ -31,10 +29,6 @@ export type SaveValueHandler = (
 export type DeleteItemHandler = (id: string) => void;
 
 export type StopEditHandler = () => void;
-
-export type MoveToNextHandler = () => void;
-
-export type MoveToPreviousHandler = () => void;
 
 export type StartEditHandler = () => void;
 
@@ -91,6 +85,13 @@ export default function useManageTodoListItems() {
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
+    const { moveToNext, moveToPrevious } = useNavigateThroughItems(
+        currentItem,
+        isEditing,
+        filteredItems,
+        setCurrentItemState,
+    );
+
     const saveValue: SaveValueHandler = (id, value, done) => {
         setItems((currentItems) => applyUpdate(currentItems, id, value, done));
     };
@@ -109,30 +110,6 @@ export default function useManageTodoListItems() {
         if (currentItem) {
             setIsEditing(true);
         }
-    };
-
-    const moveToNext: MoveToNextHandler = () => {
-        if (isEditing) {
-            return;
-        }
-
-        // use filteredItems to determine next, to make sure the cursor
-        // does not fall on a hidden item
-        setCurrentItemState(
-            determineNextCurrentItem(currentItem, filteredItems),
-        );
-    };
-
-    const moveToPrevious: MoveToPreviousHandler = () => {
-        if (isEditing) {
-            return;
-        }
-
-        // use filteredItems to determine previous, to make sure the cursor
-        // does not fall on a hidden item
-        setCurrentItemState(
-            determinePreviousCurrentItem(currentItem, filteredItems),
-        );
     };
 
     const moveCurrentItemUp: MoveCurrentItemUpHandler = () => {
