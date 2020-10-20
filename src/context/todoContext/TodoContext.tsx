@@ -4,10 +4,7 @@ import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
     DeleteItemHandler,
     SaveValueHandler,
-    CreateNewItemAfterCurrentHandler,
-    CreateNewItemBeforeCurrentHandler,
     ToggleDoneStatusHandler,
-    CreateNewItemAtTheStartHandler,
 } from './hooks/useManageTodoListItems';
 import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
@@ -34,6 +31,11 @@ import {
     MarkCurrentItemHandler,
     ToggleCurrentItemHandler,
 } from './hooks/useManageCurrentItem';
+import {
+    CreateNewItemAfterCurrentHandler,
+    CreateNewItemAtTheStartHandler,
+    CreateNewItemBeforeCurrentHandler,
+} from './hooks/useManageItemCreation';
 
 type ContextValue = {
     items: TodoListItem[];

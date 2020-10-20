@@ -1,13 +1,9 @@
-import { generateId } from './../../../utility/idGenerator';
 import { useState } from 'react';
 import type { TodoListItem } from '../../../model/TodoListItem';
 import {
     applyUpdate,
     applyDelete,
-    applyCreateNewItemAfter,
-    applyCreateNewItemBefore,
     applyToggleDoneStatus,
-    applyCreateNewItemAtTheStart,
 } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
@@ -19,6 +15,7 @@ import useNavigateThroughItems from './useNavigateThroughItems';
 import useMoveTodoListItems from './useMoveTodoListItems';
 import useManageIsEditingState from './useManageIsEditingState';
 import useManageCurrentItem from './useManageCurrentItem';
+import useManageItemCreation from './useManageItemCreation';
 
 export type SaveValueHandler = (
     id: string,
@@ -28,18 +25,11 @@ export type SaveValueHandler = (
 
 export type DeleteItemHandler = (id: string) => void;
 
-export type CreateNewItemAfterCurrentHandler = () => void;
-
-export type CreateNewItemBeforeCurrentHandler = () => void;
-
 export type ToggleDoneStatusHandler = () => void;
 
-export type CreateNewItemAtTheStartHandler = () => void;
-
 export default function useManageTodoListItems() {
-    // current item state is added here, and not in `useManageCurrentItem.ts` as
-    // isEditing state is dependent on it, but is used in `useManageCurrentItem`..
     const [currentItem, setCurrentItem] = useState<string | null>(null);
+    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const [items, setItems] = useState<TodoListItem[]>([]);
 
@@ -58,15 +48,28 @@ export default function useManageTodoListItems() {
         toggleHideNotActionable,
     } = useToggleFilters(items);
 
-    const { isEditing, startEdit, stopEdit } = useManageIsEditingState(
-        currentItem,
-    );
-
     const {
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
     } = useManageCurrentItem(isEditing, currentItem, setCurrentItem);
+
+    const { startEdit, stopEdit } = useManageIsEditingState(
+        currentItem,
+        isEditing,
+        setIsEditing,
+    );
+
+    const {
+        createNewItemAfterCurrent,
+        createNewItemBeforeCurrent,
+        createNewItemAtTheStart,
+    } = useManageItemCreation(
+        setItems,
+        markCurrentItem,
+        startEdit,
+        currentItem,
+    );
 
     useRefetchAfterLastChangeIsDone(
         currentItem,
@@ -102,49 +105,6 @@ export default function useManageTodoListItems() {
         setCurrentItem(nextCurrentItem);
     };
 
-    const createNewItemAtTheStart: CreateNewItemAtTheStartHandler = () => {
-        const id = generateId();
-
-        setItems((currentItems) =>
-            applyCreateNewItemAtTheStart(currentItems, id),
-        );
-
-        setCurrentItem(id);
-        startEdit();
-    };
-
-    const createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler = () => {
-        if (!currentItem) {
-            throw new Error(
-                'Expecting there to be a current value at this point',
-            );
-        }
-
-        const id = generateId();
-
-        setItems((currentItems) =>
-            applyCreateNewItemAfter(currentItems, currentItem, id),
-        );
-
-        setCurrentItem(id);
-    };
-
-    const createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler = () => {
-        if (!currentItem) {
-            throw new Error(
-                'Expecting there to be a current value at this point',
-            );
-        }
-
-        const id = generateId();
-
-        setItems((currentItems) =>
-            applyCreateNewItemBefore(currentItems, currentItem, id),
-        );
-
-        setCurrentItem(id);
-    };
-
     const toggleDoneStatus: ToggleDoneStatusHandler = () => {
         if (!currentItem || isEditing) {
             return;
@@ -154,6 +114,8 @@ export default function useManageTodoListItems() {
             applyToggleDoneStatus(currentItems, currentItem),
         );
     };
+
+    console.log('current item', currentItem);
 
     return {
         items,
