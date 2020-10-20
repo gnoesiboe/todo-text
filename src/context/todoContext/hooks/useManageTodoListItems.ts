@@ -4,9 +4,6 @@ import type { TodoListItem } from '../../../model/TodoListItem';
 import {
     applyUpdate,
     applyDelete,
-    applyMoveCurrentItemUp,
-    applyMoveCurrentItemDown,
-    applyMoveToIndex,
     applyCreateNewItemAfter,
     applyCreateNewItemBefore,
     applyToggleDoneStatus,
@@ -19,6 +16,7 @@ import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 import useToggleFilters from './useToggleFilters';
 import useNavigateThroughItems from './useNavigateThroughItems';
+import useMoveTodoListItems from './useMoveTodoListItems';
 
 export type SaveValueHandler = (
     id: string,
@@ -31,15 +29,6 @@ export type DeleteItemHandler = (id: string) => void;
 export type StopEditHandler = () => void;
 
 export type StartEditHandler = () => void;
-
-export type MoveCurrentItemUpHandler = () => void;
-
-export type MoveCurrentItemDownHandler = () => void;
-
-export type MoveToIndexHandler = (
-    previousIndex: number,
-    nextIndex: number,
-) => void;
 
 export type ToggleCurrentItemHandler = (id: string) => void;
 
@@ -92,6 +81,12 @@ export default function useManageTodoListItems() {
         setCurrentItemState,
     );
 
+    const {
+        moveCurrentItemUp,
+        moveCurrentItemDown,
+        moveToIndex,
+    } = useMoveTodoListItems(currentItem, isEditing, setItems);
+
     const saveValue: SaveValueHandler = (id, value, done) => {
         setItems((currentItems) => applyUpdate(currentItems, id, value, done));
     };
@@ -111,25 +106,6 @@ export default function useManageTodoListItems() {
             setIsEditing(true);
         }
     };
-
-    const moveCurrentItemUp: MoveCurrentItemUpHandler = () => {
-        if (isEditing) {
-            return;
-        }
-
-        setItems((items) => applyMoveCurrentItemUp(items, currentItem));
-    };
-
-    const moveCurrentItemDown: MoveCurrentItemDownHandler = () => {
-        if (isEditing) {
-            return;
-        }
-
-        setItems((items) => applyMoveCurrentItemDown(items, currentItem));
-    };
-
-    const moveToIndex: MoveToIndexHandler = (previousIndex, nextIndex) =>
-        setItems((items) => applyMoveToIndex(items, previousIndex, nextIndex));
 
     const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
         setCurrentItemState((currentId) => (currentId === id ? null : id));
