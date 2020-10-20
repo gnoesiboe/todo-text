@@ -17,6 +17,7 @@ import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 import useToggleFilters from './useToggleFilters';
 import useNavigateThroughItems from './useNavigateThroughItems';
 import useMoveTodoListItems from './useMoveTodoListItems';
+import useManageIsEditingState from './useManageIsEditingState';
 
 export type SaveValueHandler = (
     id: string,
@@ -25,10 +26,6 @@ export type SaveValueHandler = (
 ) => void;
 
 export type DeleteItemHandler = (id: string) => void;
-
-export type StopEditHandler = () => void;
-
-export type StartEditHandler = () => void;
 
 export type ToggleCurrentItemHandler = (id: string) => void;
 
@@ -46,7 +43,6 @@ export type CreateNewItemAtTheStartHandler = () => void;
 
 export default function useManageTodoListItems() {
     const [currentItem, setCurrentItemState] = useState<string | null>(null);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const [items, setItems] = useState<TodoListItem[]>([]);
 
@@ -74,6 +70,10 @@ export default function useManageTodoListItems() {
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
+    const { isEditing, startEdit, stopEdit } = useManageIsEditingState(
+        currentItem,
+    );
+
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
         currentItem,
         isEditing,
@@ -97,14 +97,6 @@ export default function useManageTodoListItems() {
         setItems(applyDelete(items, id));
 
         setCurrentItemState(nextCurrentItem);
-    };
-
-    const stopEdit: StopEditHandler = () => setIsEditing(false);
-
-    const startEdit: StartEditHandler = () => {
-        if (currentItem) {
-            setIsEditing(true);
-        }
     };
 
     const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
@@ -131,7 +123,7 @@ export default function useManageTodoListItems() {
         );
 
         setCurrentItemState(id);
-        setIsEditing(true);
+        startEdit();
     };
 
     const createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler = () => {
