@@ -18,6 +18,7 @@ import useToggleFilters from './useToggleFilters';
 import useNavigateThroughItems from './useNavigateThroughItems';
 import useMoveTodoListItems from './useMoveTodoListItems';
 import useManageIsEditingState from './useManageIsEditingState';
+import useManageCurrentItem from './useManageCurrentItem';
 
 export type SaveValueHandler = (
     id: string,
@@ -26,12 +27,6 @@ export type SaveValueHandler = (
 ) => void;
 
 export type DeleteItemHandler = (id: string) => void;
-
-export type ToggleCurrentItemHandler = (id: string) => void;
-
-export type MarkCurrentItemHandler = (id: string) => void;
-
-export type ClearCurrentItemHandler = () => void;
 
 export type CreateNewItemAfterCurrentHandler = () => void;
 
@@ -42,7 +37,9 @@ export type ToggleDoneStatusHandler = () => void;
 export type CreateNewItemAtTheStartHandler = () => void;
 
 export default function useManageTodoListItems() {
-    const [currentItem, setCurrentItemState] = useState<string | null>(null);
+    // current item state is added here, and not in `useManageCurrentItem.ts` as
+    // isEditing state is dependent on it, but is used in `useManageCurrentItem`..
+    const [currentItem, setCurrentItem] = useState<string | null>(null);
 
     const [items, setItems] = useState<TodoListItem[]>([]);
 
@@ -61,6 +58,16 @@ export default function useManageTodoListItems() {
         toggleHideNotActionable,
     } = useToggleFilters(items);
 
+    const { isEditing, startEdit, stopEdit } = useManageIsEditingState(
+        currentItem,
+    );
+
+    const {
+        toggleCurrentItem,
+        markCurrentItem,
+        clearCurrentItem,
+    } = useManageCurrentItem(isEditing, currentItem, setCurrentItem);
+
     useRefetchAfterLastChangeIsDone(
         currentItem,
         refetchTodos,
@@ -70,15 +77,11 @@ export default function useManageTodoListItems() {
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
-    const { isEditing, startEdit, stopEdit } = useManageIsEditingState(
-        currentItem,
-    );
-
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
         currentItem,
         isEditing,
         filteredItems,
-        setCurrentItemState,
+        setCurrentItem,
     );
 
     const {
@@ -96,23 +99,7 @@ export default function useManageTodoListItems() {
 
         setItems(applyDelete(items, id));
 
-        setCurrentItemState(nextCurrentItem);
-    };
-
-    const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
-        setCurrentItemState((currentId) => (currentId === id ? null : id));
-    };
-
-    const markCurrentItem: MarkCurrentItemHandler = (id) => {
-        setCurrentItemState(id);
-    };
-
-    const clearCurrentItem: ClearCurrentItemHandler = () => {
-        if (isEditing || !currentItem) {
-            return;
-        }
-
-        setCurrentItemState(null);
+        setCurrentItem(nextCurrentItem);
     };
 
     const createNewItemAtTheStart: CreateNewItemAtTheStartHandler = () => {
@@ -122,7 +109,7 @@ export default function useManageTodoListItems() {
             applyCreateNewItemAtTheStart(currentItems, id),
         );
 
-        setCurrentItemState(id);
+        setCurrentItem(id);
         startEdit();
     };
 
@@ -139,7 +126,7 @@ export default function useManageTodoListItems() {
             applyCreateNewItemAfter(currentItems, currentItem, id),
         );
 
-        setCurrentItemState(id);
+        setCurrentItem(id);
     };
 
     const createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler = () => {
@@ -155,7 +142,7 @@ export default function useManageTodoListItems() {
             applyCreateNewItemBefore(currentItems, currentItem, id),
         );
 
-        setCurrentItemState(id);
+        setCurrentItem(id);
     };
 
     const toggleDoneStatus: ToggleDoneStatusHandler = () => {

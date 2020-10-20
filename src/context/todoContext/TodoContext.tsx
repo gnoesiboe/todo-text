@@ -3,12 +3,9 @@ import type { TodoListItem } from './../../model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
     DeleteItemHandler,
-    ToggleCurrentItemHandler,
     SaveValueHandler,
-    MarkCurrentItemHandler,
     CreateNewItemAfterCurrentHandler,
     CreateNewItemBeforeCurrentHandler,
-    ClearCurrentItemHandler,
     ToggleDoneStatusHandler,
     CreateNewItemAtTheStartHandler,
 } from './hooks/useManageTodoListItems';
@@ -32,6 +29,11 @@ import {
     StartEditHandler,
     StopEditHandler,
 } from './hooks/useManageIsEditingState';
+import {
+    ClearCurrentItemHandler,
+    MarkCurrentItemHandler,
+    ToggleCurrentItemHandler,
+} from './hooks/useManageCurrentItem';
 
 type ContextValue = {
     items: TodoListItem[];
