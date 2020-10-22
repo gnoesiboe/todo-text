@@ -31,6 +31,7 @@ import useScrollIntoView from './hooks/useScrollIntoView';
 import { determineProgress } from './utility/selectors';
 import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
 import { AutoHeightAnimate } from 'react-animate-auto-height';
+import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 
 type Props = {
     item: ItemModel;
@@ -58,8 +59,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     useStartEditingOnKeyDown(current);
 
     const waiting = isWaiting(item);
-    const showStatusIcon =
-        ((!isEditing && current) || !current) && !item.done && !isDragging;
+    const showStatusIcon = !item.done && !isDragging;
 
     const { done, todo, total } = determineProgress(item);
 
@@ -76,16 +76,12 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 <DragHandle ref={dragHandleRef} current={current}>
                     <UnfoldIcon />
                 </DragHandle>
-                {waiting && showStatusIcon && (
-                    <span title="Waiting..">
-                        <WaitingIcon />
-                    </span>
-                )}
-                {isQuickfix(item) && !waiting && showStatusIcon && (
-                    <span title="Quickfix">
+                <StatusIndicatorContainer>
+                    {waiting && showStatusIcon && <WaitingIcon />}
+                    {isQuickfix(item) && !waiting && showStatusIcon && (
                         <QuickfixIcon />
-                    </span>
-                )}
+                    )}
+                </StatusIndicatorContainer>
                 {!isHeading(item) && (
                     <Checkbox
                         item={item}

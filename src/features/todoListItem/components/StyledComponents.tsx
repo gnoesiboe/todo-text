@@ -1,11 +1,6 @@
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import BaseCheckbox from '../../../primitives/Checkbox/Checkbox';
-import {
-    isCancelled,
-    isQuickfix,
-    isWaiting,
-    TodoListItem,
-} from '../../../model/TodoListItem';
+import { isCancelled, TodoListItem } from '../../../model/TodoListItem';
 import {
     QuestionIcon,
     AlertIcon,
@@ -19,7 +14,6 @@ interface ItemContextProps {
 
 const statusTop: string = '11px';
 const valueMarginLeft: string = '45px';
-const statusIconLeft: string = `calc(${valueMarginLeft} - 1px)`;
 
 export const Container = styled.div<{
     item: TodoListItem;
@@ -50,9 +44,6 @@ export const Container = styled.div<{
             background: ${theme.colors.third};
         `}
 `;
-
-const hasPrefixStatus = (item: TodoListItem) =>
-    isWaiting(item) || isQuickfix(item);
 
 export const Checkbox = styled(BaseCheckbox)<ItemContextProps>`
     position: absolute;
@@ -86,8 +77,6 @@ export const Value = styled.div<{
         `}
 
     ${({ isDragging }) => isDragging && `visibility: hidden;`}
-
-    ${({ item }) => hasPrefixStatus(item) && !item.done && 'text-indent: 25px;'}
 
     .todo-list-item__value__removed {
         text-decoration: line-through;
@@ -155,21 +144,29 @@ export const Value = styled.div<{
     }
 `;
 
+const StatusIndicatorIconStyling = css`
+    margin-right: 5px;
+    display: inline;
+`;
+
 export const WaitingIcon = styled(QuestionIcon)`
-    position: absolute;
-    left: ${statusIconLeft};
-    top: ${statusTop};
-    color: ${({ theme }) => theme.colors.third};
+    ${StatusIndicatorIconStyling}
+    color: ${({ theme }) => theme.colors.fourth};
 `;
 
 export const QuickfixIcon = styled(AlertIcon)`
-    position: absolute;
-    left: ${statusIconLeft};
-    top: ${statusTop};
+    ${StatusIndicatorIconStyling}
     color: ${({ theme }) => theme.colors.success};
+`;
 
-    &:after {
-        content: ' - ';
+export const StatusIndicatorContainerWrapper = styled.div`
+    position: absolute;
+    left: calc(-${valueMarginLeft} - 20px);
+    top: 5px;
+    z-index: 800;
+
+    @media (max-width: 992px) {
+        display: none;
     }
 `;
 
