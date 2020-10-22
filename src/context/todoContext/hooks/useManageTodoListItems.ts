@@ -115,8 +115,6 @@ export default function useManageTodoListItems() {
         );
     };
 
-    console.log('current item', currentItem);
-
     return {
         items,
         isFetching,

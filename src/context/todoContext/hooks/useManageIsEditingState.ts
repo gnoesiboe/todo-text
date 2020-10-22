@@ -14,10 +14,7 @@ export default function useManageIsEditingState(
     const startEdit: StartEditHandler = (
         ignoreCurrentItem: boolean = false,
     ) => {
-        console.log('start edit', currentItem);
-
         if (currentItem || ignoreCurrentItem) {
-            console.log('start');
             setIsEditing(true);
         }
     };
