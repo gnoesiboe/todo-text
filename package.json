@@ -1,7 +1,7 @@
 {
     "scripts": {
         "dev:build:watch": "react-scripts start",
-        "dev:format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
+        "dev:format": "prettier --write \"src/**/*.{ts,tsx,json,md,css}\"",
         "dev:test": "react-scripts test",
         "dev:lint": "prettier --check \"src/**/*.{js,jsx,ts,tsx}\"",
         "dev:eject": "react-scripts test",
