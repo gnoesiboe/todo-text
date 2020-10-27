@@ -7,7 +7,7 @@ import wobble from '../../../primitives/keyframes/wobble';
 const containerPaddingRightLeft = 20;
 
 export const Container = styled.div`
-    border: 3px solid #264653;
+    border: 3px solid ${({ theme }) => theme.colors.first};
     padding: 30px ${containerPaddingRightLeft * 2}px 40px;
     border-radius: 8px;
     background: #fff;
@@ -71,7 +71,7 @@ export const Heading = styled.h1`
     background: ${({ theme }) => theme.colors.fourth};
 
     &::first-letter {
-        background: #264653;
+        background: ${({ theme }) => theme.colors.first};
         padding: 0 10px 0 7px;
         margin-right: 3px;
     }
