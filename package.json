@@ -5,6 +5,8 @@
         "dev:test": "react-scripts test",
         "dev:eject": "react-scripts test",
         "dev:pre-commit": "npm run typescript:validate && lint-staged",
+        "dev:lint:js": "eslint --ext .ts,.tsx ./src",
+        "dev:lint:js:fix": "npm run dev:lint:js -- --fix",
         "prod:build": "react-scripts build",
         "typescript:validate": "tsc --noEmit",
         "typescript:validate:watch": "tsc --noEmit --watch"
@@ -71,6 +73,7 @@
         }
     },
     "lint-staged": {
-        "src/**/*.{ts,tsx,json,md,css}": "prettier --write"
+        "src/**/*.{ts,tsx,json,md,css}": "prettier --write",
+        "src/**/*.{ts,tsx}": "eslint --fix"
     }
 }
