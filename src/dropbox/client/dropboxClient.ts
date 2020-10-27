@@ -28,7 +28,11 @@ export const getDropboxClient = () => {
                 clearTokenStorage();
 
                 setTimeout(() => window.location.reload(), reloadTimeoutLength);
+
+                return;
             }
+
+            throw error;
         },
     );
 
