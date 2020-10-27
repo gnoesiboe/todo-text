@@ -6,5 +6,9 @@ declare module 'styled-components' {
             'first' | 'second' | 'third' | 'fourth' | 'fifth' | 'success',
             string
         >;
+        zIndex: {
+            todoListHeader: number;
+            statusIndicatorContainerWrapper: number;
+        };
     }
 }

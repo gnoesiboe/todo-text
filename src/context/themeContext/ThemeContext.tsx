@@ -12,6 +12,10 @@ const theme: DefaultTheme = {
         fifth: '#f4a261',
         success: '#1eb047',
     },
+    zIndex: {
+        todoListHeader: 1000,
+        statusIndicatorContainerWrapper: 800,
+    },
 };
 
 export const ThemeContextProvider: React.FC<{ children: ReactNode }> = ({

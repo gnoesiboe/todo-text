@@ -60,7 +60,7 @@ export const Header = styled.div`
     position: sticky;
     top: 0;
     display: block;
-    z-index: 1000;
+    z-index: ${({ theme }) => theme.zIndex.todoListHeader};
     padding: 5px 0px 5px 0;
     margin: 20px -${containerPaddingRightLeft * 2}px 20px -${containerPaddingRightLeft *
         2}px;

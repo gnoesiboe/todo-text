@@ -163,7 +163,7 @@ export const StatusIndicatorContainerWrapper = styled.div`
     position: absolute;
     left: calc(-${valueMarginLeft} - 20px);
     top: 5px;
-    z-index: 800;
+    z-index: ${({ theme }) => theme.zIndex.statusIndicatorContainerWrapper};
 
     @media (max-width: 992px) {
         display: none;
