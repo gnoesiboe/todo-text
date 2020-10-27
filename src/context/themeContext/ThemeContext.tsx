@@ -16,6 +16,12 @@ const theme: DefaultTheme = {
         todoListHeader: 1000,
         statusIndicatorContainerWrapper: 800,
     },
+    breakpoints: {
+        small: '576px',
+        medium: '768px',
+        large: '992px',
+        extraLarge: '1200px',
+    },
 };
 
 export const ThemeContextProvider: React.FC<{ children: ReactNode }> = ({

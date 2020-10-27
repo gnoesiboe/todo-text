@@ -9,7 +9,7 @@ export const Wrapper = styled.div`
     top: 10px;
     opacity: 0.5;
 
-    @media (max-width: 992px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
         display: none;
     }
 `;

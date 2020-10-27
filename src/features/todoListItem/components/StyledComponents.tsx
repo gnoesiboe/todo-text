@@ -165,7 +165,7 @@ export const StatusIndicatorContainerWrapper = styled.div`
     top: 5px;
     z-index: ${({ theme }) => theme.zIndex.statusIndicatorContainerWrapper};
 
-    @media (max-width: 992px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
         display: none;
     }
 `;

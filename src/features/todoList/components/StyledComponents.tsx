@@ -11,7 +11,7 @@ export const Container = styled.div`
     background: #fff;
     margin-bottom: 30px;
 
-    @media (max-width: 768px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
         padding: 15px ${containerPaddingRightLeft}px 20px;
     }
 `;
@@ -37,7 +37,7 @@ const connectionIndicatorCss = css`
     top: 0;
     right: 20px;
 
-    @media (max-width: 992px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
         top: 10px;
         right: 25px;
     }
@@ -69,7 +69,7 @@ export const Header = styled.div`
     justify-content: space-between;
     flex-wrap: wrap;
 
-    @media (max-width: 768px) {
+    @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
         margin-left: -${containerPaddingRightLeft}px;
         margin-right: -${containerPaddingRightLeft}px;
     }

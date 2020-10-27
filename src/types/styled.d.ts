@@ -10,5 +10,11 @@ declare module 'styled-components' {
             todoListHeader: number;
             statusIndicatorContainerWrapper: number;
         };
+        breakpoints: {
+            small: string;
+            medium: string;
+            large: string;
+            extraLarge: string;
+        };
     }
 }
