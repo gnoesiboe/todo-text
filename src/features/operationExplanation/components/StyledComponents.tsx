@@ -5,7 +5,7 @@ export const ButtonWrapper = styled.div`
 `;
 
 export const ExplanationContainer = styled.div`
-    background: #2a9d8f;
+    background: ${({ theme }) => theme.colors.second};
     border-radius: 8px;
     padding: 40px;
     margin-bottom: 20px;
