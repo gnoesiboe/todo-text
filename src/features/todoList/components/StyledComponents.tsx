@@ -1,6 +1,8 @@
 import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
-import styled, { keyframes, css } from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import { Button } from '../../../primitives/FilterButton/components/StyledComponents';
+import rotate from '../../../primitives/keyframes/rotate';
+import wobble from '../../../primitives/keyframes/wobble';
 
 const containerPaddingRightLeft = 20;
 
@@ -14,21 +16,6 @@ export const Container = styled.div`
     @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
         padding: 15px ${containerPaddingRightLeft}px 20px;
     }
-`;
-
-const rotate = keyframes`
-   0% { transform: rotate(0deg); }
-   50% { transform: rotate(180deg); }
-`;
-
-const wobble = keyframes`
-   0% { transform: rotate(0deg); }
-   15% { transform: rotate(-20deg); }
-   30% { transform: rotate(12deg); }
-   45% { transform: rotate(-12deg); }
-   60% { transform: rotate(8deg); }
-   75% { transform: rotate(-4deg); }
-   100% { transform: rotate(0deg); }
 `;
 
 const connectionIndicatorCss = css`
