@@ -84,6 +84,7 @@ export const AddTodoContainer = styled.div`
 
 export const FilterContainer = styled.div`
     margin-right: 38px;
+
     ${Button} {
         margin-top: 5px;
     }
