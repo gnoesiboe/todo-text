@@ -78,10 +78,6 @@ export const CheckboxReplacement = styled.span<{
             `}
     }
 
-    ${Container}:checked & {
-        background-color: #2196f3;
-    }
-
     ${Input}:checked ~ &:after {
         display: block;
     }
