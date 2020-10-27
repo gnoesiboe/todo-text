@@ -110,7 +110,9 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         />
                     </AutoHeightAnimate>
                 )}
-                <ProgressBar done={done} todo={todo} total={total} />
+                {!item.done && (
+                    <ProgressBar done={done} todo={todo} total={total} />
+                )}
                 {hasNotes(item) && !current && <HasNotesIndicator />}
                 <DeleteTodo item={item} visible={current && !isEditing} />
             </>
