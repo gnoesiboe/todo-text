@@ -65,7 +65,7 @@ export const Header = styled.div`
 export const Heading = styled.h1`
     border-radius: 4px;
     padding: 0 5px 0 0;
-    margin: 0 0 0 0;
+    margin: 0;
     font-weight: bold;
     color: #fff;
     background: ${({ theme }) => theme.colors.fourth};
