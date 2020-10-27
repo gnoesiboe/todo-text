@@ -54,13 +54,10 @@ const OperationExplanation: React.FC = () => {
                                     </td>
                                     <td>
                                         <p>
-                                            When a todo is in edit mode, it will
-                                            save the current value and continue
-                                            to the next (if any).
-                                        </p>
-                                        <p>
-                                            When no item is selected, it will
-                                            focus on the first in edit mode.
+                                            When an item is selected, the cursor
+                                            will move to the next item. When no
+                                            item is selected, it will focus on
+                                            the first item in the list.
                                         </p>
                                     </td>
                                 </tr>
@@ -70,9 +67,61 @@ const OperationExplanation: React.FC = () => {
                                     </td>
                                     <td>
                                         <p>
-                                            When a todo is in edit mode, it will
-                                            save the current value and move to
-                                            the previous todo (if any).
+                                            When an item is selected, the cursor
+                                            will move to the previous item. When
+                                            no item is selected, it will focus
+                                            on the last item in the list.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>e</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When an item is selected, this
+                                            shortcut will put the current item
+                                            in edit mode.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>a</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When not in edit mode, and an item
+                                            is selected, this shortcut will
+                                            start a new todo list item behind
+                                            the currently selected one.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>shift + a</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When not in edit mode, and an item
+                                            is selected, this shortcut will
+                                            start a new todo list item before
+                                            the currently selected one.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>esc</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When an item is selected, this
+                                            shortcut will deselect the item.
+                                            When in edit mode, the edit mode is
+                                            exited without saving the changes.
                                         </p>
                                     </td>
                                 </tr>
@@ -83,7 +132,7 @@ const OperationExplanation: React.FC = () => {
                                     <td>
                                         <p>
                                             Moves the currently selected item up
-                                            (if possible).
+                                            the list (if possible).
                                         </p>
                                     </td>
                                 </tr>
@@ -94,13 +143,13 @@ const OperationExplanation: React.FC = () => {
                                     <td>
                                         <p>
                                             Moves the currently selected item
-                                            down (if possible).
+                                            down the list (if possible).
                                         </p>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>enter</code>
+                                        <code>ctrl + enter</code>
                                     </td>
                                     <td>
                                         <p>
@@ -143,8 +192,8 @@ const OperationExplanation: React.FC = () => {
                                     <td>
                                         <p>
                                             When editing a todo, it saves any
-                                            changes you have made and then ends
-                                            the edit mode.
+                                            changes you have made and ends the
+                                            edit mode.
                                         </p>
                                     </td>
                                 </tr>
@@ -157,6 +206,17 @@ const OperationExplanation: React.FC = () => {
                                             When editing a todo, it toggles the
                                             done status of the todo you are
                                             editing.
+                                        </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>alt + backspace</code>
+                                    </td>
+                                    <td>
+                                        <p>
+                                            When a todo is selected, this
+                                            shortcut can be used to delete it.
                                         </p>
                                     </td>
                                 </tr>
@@ -240,6 +300,23 @@ const OperationExplanation: React.FC = () => {
                                 <ExplanationOutput>
                                     <span className="todo-list-item__value__tag">
                                         @must
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
+                            <ListItem code="@quickfix">
+                                <p>
+                                    This is a special tag that can be used to
+                                    tag the todo as a quick fix. When applied,
+                                    the todo's will be marked so it can be
+                                    visually scanned quickly.
+                                </p>
+                                <p>
+                                    Within the todo text itself, it will be
+                                    formatted like every other tag:
+                                </p>
+                                <ExplanationOutput>
+                                    <span className="todo-list-item__value__tag">
+                                        @quickfix
                                     </span>
                                 </ExplanationOutput>
                             </ListItem>
