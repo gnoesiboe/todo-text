@@ -2,6 +2,8 @@ import React, { useRef } from 'react';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
 import type { TodoListItem } from '../../model/TodoListItem';
 import { Form, TextareaAutosize } from './components/StyledComponents';
+import { Button } from 'react-bootstrap';
+import useIsTouchDevice from '../../hooks/useIsTouchDevice';
 
 type Props = {
     item: TodoListItem;
@@ -18,6 +20,8 @@ const EditTodo: React.FC<Props> = ({ item }) => {
         onValueBlur,
     } = useTodoFormHandlers(item);
 
+    const isTouchDevice = useIsTouchDevice(false);
+
     return (
         <Form onSubmit={onSubmit}>
             <TextareaAutosize
@@ -29,6 +33,7 @@ const EditTodo: React.FC<Props> = ({ item }) => {
                 onChange={onValueChange}
                 onBlur={onValueBlur}
             />
+            {isTouchDevice && <Button type="submit">Save</Button>}
         </Form>
     );
 };
