@@ -7,13 +7,11 @@ type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
     active: boolean;
 };
 
-const FilterButton: React.FC<Props> = ({ title, active, onClick }) => {
-    return (
-        <Button active={active} onClick={onClick}>
-            <Input type="checkbox" checked={active} onChange={() => {}} />
-            <Title active={active}>{title}</Title>
-        </Button>
-    );
-};
+const FilterButton: React.FC<Props> = ({ title, active, onClick }) => (
+    <Button active={active} onClick={onClick}>
+        <Input type="checkbox" checked={active} onChange={() => {}} />
+        <Title active={active}>{title}</Title>
+    </Button>
+);
 
 export default FilterButton;
