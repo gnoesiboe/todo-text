@@ -30,8 +30,10 @@ const TodoList: React.FC = () => {
         currentItem,
         hideDone,
         hideNotActionable,
+        hideEvening,
         toggleHideDone,
         toggleHideNotActionable,
+        toggleHideEvening,
     } = useTodoContext();
 
     useNavigateToNextItemOnDownKeyPressed();
@@ -63,6 +65,11 @@ const TodoList: React.FC = () => {
                         onClick={() => toggleHideDone()}
                         active={hideDone}
                         title="hide done"
+                    />
+                    <FilterButton
+                        onClick={() => toggleHideEvening()}
+                        active={hideEvening}
+                        title="hide evening"
                     />
                 </FilterContainer>
             </Header>

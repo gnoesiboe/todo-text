@@ -36,3 +36,6 @@ export const isActionable = (item: TodoListItem) =>
 
 export const hasNotes = (item: TodoListItem) =>
     splitAtLineBreak(item.value).length > 1;
+
+export const isEvening = (item: TodoListItem) =>
+    !!item.value.match(/^.*@evening/);

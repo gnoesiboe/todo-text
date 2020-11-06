@@ -11,6 +11,7 @@ import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 import {
     ToggleHideDoneHandler,
+    ToggleHideEveningHandler,
     ToggleHideNotWaitingHandler,
 } from './hooks/useToggleFilters';
 import {
@@ -64,6 +65,8 @@ type ContextValue = {
     toggleHideDone: ToggleHideDoneHandler;
     hideNotActionable: boolean;
     toggleHideNotActionable: ToggleHideNotWaitingHandler;
+    hideEvening: boolean;
+    toggleHideEvening: ToggleHideEveningHandler;
     createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
 };
 
@@ -94,6 +97,8 @@ const initialValue: ContextValue = {
     toggleHideDone: () => {},
     hideNotActionable: false,
     toggleHideNotActionable: () => {},
+    hideEvening: true,
+    toggleHideEvening: () => {},
     createNewItemAtTheStart: () => {},
 };
 
@@ -129,6 +134,8 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleHideNotActionable,
         hideDone,
         toggleHideDone,
+        hideEvening,
+        toggleHideEvening,
         filteredItems,
         createNewItemAtTheStart,
     } = useManageTodoListItems();
@@ -175,6 +182,8 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleHideNotActionable,
         hideDone,
         toggleHideDone,
+        hideEvening,
+        toggleHideEvening,
         filteredItems,
         createNewItemAtTheStart,
     };

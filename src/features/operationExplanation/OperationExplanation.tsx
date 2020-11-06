@@ -320,6 +320,23 @@ const OperationExplanation: React.FC = () => {
                                     </span>
                                 </ExplanationOutput>
                             </ListItem>
+                            <ListItem code="@evening">
+                                <p>
+                                    This is a special tag that can be used to
+                                    tag the todo as something to be done in the
+                                    evening. Using the filters these can be
+                                    excluded for mornings and afternoons.
+                                </p>
+                                <p>
+                                    Within the todo text itself, it will be
+                                    formatted like every other tag:
+                                </p>
+                                <ExplanationOutput>
+                                    <span className="todo-list-item__value__tag">
+                                        @evening
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
                             <ListItem code="~~some value~~">
                                 <p>
                                     Is displayed as striked through text. Can be
