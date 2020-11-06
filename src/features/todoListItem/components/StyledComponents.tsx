@@ -104,6 +104,14 @@ export const Value = styled.div<{
         text-decoration: underline;
     }
 
+    .todo-list-item__value__code {
+        color: #777;
+        background: #eee;
+        padding: 2px 3px;
+        border-radius: 2px;
+        font-size: 0.9em;
+    }
+
     .todo-list-item__value__deadline {
         color: ${({ theme }) => theme.colors.third};
     }

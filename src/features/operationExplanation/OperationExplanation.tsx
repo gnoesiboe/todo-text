@@ -354,6 +354,17 @@ const OperationExplanation: React.FC = () => {
                                     </span>
                                 </ExplanationOutput>
                             </ListItem>
+                            <ListItem code="`someCode();`">
+                                <p>
+                                    When wrapped in `-s, a code block will be
+                                    displayed.
+                                </p>
+                                <ExplanationOutput>
+                                    <code className="todo-list-item__value__code">
+                                        someCode();
+                                    </code>
+                                </ExplanationOutput>
+                            </ListItem>
                         </ul>
                     </ExplanationSection>
                 </ExplanationContainer>

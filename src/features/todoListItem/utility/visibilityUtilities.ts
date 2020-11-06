@@ -26,6 +26,13 @@ const applyTagging: Formatter = (value) => {
     );
 };
 
+const appyInlineCodeBlock: Formatter = (value) => {
+    return value.replace(
+        /`([^`]+)`/g,
+        '<code class="todo-list-item__value__code">$1</code>',
+    );
+};
+
 const applyLinks: Formatter = (value) => {
     return value.replace(
         /\[([^\]]+)\]\(([^)]+)\)/g,
@@ -96,6 +103,7 @@ export const prepareForVisibility = (item: TodoListItem): string => {
                 applyProjects,
                 applyStrong,
                 applyStrikeThrough,
+                appyInlineCodeBlock,
                 applyLineBreaks,
             ];
 
