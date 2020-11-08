@@ -1,4 +1,11 @@
-import { parseISO, format, addDays } from 'date-fns';
+import {
+    parseISO,
+    format,
+    addDays,
+    isAfter,
+    startOfDay,
+    startOfToday,
+} from 'date-fns';
 
 export const checkItIsCurrentlyEvening = () => {
     const currentHour = new Date().getHours();
@@ -8,10 +15,12 @@ export const checkItIsCurrentlyEvening = () => {
 
 const isValidDate = (date: Date): boolean => date.toString() !== 'Invalid Date';
 
-export const isExactDate = (value: string): boolean => {
+export const isExactDate = (value: string): boolean => !!parseDate(value);
+
+export const parseDate = (value: string): Date | null => {
     const date = parseISO(value);
 
-    return isValidDate(date);
+    return isValidDate(date) ? date : null;
 };
 
 const supportedInexactDateIndicators = [
@@ -53,3 +62,6 @@ export const transformInexactToExactDate = (value: string): string => {
 
     return format(cursor, 'yyyy-MM-dd');
 };
+
+export const isAfterToday = (date: Date): boolean =>
+    isAfter(startOfDay(date), startOfToday());

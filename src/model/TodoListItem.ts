@@ -1,3 +1,5 @@
+import { isAfterToday } from './../utility/dateTimeUtilities';
+import { extractSnoozedDate } from './selectors/TodoListIttemSelectors';
 import { generateId } from './../utility/idGenerator';
 import Joi from 'joi';
 import { splitAtLineBreak } from '../utility/stringUtilities';
@@ -39,3 +41,13 @@ export const hasNotes = (item: TodoListItem) =>
 
 export const isEvening = (item: TodoListItem) =>
     !!item.value.match(/^.*@evening/);
+
+export const isSnoozed = (item: TodoListItem): boolean => {
+    const date = extractSnoozedDate(item);
+
+    if (!date) {
+        return false;
+    }
+
+    return isAfterToday(date);
+};

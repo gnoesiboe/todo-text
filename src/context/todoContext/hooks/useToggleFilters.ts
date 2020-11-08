@@ -4,6 +4,7 @@ import {
     isActionable,
     isHeading,
     isEvening,
+    isSnoozed,
 } from './../../../model/TodoListItem';
 import { useState, useEffect } from 'react';
 
@@ -58,6 +59,10 @@ export default function useToggleFilters(items: TodoListItem[]) {
         }
 
         if (isEvening(item) && hideEvening) {
+            return false;
+        }
+
+        if (isSnoozed(item) && hideSnoozed) {
             return false;
         }
 
