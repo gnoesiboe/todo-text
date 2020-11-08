@@ -5,6 +5,7 @@ import {
     isHeading,
     isEvening,
     isSnoozed,
+    isWaiting,
 } from './../../../model/TodoListItem';
 import { useState, useEffect } from 'react';
 
@@ -12,6 +13,13 @@ export type ToggleHideNotWaitingHandler = () => void;
 export type ToggleHideDoneHandler = () => void;
 export type ToggleHideEveningHandler = () => void;
 export type ToggleHideSnoozedHandler = () => void;
+
+export type MatchingFilters = {
+    waiting: number;
+    done: number;
+    evening: number;
+    snoozed: number;
+};
 
 const eveningCheckInterval = 10000; // 10 minutes
 
@@ -49,6 +57,34 @@ export default function useToggleFilters(items: TodoListItem[]) {
         setHideSnoozed((currentValue) => !currentValue);
     };
 
+    const matchingFilters = items.reduce<MatchingFilters>(
+        (matches, item) => {
+            if (isWaiting(item)) {
+                matches.waiting++;
+            }
+
+            if (item.done) {
+                matches.done++;
+            }
+
+            if (isEvening(item)) {
+                matches.evening++;
+            }
+
+            if (isSnoozed(item)) {
+                matches.snoozed++;
+            }
+
+            return matches;
+        },
+        {
+            waiting: 0,
+            done: 0,
+            evening: 0,
+            snoozed: 0,
+        },
+    );
+
     const filteredItems = items.filter((item) => {
         if (hideNotActionable && !isActionable(item) && !isHeading(item)) {
             return false;
@@ -78,6 +114,7 @@ export default function useToggleFilters(items: TodoListItem[]) {
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
+        matchingFilters,
         filteredItems,
     };
 }

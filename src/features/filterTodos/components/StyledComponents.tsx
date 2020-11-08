@@ -5,6 +5,10 @@ export const ButtonGroup = styled(DropdownButton)`
     .dropdown-toggle {
         background: ${({ theme }) => theme.colors.first} !important;
     }
+
+    .dropdown-item {
+        padding-left: 10px;
+    }
 `;
 
 export const Button = styled.button<{ active: boolean }>`
@@ -12,19 +16,29 @@ export const Button = styled.button<{ active: boolean }>`
     border: none;
     color: ${({ active }) => (active ? '#333' : '#888')};
     font-weight: ${({ active }) => (active ? 'bold' : 'normal')};
-    position: relative;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
 `;
 
 export const Input = styled.input`
-    position: absolute;
-    left: 7px;
-    top: 5px;
+    width: 30px;
+    margin-top: 2px;
 `;
 
 export const Title = styled.div<{ active: boolean }>`
-    margin-left: 28px;
+    flex: 1;
+    color: ${({ active }) => active && `color: #333;`};
+    text-align: left;
+`;
 
-    ${({ active }) => active && `color: #333;`};
+export const Badge = styled.div`
+    width: 20px;
+    color: white;
+    background: #999;
+    font-size: 0.8em;
+    border-radius: 3px;
+    padding: 2px 0;
 `;
 
 export const FilterContainer = styled.div`

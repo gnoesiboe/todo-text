@@ -14,6 +14,7 @@ const FilterTodos: React.FC = () => {
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
+        matchingFilters,
     } = useTodoContext();
 
     return (
@@ -24,6 +25,7 @@ const FilterTodos: React.FC = () => {
                         onClick={() => toggleHideNotActionable()}
                         active={hideNotActionable}
                         title="hide not-actionable"
+                        amount={matchingFilters.waiting}
                     />
                 </DropdownItem>
                 <DropdownItem>
@@ -31,6 +33,7 @@ const FilterTodos: React.FC = () => {
                         onClick={() => toggleHideDone()}
                         active={hideDone}
                         title="hide done"
+                        amount={matchingFilters.done}
                     />
                 </DropdownItem>
                 <DropdownItem>
@@ -38,6 +41,7 @@ const FilterTodos: React.FC = () => {
                         onClick={() => toggleHideEvening()}
                         active={hideEvening}
                         title="hide evening"
+                        amount={matchingFilters.evening}
                     />
                 </DropdownItem>
                 <DropdownItem>
@@ -45,6 +49,7 @@ const FilterTodos: React.FC = () => {
                         onClick={() => toggleHideSnoozed()}
                         active={hideSnoozed}
                         title="hide snoozed"
+                        amount={matchingFilters.snoozed}
                     />
                 </DropdownItem>
             </ButtonGroup>

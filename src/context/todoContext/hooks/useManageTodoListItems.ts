@@ -50,6 +50,7 @@ export default function useManageTodoListItems() {
         toggleHideNotActionable,
         toggleHideEvening,
         toggleHideSnoozed,
+        matchingFilters,
     } = useToggleFilters(items);
 
     const {
@@ -151,6 +152,7 @@ export default function useManageTodoListItems() {
         toggleHideNotActionable,
         toggleHideEvening,
         toggleHideSnoozed,
+        matchingFilters,
         createNewItemAtTheStart,
     };
 }

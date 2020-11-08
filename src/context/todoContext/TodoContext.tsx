@@ -10,6 +10,7 @@ import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
 import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 import {
+    MatchingFilters,
     ToggleHideDoneHandler,
     ToggleHideEveningHandler,
     ToggleHideNotWaitingHandler,
@@ -70,6 +71,7 @@ type ContextValue = {
     toggleHideEvening: ToggleHideEveningHandler;
     hideSnoozed: boolean;
     toggleHideSnoozed: ToggleHideSnoozedHandler;
+    matchingFilters: MatchingFilters;
     createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
 };
 
@@ -104,6 +106,7 @@ const initialValue: ContextValue = {
     toggleHideEvening: () => {},
     hideSnoozed: true,
     toggleHideSnoozed: () => {},
+    matchingFilters: { snoozed: 0, done: 0, evening: 0, waiting: 0 },
     createNewItemAtTheStart: () => {},
 };
 
@@ -144,6 +147,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         hideSnoozed,
         toggleHideSnoozed,
         filteredItems,
+        matchingFilters,
         createNewItemAtTheStart,
     } = useManageTodoListItems();
 
@@ -194,6 +198,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         hideSnoozed,
         toggleHideSnoozed,
         filteredItems,
+        matchingFilters,
         createNewItemAtTheStart,
     };
 
