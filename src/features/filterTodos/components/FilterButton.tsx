@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import { Button, Input, Title } from './components/StyledComponents';
+import { Button, Input, Title } from './StyledComponents';
 
 type Props = ButtonHTMLAttributes<HTMLButtonElement> & {
     onClick: () => void;
