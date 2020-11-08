@@ -10,6 +10,7 @@ import { useState, useEffect } from 'react';
 export type ToggleHideNotWaitingHandler = () => void;
 export type ToggleHideDoneHandler = () => void;
 export type ToggleHideEveningHandler = () => void;
+export type ToggleHideSnoozedHandler = () => void;
 
 const eveningCheckInterval = 10000; // 10 minutes
 
@@ -19,6 +20,7 @@ export default function useToggleFilters(items: TodoListItem[]) {
     const [hideEvening, setHideEvening] = useState<boolean>(
         !checkItIsCurrentlyEvening(),
     );
+    const [hideSnoozed, setHideSnoozed] = useState<boolean>(true);
 
     useEffect(() => {
         const reference = setInterval(() => {
@@ -40,6 +42,10 @@ export default function useToggleFilters(items: TodoListItem[]) {
 
     const toggleHideEvening: ToggleHideEveningHandler = () => {
         setHideEvening((currentValue) => !currentValue);
+    };
+
+    const toggleHideSnoozed: ToggleHideSnoozedHandler = () => {
+        setHideSnoozed((currentValue) => !currentValue);
     };
 
     const filteredItems = items.filter((item) => {
@@ -65,6 +71,8 @@ export default function useToggleFilters(items: TodoListItem[]) {
         toggleHideDone,
         hideEvening,
         toggleHideEvening,
+        hideSnoozed,
+        toggleHideSnoozed,
         filteredItems,
     };
 }
