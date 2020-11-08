@@ -2,7 +2,7 @@ import { parseDate } from '../../utility/dateTimeUtilities';
 import { TodoListItem } from './../TodoListItem';
 
 export const extractSnoozedDate = (item: TodoListItem): Date | null => {
-    const match = item.value.match(/@snooze\(([^)]+)\)/);
+    const match = item.value.match(/@snoozeUntil\(([^)]+)\)/);
 
     if (!match) {
         return null;

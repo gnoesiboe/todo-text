@@ -8,7 +8,7 @@ import { isExactDate } from '../../../utility/dateTimeUtilities';
 
 const transformDateIndicators = (items: TodoListItem[]) => {
     items.forEach((item) => {
-        const match = item.value.match(/@snooze\(([^)]+)\)/);
+        const match = item.value.match(/@snoozeUntil\(([^)]+)\)/);
 
         if (!match) {
             return;
@@ -23,8 +23,8 @@ const transformDateIndicators = (items: TodoListItem[]) => {
         const newValue = transformInexactToExactDate(value);
 
         item.value = item.value.replace(
-            /@snooze\([^)]+\)/g,
-            `@snooze(${newValue})`,
+            /@snoozeUntil\([^)]+\)/g,
+            `@snoozeUntil(${newValue})`,
         );
     });
 };
