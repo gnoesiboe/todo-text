@@ -1,6 +1,7 @@
 import React from 'react';
 import DropdownItem from 'react-bootstrap/esm/DropdownItem';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
+import ButtonGroupTitle from './components/ButtonGroupTitle';
 import FilterButton from './components/FilterButton';
 import { ButtonGroup, FilterContainer } from './components/StyledComponents';
 
@@ -19,7 +20,7 @@ const FilterTodos: React.FC = () => {
 
     return (
         <FilterContainer>
-            <ButtonGroup title="filters">
+            <ButtonGroup title={<ButtonGroupTitle />}>
                 <DropdownItem>
                     <FilterButton
                         onClick={() => toggleHideNotActionable()}
