@@ -303,6 +303,23 @@ const OperationExplanation: React.FC = () => {
                                     </span>
                                 </ExplanationOutput>
                             </ListItem>
+                            <ListItem code="@snoozedUntil(tomorrow)">
+                                <p>
+                                    This is a special tag that can be used to
+                                    mark the todo as snoozed. It will hide the
+                                    todo until the supplied date, so it is not
+                                    in the way.
+                                </p>
+                                <p>
+                                    Within the todo text itself, it will be
+                                    formatted like every other tag:
+                                </p>
+                                <ExplanationOutput>
+                                    <span className="todo-list-item__value__tag">
+                                        @snoozedUntil(2020-01-19)
+                                    </span>
+                                </ExplanationOutput>
+                            </ListItem>
                             <ListItem code="@quickfix">
                                 <p>
                                     This is a special tag that can be used to
