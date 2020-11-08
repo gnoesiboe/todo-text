@@ -1,6 +1,5 @@
 import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
 import styled, { css } from 'styled-components/macro';
-import { Button } from '../../../primitives/FilterButton/components/StyledComponents';
 import rotate from '../../../primitives/keyframes/rotate';
 import wobble from '../../../primitives/keyframes/wobble';
 
@@ -80,12 +79,4 @@ export const Heading = styled.h1`
 export const AddTodoContainer = styled.div`
     flex: 1;
     margin-left: 20px;
-`;
-
-export const FilterContainer = styled.div`
-    margin-right: 38px;
-
-    ${Button} {
-        margin-top: 5px;
-    }
 `;

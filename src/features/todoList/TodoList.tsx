@@ -4,13 +4,11 @@ import { useTodoContext } from '../../context/todoContext/TodoContext';
 import {
     Container,
     Header,
-    FilterContainer,
     Heading,
     SavingIdicator,
     FetchingIndicator,
     AddTodoContainer,
 } from './components/StyledComponents';
-import FilterButton from '../../primitives/FilterButton/FilterButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
 import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
 import useMoveItemUpOnKeyboardShortcutPressed from './hooks/useMoveItemUpOnKeyboardShortcutPressed';
@@ -21,6 +19,7 @@ import useToggleDoneStatusOnKeyPressed from './hooks/useToggleDoneStatusOnKeyPre
 import useAddNewItemOnKeyboardShortcutPressed from './hooks/useAddNewItemOnKeyboardShortcutPressed';
 import usePreventScrollWithArrowKeys from './hooks/usePreventScrollWithArrowKeys';
 import AddTodo from '../addTodo/AddTodo';
+import FilterTodos from '../filterTodos/FilterTodos';
 
 const TodoList: React.FC = () => {
     const {
@@ -28,14 +27,6 @@ const TodoList: React.FC = () => {
         isFetching,
         isSaving,
         currentItem,
-        hideDone,
-        hideNotActionable,
-        hideEvening,
-        hideSnoozed,
-        toggleHideDone,
-        toggleHideNotActionable,
-        toggleHideEvening,
-        toggleHideSnoozed,
     } = useTodoContext();
 
     useNavigateToNextItemOnDownKeyPressed();
@@ -57,28 +48,7 @@ const TodoList: React.FC = () => {
                 <AddTodoContainer>
                     <AddTodo />
                 </AddTodoContainer>
-                <FilterContainer>
-                    <FilterButton
-                        onClick={() => toggleHideNotActionable()}
-                        active={hideNotActionable}
-                        title="hide not-actionable"
-                    />
-                    <FilterButton
-                        onClick={() => toggleHideDone()}
-                        active={hideDone}
-                        title="hide done"
-                    />
-                    <FilterButton
-                        onClick={() => toggleHideEvening()}
-                        active={hideEvening}
-                        title="hide evening"
-                    />
-                    <FilterButton
-                        onClick={() => toggleHideSnoozed()}
-                        active={hideSnoozed}
-                        title="hide snoozed"
-                    />
-                </FilterContainer>
+                <FilterTodos />
             </Header>
             {filteredItems.map((item, index) => (
                 <TodoListItem
