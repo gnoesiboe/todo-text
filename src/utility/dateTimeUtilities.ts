@@ -1,5 +1,55 @@
+import { parseISO, format, addDays } from 'date-fns';
+
 export const checkItIsCurrentlyEvening = () => {
     const currentHour = new Date().getHours();
 
     return currentHour > 18;
+};
+
+const isValidDate = (date: Date): boolean => date.toString() !== 'Invalid Date';
+
+export const isExactDate = (value: string): boolean => {
+    const date = parseISO(value);
+
+    return isValidDate(date);
+};
+
+const supportedInexactDateIndicators = [
+    'today',
+    'tomorrow',
+    'monday',
+    'tuesday',
+    'wednesday',
+    'thursday',
+    'friday',
+    'saturday',
+    'sunday',
+];
+
+const dateFormat = 'yyyy-MM-dd';
+
+export const transformInexactToExactDate = (value: string): string => {
+    if (!supportedInexactDateIndicators.includes(value)) {
+        console.warn('Incorrect, inexact value supplied:', value);
+
+        return value;
+    }
+
+    if (value === 'today') {
+        return format(new Date(), dateFormat);
+    }
+
+    if (value === 'tomorrow') {
+        return format(addDays(new Date(), 1), dateFormat);
+    }
+
+    const normalizedValue = value.toLowerCase();
+
+    let cursor = new Date();
+
+    while (format(cursor, 'EEEE').toLowerCase() !== normalizedValue) {
+        cursor = addDays(cursor, 1);
+    }
+
+    return format(cursor, 'yyyy-MM-dd');
 };

@@ -1,8 +1,33 @@
+import { transformInexactToExactDate } from './../../../utility/dateTimeUtilities';
 import { isActionable } from './../../../model/TodoListItem';
 import { createEmpty } from './../../../model/factory/todoListItemFactory';
 import { TodoListItem } from '../../../model/TodoListItem';
 import produce from 'immer';
 import { isEqual } from 'lodash';
+import { isExactDate } from '../../../utility/dateTimeUtilities';
+
+const transformDateIndicators = (items: TodoListItem[]) => {
+    items.forEach((item) => {
+        const match = item.value.match(/@snooze\(([^)]+)\)/);
+
+        if (!match) {
+            return;
+        }
+
+        const value = match[1];
+
+        if (!value || isExactDate(value)) {
+            return;
+        }
+
+        const newValue = transformInexactToExactDate(value);
+
+        item.value = item.value.replace(
+            /@snooze\([^)]+\)/g,
+            `@snooze(${newValue})`,
+        );
+    });
+};
 
 export function applyNewlyFetched(
     currentItems: TodoListItem[],
@@ -14,6 +39,8 @@ export function applyNewlyFetched(
     if (isEqual(currentItems, incomingItems)) {
         return currentItems;
     }
+
+    transformDateIndicators(incomingItems);
 
     return incomingItems;
 }
@@ -36,6 +63,8 @@ export function applyUpdate(
 
         nextItems[indexToChange].value = normalizedValue;
         nextItems[indexToChange].done = done;
+
+        transformDateIndicators(nextItems);
     });
 }
 
@@ -51,6 +80,8 @@ export function applyDelete(
         }
 
         nextItems.splice(indexToDelete, 1);
+
+        transformDateIndicators(nextItems);
     });
 }
 
