@@ -6,9 +6,26 @@ export default function useCountAppliedFilters(): number {
         hideEvening,
         hideSnoozed,
         hideNotActionable,
+        matchingFilters,
     } = useTodoContext();
 
-    return [hideDone, hideEvening, hideSnoozed, hideNotActionable].filter(
-        (value) => !!value,
-    ).length;
+    let totalCount = 0;
+
+    if (hideDone) {
+        totalCount += matchingFilters.done;
+    }
+
+    if (hideEvening) {
+        totalCount += matchingFilters.evening;
+    }
+
+    if (hideSnoozed) {
+        totalCount += matchingFilters.snoozed;
+    }
+
+    if (hideNotActionable) {
+        totalCount += matchingFilters.waiting;
+    }
+
+    return totalCount;
 }
