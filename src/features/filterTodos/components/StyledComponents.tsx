@@ -7,7 +7,7 @@ export const ButtonGroup = styled(DropdownButton)`
     }
 
     .dropdown-item {
-        padding-left: 10px;
+        padding: 10px;
     }
 `;
 
@@ -30,6 +30,7 @@ export const Title = styled.div<{ active: boolean }>`
     flex: 1;
     color: ${({ active }) => active && `color: #333;`};
     text-align: left;
+    padding-right: 10px;
 `;
 
 export const Badge = styled.div`
