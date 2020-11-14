@@ -32,6 +32,7 @@ import { determineProgress } from './utility/selectors';
 import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
 import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
+import EditTodoButton from './components/EditTodoButton';
 
 type Props = {
     item: ItemModel;
@@ -40,7 +41,7 @@ type Props = {
 };
 
 const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
-    const { isEditing, stopEdit } = useTodoContext();
+    const { isEditing, stopEdit, startEdit } = useTodoContext();
 
     const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
         isEditing,
@@ -112,6 +113,9 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 )}
                 {!item.done && (
                     <ProgressBar done={done} todo={todo} total={total} />
+                )}
+                {!isEditing && current && (
+                    <EditTodoButton onClick={() => startEdit()} />
                 )}
                 {hasNotes(item) && !current && <HasNotesIndicator />}
                 <DeleteTodo item={item} visible={current && !isEditing} />

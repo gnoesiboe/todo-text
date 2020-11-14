@@ -26,6 +26,7 @@ export const Container = styled.div<{
     padding: 5px 0 3px 0;
     border-radius: 5px;
     transition: max-height 1s ease-in;
+    margin-bottom: ${({ current }) => (current ? 20 : 0)}px;
 
     ${({ isEditing, current }) => {
         if (!current) {
@@ -132,10 +133,8 @@ export const Value = styled.div<{
     .todo-list-item__value__note {
         font-size: 0.8em !important;
         min-height: 1em;
-        display: none;
-        padding-right: 5px;
-
-        ${({ current }) => current && 'display: block;'}
+        padding-right: 15px;
+        display: ${({ current }) => (current ? 'block' : 'none')};
     }
 
     .todo-list-item__value__sub-item {
@@ -199,4 +198,22 @@ export const HasNotesIndicator = styled(ChevronDownIcon)`
     right: 5px;
     top: 5px;
     opacity: 0.3;
+`;
+
+export const EditTodoButtonBase = styled.button`
+    position: absolute;
+    right: 5px;
+    bottom: -20px;
+    border: none;
+    background: none;
+    padding: 0;
+    margin: 0;
+    color: #999;
+    border-radius: 2px;
+    font-size: 0.8em;
+
+    &:hover {
+        border-color: #000;
+        color: #000;
+    }
 `;
