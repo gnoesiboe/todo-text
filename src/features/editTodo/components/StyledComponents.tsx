@@ -7,7 +7,7 @@ export const Form = styled.form`
 
 export const TextareaAutosize = styled(ReactTextareaAutosize)`
     border: none;
-    padding: 0;
+    padding: 15px;
     margin: 0;
     width: 100%;
     background: initial;
