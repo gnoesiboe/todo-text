@@ -4,6 +4,7 @@ import styled from 'styled-components';
 export const ButtonGroup = styled(DropdownButton)`
     .dropdown-toggle {
         background: ${({ theme }) => theme.colors.first} !important;
+        border: none;
     }
 
     .dropdown-item {
