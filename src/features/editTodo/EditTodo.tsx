@@ -1,15 +1,19 @@
 import React, { useRef } from 'react';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
 import type { TodoListItem } from '../../model/TodoListItem';
-import { Form, TextareaAutosize } from './components/StyledComponents';
-import { Button } from 'react-bootstrap';
-import useIsTouchDevice from '../../hooks/useIsTouchDevice';
+import {
+    Form,
+    SubmitButton,
+    CancelButton,
+    TextareaAutosize,
+} from './components/StyledComponents';
 
 type Props = {
     item: TodoListItem;
+    onCancel: () => void;
 };
 
-const EditTodo: React.FC<Props> = ({ item }) => {
+const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
     const textareaRef = useRef<HTMLTextAreaElement>(null);
 
     const {
@@ -19,8 +23,6 @@ const EditTodo: React.FC<Props> = ({ item }) => {
         onValueChange,
         onValueBlur,
     } = useTodoFormHandlers(item);
-
-    const isTouchDevice = useIsTouchDevice(false);
 
     return (
         <Form onSubmit={onSubmit}>
@@ -33,7 +35,14 @@ const EditTodo: React.FC<Props> = ({ item }) => {
                 onChange={onValueChange}
                 onBlur={onValueBlur}
             />
-            {isTouchDevice && <Button type="submit">Save</Button>}
+            <SubmitButton type="submit">Save</SubmitButton>
+            <CancelButton
+                type="submit"
+                variant="link"
+                onClick={() => onCancel()}
+            >
+                Cancel
+            </CancelButton>
         </Form>
     );
 };

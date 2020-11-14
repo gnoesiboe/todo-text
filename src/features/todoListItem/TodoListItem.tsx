@@ -40,7 +40,7 @@ type Props = {
 };
 
 const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
-    const { isEditing } = useTodoContext();
+    const { isEditing, stopEdit } = useTodoContext();
 
     const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
         isEditing,
@@ -95,7 +95,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 )}
 
                 {current && isEditing ? (
-                    <EditTodo item={item} />
+                    <EditTodo item={item} onCancel={() => stopEdit()} />
                 ) : (
                     <AutoHeightAnimate heightState={current}>
                         <Value
