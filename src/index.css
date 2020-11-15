@@ -4,3 +4,33 @@ body,
     height: 100%;
     background: #e9c46a;
 }
+
+/* Suggest box setup */
+.suggest-box {
+    position: fixed;
+    border: 1px solid #ddd;
+    z-index: 100;
+    background: white;
+}
+
+.suggest-box ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.suggest-box li {
+    padding: 4px 8px;
+    font-size: 85%;
+    border-bottom: 1px solid #ddd;
+}
+
+.suggest-box li:last-child {
+    border: 0;
+}
+
+.suggest-box li.selected {
+    color: #fff;
+    background-color: #428bca;
+    border-color: darken(#428bca, 5%);
+}

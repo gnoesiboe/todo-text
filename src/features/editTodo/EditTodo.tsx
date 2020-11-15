@@ -7,6 +7,7 @@ import {
     CancelButton,
     TextareaAutosize,
 } from './components/StyledComponents';
+import useSuggestTags from './hooks/useSuggestTags';
 
 type Props = {
     item: TodoListItem;
@@ -23,6 +24,8 @@ const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
         onValueChange,
         onValueBlur,
     } = useTodoFormHandlers(item);
+
+    useSuggestTags(textareaRef);
 
     return (
         <Form onSubmit={onSubmit}>
