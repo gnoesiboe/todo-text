@@ -1,20 +1,19 @@
 import styled from 'styled-components/macro';
 
 export const Button = styled.button<{ visible: boolean }>`
-    padding: 2px;
-    border-radius: 4px;
-    margin: 0;
+    position: absolute;
+    right: 36px;
+    bottom: -18px;
     border: none;
     background: none;
-    border: none;
-    position: absolute;
-    right: 3px;
-    top: 0;
-    display: ${({ visible }) => (visible ? `inline` : 'none')};
-    transition: 1s;
+    padding: 0;
+    margin: 0;
+    color: #999;
+    border-radius: 2px;
+    font-size: 0.8em;
 
     &:hover {
-        background: #ddd;
-        border-color: #333;
+        border-color: #000;
+        color: #000;
     }
 `;

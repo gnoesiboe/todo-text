@@ -1,4 +1,3 @@
-import { XIcon } from '@primer/octicons-react';
 import React from 'react';
 import { TodoListItem } from '../../model/TodoListItem';
 import { Button } from './components/StyledComponents';
@@ -14,7 +13,7 @@ const DeleteTodo: React.FC<Props> = ({ item, visible }) => {
 
     return (
         <Button onClick={onClick} visible={visible}>
-            <XIcon />
+            delete
         </Button>
     );
 };

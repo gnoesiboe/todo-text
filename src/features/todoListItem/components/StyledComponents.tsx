@@ -203,7 +203,7 @@ export const HasNotesIndicator = styled(ChevronDownIcon)`
 export const EditTodoButtonBase = styled.button`
     position: absolute;
     right: 5px;
-    bottom: -20px;
+    bottom: -18px;
     border: none;
     background: none;
     padding: 0;
