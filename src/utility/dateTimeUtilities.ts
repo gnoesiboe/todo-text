@@ -5,6 +5,8 @@ import {
     isAfter,
     startOfDay,
     startOfToday,
+    isBefore,
+    isSameDay,
 } from 'date-fns';
 
 export const checkItIsCurrentlyEvening = () => {
@@ -65,3 +67,8 @@ export const transformInexactToExactDate = (value: string): string => {
 
 export const isAfterToday = (date: Date): boolean =>
     isAfter(startOfDay(date), startOfToday());
+
+export const isBeforeToday = (date: Date): boolean =>
+    isBefore(date, startOfToday());
+
+export const isToday = (date: Date): boolean => isSameDay(date, new Date());

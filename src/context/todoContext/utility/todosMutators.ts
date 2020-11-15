@@ -1,4 +1,9 @@
-import { transformInexactToExactDate } from './../../../utility/dateTimeUtilities';
+import {
+    parseDate,
+    transformInexactToExactDate,
+    isBeforeToday,
+    isToday,
+} from './../../../utility/dateTimeUtilities';
 import { isActionable } from './../../../model/TodoListItem';
 import { createEmpty } from './../../../model/factory/todoListItemFactory';
 import { TodoListItem } from '../../../model/TodoListItem';
@@ -16,7 +21,21 @@ const transformDateIndicators = (items: TodoListItem[]) => {
 
         const value = match[1];
 
-        if (!value || isExactDate(value)) {
+        if (!value) {
+            return;
+        }
+
+        if (isExactDate(value)) {
+            const date = parseDate(value);
+
+            if (!date) {
+                return;
+            }
+
+            if (isBeforeToday(date) || isToday(date)) {
+                item.value = item.value.replace(/@snoozeUntil\([^)]+\)/g, '');
+            }
+
             return;
         }
 
