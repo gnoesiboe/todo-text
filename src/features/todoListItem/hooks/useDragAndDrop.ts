@@ -17,7 +17,7 @@ export default function useDragAndDrop(
     item: TodoListItem,
 ) {
     const dragPreviewRef = useRef<HTMLDivElement>(null);
-    const dragHandleRef = useRef<HTMLDivElement>(null);
+    // const dragHandleRef = useRef<HTMLDivElement>(null);
 
     const allowDragDrop = !isEditing;
 
@@ -30,7 +30,7 @@ export default function useDragAndDrop(
     const { applyDrop } = useDropItem(dragPreviewRef, index);
 
     applyDragPreview(applyDrop(dragPreviewRef));
-    applyDragHandle(dragHandleRef);
+    applyDragHandle(dragPreviewRef);
 
-    return { dragPreviewRef, dragHandleRef, isDragging };
+    return { dragPreviewRef, isDragging };
 }
