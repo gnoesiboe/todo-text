@@ -18,9 +18,11 @@ import {
     Value,
     WaitingIcon,
     QuickfixIcon,
+    DragHandle,
     HasNotesIndicator,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
+import { UnfoldIcon } from '@primer/octicons-react';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
 import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
@@ -41,7 +43,7 @@ type Props = {
 const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     const { isEditing, stopEdit, startEdit } = useTodoContext();
 
-    const { dragPreviewRef, isDragging } = useDragAndDrop(
+    const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
         isEditing,
         index,
         item,
@@ -71,6 +73,10 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
             isDragging={isDragging}
         >
             <>
+                {/* @ts-ignore don't know how to fix ref */}
+                <DragHandle ref={dragHandleRef} current={current}>
+                    <UnfoldIcon />
+                </DragHandle>
                 <StatusIndicatorContainer>
                     {waiting && showStatusIcon && <WaitingIcon />}
                     {isQuickfix(item) && !waiting && showStatusIcon && (
