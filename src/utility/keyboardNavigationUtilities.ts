@@ -6,6 +6,7 @@ export type KeyDefinition = {
     ctrlKey: boolean;
     altKey: boolean;
     metaKey: boolean;
+    description: string;
 };
 
 export const checkKeyDefinitionIsPressed = (

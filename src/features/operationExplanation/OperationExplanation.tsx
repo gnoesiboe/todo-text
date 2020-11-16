@@ -13,6 +13,21 @@ import {
     ExplanationSectionTitle,
     ExplanationOutput,
 } from './components/StyledComponents';
+import {
+    clearCurrentItem,
+    createNewItemAfterCurrent,
+    createNewItemBeforeCurrent,
+    deleteCurrentItem,
+    editCurrentItem,
+    moveCurrentItemDown,
+    moveCurrentItemUp,
+    navigateToNext,
+    navigateToPrevious,
+    submitAndCreateNewItemAfterCurrent,
+    submitAndCreateNewItemBeforeCurrent,
+    submitItemForm,
+    toggleDoneStatus,
+} from '../../constants/keyDefnitions';
 
 const OperationExplanation: React.FC = () => {
     const { visible, toggle } = useToggleVisibility(false);
@@ -50,7 +65,9 @@ const OperationExplanation: React.FC = () => {
                             <tbody>
                                 <tr>
                                     <td>
-                                        <code>down</code>
+                                        <code>
+                                            {navigateToNext.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -63,7 +80,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>up</code>
+                                        <code>
+                                            {navigateToPrevious.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -76,7 +95,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>e</code>
+                                        <code>
+                                            {editCurrentItem.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -88,7 +109,11 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>a</code>
+                                        <code>
+                                            {
+                                                createNewItemAfterCurrent.description
+                                            }
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -101,7 +126,11 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>shift + a</code>
+                                        <code>
+                                            {
+                                                createNewItemBeforeCurrent.description
+                                            }
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -114,7 +143,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>esc</code>
+                                        <code>
+                                            {clearCurrentItem.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -127,7 +158,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>alt + up</code>
+                                        <code>
+                                            {moveCurrentItemUp.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -138,7 +171,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>alt + down</code>
+                                        <code>
+                                            {moveCurrentItemDown.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -149,7 +184,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>ctrl + enter</code>
+                                        <code>
+                                            {submitItemForm.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -161,7 +198,11 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>alt + enter</code>
+                                        <code>
+                                            {
+                                                submitAndCreateNewItemAfterCurrent.description
+                                            }
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -174,7 +215,11 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>alt + shift + enter</code>
+                                        <code>
+                                            {
+                                                submitAndCreateNewItemBeforeCurrent.description
+                                            }
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -187,7 +232,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>ctrl + enter</code>
+                                        <code>
+                                            {submitItemForm.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -199,7 +246,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>ctrl + space</code>
+                                        <code>
+                                            {toggleDoneStatus.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
@@ -211,7 +260,9 @@ const OperationExplanation: React.FC = () => {
                                 </tr>
                                 <tr>
                                     <td>
-                                        <code>alt + backspace</code>
+                                        <code>
+                                            {deleteCurrentItem.description}
+                                        </code>
                                     </td>
                                     <td>
                                         <p>
