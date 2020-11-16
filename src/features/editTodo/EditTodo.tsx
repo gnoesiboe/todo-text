@@ -8,6 +8,10 @@ import {
     TextareaAutosize,
 } from './components/StyledComponents';
 import useSuggestTags from './hooks/useSuggestTags';
+import {
+    submitItemForm,
+    stopEditWithoutSave,
+} from '../../constants/keyDefnitions';
 
 type Props = {
     item: TodoListItem;
@@ -38,10 +42,16 @@ const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
                 onChange={onValueChange}
                 onBlur={onValueBlur}
             />
-            <SubmitButton type="submit">Save</SubmitButton>
+            <SubmitButton
+                type="submit"
+                title={`Save changes (keyboard shortcut: ${submitItemForm.description})`}
+            >
+                Save
+            </SubmitButton>
             <CancelButton
                 type="submit"
                 variant="link"
+                title={`Cancel changes (keyboard shortcut: ${stopEditWithoutSave.description}))`}
                 onClick={() => onCancel()}
             >
                 Cancel
