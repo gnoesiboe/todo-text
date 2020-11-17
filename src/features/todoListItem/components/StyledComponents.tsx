@@ -22,11 +22,10 @@ export const Container = styled.div<{
     isEditing: boolean;
 }>`
     position: relative;
-    margin: 0 0 10px -10px;
+    margin: 0 0 ${({ current }) => (current ? 20 : 5)}px -10px;
     padding: 5px 0 3px 0;
     border-radius: 5px;
     transition: max-height 1s ease-in;
-    margin-bottom: ${({ current }) => (current ? 20 : 0)}px;
 
     ${({ isEditing, current }) => {
         if (!current) {
