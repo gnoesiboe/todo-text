@@ -22,7 +22,7 @@ export const Container = styled.div<{
     isEditing: boolean;
 }>`
     position: relative;
-    margin: 0 0 ${({ current }) => (current ? 20 : 5)}px -10px;
+    margin: 0 0 ${({ current }) => (current ? 30 : 5)}px -10px;
     padding: 5px 0 3px 0;
     border-radius: 5px;
     transition: max-height 1s ease-in;
@@ -199,14 +199,18 @@ export const HasNotesIndicator = styled(ChevronDownIcon)`
     opacity: 0.3;
 `;
 
-export const EditTodoButtonBase = styled.button`
+export const ActionButtonWrapper = styled.div`
     position: absolute;
-    right: 5px;
-    bottom: -18px;
+    left: 0;
+    right: 0;
+    bottom: -22px;
+    padding-left: 40px;
+`;
+
+export const actionButtonBase = css`
     border: none;
     background: none;
-    padding: 0;
-    margin: 0;
+    padding: 3px 5px;
     color: #999;
     border-radius: 2px;
     font-size: 0.8em;
@@ -215,4 +219,18 @@ export const EditTodoButtonBase = styled.button`
         border-color: #000;
         color: #000;
     }
+`;
+
+export const DragHandleBase = styled.button`
+    ${actionButtonBase};
+
+    left: 5px;
+    bottom: -20px;
+`;
+
+export const EditTodoButtonBase = styled.button`
+    ${actionButtonBase};
+
+    right: 5px;
+    bottom: -18px;
 `;

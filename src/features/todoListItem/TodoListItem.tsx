@@ -20,9 +20,9 @@ import {
     QuickfixIcon,
     DragHandle,
     HasNotesIndicator,
+    ActionButtonWrapper,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
-import { UnfoldIcon } from '@primer/octicons-react';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
 import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
@@ -33,6 +33,7 @@ import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
 import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 import EditTodoButton from './components/EditTodoButton';
+import { UnfoldIcon } from '@primer/octicons-react';
 
 type Props = {
     item: ItemModel;
@@ -111,12 +112,20 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         />
                     </AutoHeightAnimate>
                 )}
-                {!isEditing && current && (
-                    <EditTodoButton onClick={() => startEdit()} />
+                {!isEditing && (
+                    <ActionButtonWrapper>
+                        {current && (
+                            <>
+                                <EditTodoButton onClick={() => startEdit()} />
+                                <DeleteTodo
+                                    item={item}
+                                    visible={current && !isEditing}
+                                />
+                            </>
+                        )}
+                    </ActionButtonWrapper>
                 )}
-                {current && (
-                    <DeleteTodo item={item} visible={current && !isEditing} />
-                )}
+
                 {!item.done && (
                     <ProgressBar done={done} todo={todo} total={total} />
                 )}
