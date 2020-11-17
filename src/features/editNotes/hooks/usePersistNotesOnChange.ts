@@ -1,13 +1,12 @@
-import { resolveDropboxFileName } from './../../../utility/environmentUtlities';
-import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
-import { pushDataToDropbox } from '../../../dropbox/storage/dropboxStorage';
+import { resolveDropboxNotesFileName } from './../../../utility/environmentUtlities';
+import { useAuthenticationContext } from './../../../context/authenticationContext/AuthenticationContext';
 import { useEffect, useState } from 'react';
-import type { TodoListItem } from '../../../model/TodoListItem';
+import { pushDataToDropbox } from '../../../dropbox/storage/dropboxStorage';
 
 const pushToDropboxThrottle = 3000; // 3 seconds
 
-export default function usePersistTodoListItemsOnChange(
-    items: TodoListItem[],
+export default function usePersistNotesOnChange(
+    value: string,
     isFetching: boolean,
 ) {
     const [hasOpenChanges, setHasOpenChanges] = useState<boolean>(false);
@@ -15,7 +14,6 @@ export default function usePersistTodoListItemsOnChange(
 
     const { accessToken } = useAuthenticationContext();
 
-    // use timeout for persistance to bundle multiple changes into one after timeout has cleared
     useEffect(() => {
         setHasOpenChanges(true);
 
@@ -28,19 +26,17 @@ export default function usePersistTodoListItemsOnChange(
 
             pushDataToDropbox(
                 accessToken,
-                JSON.stringify(items),
-                resolveDropboxFileName(),
+                value,
+                resolveDropboxNotesFileName(),
             ).finally(() => {
                 setHasOpenChanges(false);
                 setIsSaving(false);
             });
         }, pushToDropboxThrottle);
 
-        return () => {
-            clearTimeout(handle);
-        };
+        return () => clearTimeout(handle);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [items]);
+    }, [value, isFetching]);
 
     return { hasOpenChanges, isSaving };
 }

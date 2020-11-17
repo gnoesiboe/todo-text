@@ -1,3 +1,7 @@
+import {
+    resolveDropboxFileName,
+    resolveDropboxNotesFileName,
+} from './../../utility/environmentUtlities';
 import { TodoListItem } from './../../model/TodoListItem';
 import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
 import {
@@ -5,7 +9,6 @@ import {
     resolveDropboxApiSecret,
 } from '../../utility/environmentUtlities';
 import { formatBodyAsFormData } from '../../utility/requestUtilities';
-import { resolveDropboxFileName } from '../../utility/environmentUtlities';
 import { getDropboxClient } from '../client/dropboxClient';
 import { createAuthorizationHeader } from '../utility/headerUtilities';
 import { notifyError } from '../../utility/notifier';
@@ -13,8 +16,6 @@ import { notifyError } from '../../utility/notifier';
 const apiHost = 'https://api.dropboxapi.com';
 const contentHost = 'https://content.dropboxapi.com';
 const notifyHost = 'https://notify.dropboxapi.com';
-
-const jsonFilePath = `/${resolveDropboxFileName()}`;
 
 const apiKey = resolveDropboxApiKey();
 const apiSecret = resolveDropboxApiSecret();
@@ -45,7 +46,11 @@ export const fetchAccessToken = async (
     return data.access_token;
 };
 
-export const pushTodosToDropbox = async (accessToken: string, json: string) => {
+export const pushDataToDropbox = async (
+    accessToken: string,
+    json: string,
+    fileName: string,
+) => {
     const url = `${contentHost}/2/files/upload`;
 
     await getDropboxClient().post(url, json, {
@@ -53,11 +58,32 @@ export const pushTodosToDropbox = async (accessToken: string, json: string) => {
             Authorization: createAuthorizationHeader(accessToken),
             'Content-Type': 'application/octet-stream',
             'Dropbox-API-Arg': JSON.stringify({
-                path: jsonFilePath,
+                path: `/${fileName}`,
                 mode: 'overwrite',
             }),
         },
     });
+};
+
+export const fetchDataFromDropbox = async (
+    accessToken: string,
+): Promise<string | null> => {
+    const url = `${contentHost}/2/files/download`;
+
+    const response = await getDropboxClient().post(url, undefined, {
+        headers: {
+            Authorization: createAuthorizationHeader(accessToken),
+            'Dropbox-API-Arg': JSON.stringify({
+                path: `/${resolveDropboxNotesFileName()}`,
+            }),
+        },
+    });
+
+    if (!response || !response.data) {
+        return null;
+    }
+
+    return response.data;
 };
 
 export const fetchTodosFromDropbox = async (
@@ -69,7 +95,7 @@ export const fetchTodosFromDropbox = async (
         headers: {
             Authorization: createAuthorizationHeader(accessToken),
             'Dropbox-API-Arg': JSON.stringify({
-                path: jsonFilePath,
+                path: `/${resolveDropboxFileName()}`,
             }),
         },
     });

@@ -1,4 +1,5 @@
-import { pushTodosToDropbox } from './../../../dropbox/storage/dropboxStorage';
+import { resolveDropboxFileName } from './../../../utility/environmentUtlities';
+import { pushDataToDropbox } from './../../../dropbox/storage/dropboxStorage';
 import { isFileNotFoundError } from './../../../dropbox/utility/errorIdentificationUtilities';
 import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
 import { useState, useEffect } from 'react';
@@ -31,7 +32,11 @@ export default function useFetchTodoListItems(
             }
         } catch (error) {
             if (isFileNotFoundError(error)) {
-                await pushTodosToDropbox(accessToken, '[]');
+                await pushDataToDropbox(
+                    accessToken,
+                    '[]',
+                    resolveDropboxFileName(),
+                );
 
                 notifySuccess(
                     'File did not exist (anymore) in Dropbox. We created a new one',

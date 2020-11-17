@@ -23,3 +23,6 @@ export const resolveDropboxApiSecret = () =>
 
 export const resolveDropboxFileName = () =>
     resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_FILE_NAME');
+
+export const resolveDropboxNotesFileName = () =>
+    resolveEnvironmentVariableOrThrow('REACT_APP_DROPBOX_NOTES_FILE_NAME');
