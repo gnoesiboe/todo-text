@@ -10,7 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import styled from 'styled-components/macro';
 import { ThemeContextProvider } from './context/themeContext/ThemeContext';
 import { DndProvider } from 'react-dnd-multi-backend';
-import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'; // or any other pipeline
+import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 import { DeviceInformationContextProvider } from './context/deviceInformationContext/DeviceInformationContext';
 import EditNotes from './features/editNotes/EditNotes';
 import { ActivityContextProvider } from './context/activityContext/ActivityContext';
