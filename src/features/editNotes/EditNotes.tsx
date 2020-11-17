@@ -15,6 +15,7 @@ import useManageEditorValue from './hooks/useManageEditorValue';
 import useAddKeyboardBindings from './hooks/useAddKeyboardBindings';
 import useFocusEditorOnLoad from './hooks/useFocusEditorOnLoad';
 import usePersistNotesOnChange from './hooks/usePersistNotesOnChange';
+import useStartEditWithKeyboardShortcut from './hooks/useStartEditWithKeyboardShortcut';
 
 const EditNotes: React.FC = () => {
     const editorRef = useRef<Ace.Editor>();
@@ -28,6 +29,8 @@ const EditNotes: React.FC = () => {
     const { onLoad } = useFocusEditorOnLoad(editorRef);
 
     const { isSaving } = usePersistNotesOnChange(value, isFetching);
+
+    useStartEditWithKeyboardShortcut(startEdit, mode);
 
     if (mode === Mode.View) {
         return (

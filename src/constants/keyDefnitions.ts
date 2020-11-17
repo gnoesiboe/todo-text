@@ -107,3 +107,9 @@ export const toggleDoneStatus: KeyDefinition = {
     ctrlKey: true,
     description: 'ctrl + space',
 };
+
+export const startEditNotes: KeyDefinition = {
+    ...baseKeyDefinition,
+    key: 'n',
+    description: 'n',
+};
