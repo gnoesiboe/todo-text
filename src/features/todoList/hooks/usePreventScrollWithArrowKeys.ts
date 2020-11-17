@@ -1,11 +1,14 @@
+import { useIsEditingNotes } from './../../../context/activityContext/ActivityContext';
 import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { useEffect } from 'react';
 
 export default function usePreventScrollWithArrowKeys() {
     const { isEditing } = useTodoContext();
 
+    const isEditingNotes = useIsEditingNotes();
+
     useEffect(() => {
-        if (isEditing) {
+        if (isEditing || isEditingNotes) {
             return;
         }
 
@@ -18,5 +21,5 @@ export default function usePreventScrollWithArrowKeys() {
         window.addEventListener('keydown', onKeyDown, false);
 
         return () => window.removeEventListener('keydown', onKeyDown, false);
-    }, [isEditing]);
+    }, [isEditing, isEditingNotes]);
 }
