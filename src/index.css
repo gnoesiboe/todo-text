@@ -34,3 +34,8 @@ body,
     background-color: #428bca;
     border-color: darken(#428bca, 5%);
 }
+
+/* bootstrap adjustments */
+.container-lg {
+    max-width: 1400px;
+}

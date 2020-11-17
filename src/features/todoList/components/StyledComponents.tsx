@@ -11,7 +11,7 @@ export const Container = styled.div`
     border-radius: 8px;
     background: #fff;
     margin-bottom: 30px;
-    margin-right: 40px;
+    margin-right: 30px;
     position: relative;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.large}) {

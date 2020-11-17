@@ -15,6 +15,7 @@ export const EditorContainer = styled.div`
 
     .ace-tomorrow {
         background: none;
+
         .ace_heading,
         .ace_markup.ace_heading,
         .ace_string {
@@ -36,6 +37,10 @@ export const ViewContainer = styled.div`
     * {
         color: rgba(0, 0, 0, 0.7);
         font-family: monospace;
+    }
+
+    ul {
+        padding-left: 25px;
     }
 
     .task-list {
@@ -73,6 +78,7 @@ export const ViewContainer = styled.div`
     h2,
     h3 {
         color: #000;
+        margin-top: 30px;
     }
 
     h1 {
@@ -95,7 +101,7 @@ export const ViewContainer = styled.div`
     hr {
         border: none;
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
-        margin: 30px 0;
+        margin: 50px 0;
     }
 `;
 

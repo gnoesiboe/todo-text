@@ -54,7 +54,7 @@ const EditNotes: React.FC = () => {
                 onFocus={onFocus}
                 theme="tomorrow"
                 name="notes"
-                fontSize={16}
+                fontSize={15}
                 height="calc(100vh - 80px)"
                 width="100%"
                 highlightActiveLine={false}

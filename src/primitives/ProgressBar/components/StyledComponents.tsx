@@ -1,11 +1,11 @@
 import styled from 'styled-components/macro';
 
 export const Wrapper = styled.div`
-    width: 50px;
+    width: 40px;
     border: 1px solid black;
     height: 10px;
     position: absolute;
-    right: -100px;
+    right: -90px;
     top: 10px;
     opacity: 0.5;
 
