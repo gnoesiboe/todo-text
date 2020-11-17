@@ -1,3 +1,4 @@
+import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { startEditNotes } from './../../../constants/keyDefnitions';
 import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
 import { useEffect } from 'react';
@@ -7,7 +8,13 @@ export default function useStartEditWithKeyboardShortcut(
     startEdit: () => void,
     mode: Mode,
 ) {
+    const { isEditing } = useTodoContext();
+
     useEffect(() => {
+        if (isEditing) {
+            return;
+        }
+
         const onKeyUp = (event: WindowEventMap['keyup']) => {
             if (!checkKeyDefinitionIsPressed(startEditNotes, event)) {
                 return;
@@ -21,5 +28,5 @@ export default function useStartEditWithKeyboardShortcut(
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [mode, startEdit]);
+    }, [mode, startEdit, isEditing]);
 }

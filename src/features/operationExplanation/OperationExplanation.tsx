@@ -23,6 +23,7 @@ import {
     moveCurrentItemUp,
     navigateToNext,
     navigateToPrevious,
+    startEditNotes,
     submitAndCreateNewItemAfterCurrent,
     submitAndCreateNewItemBeforeCurrent,
     submitItemForm,
@@ -269,6 +270,16 @@ const OperationExplanation: React.FC = () => {
                                             When a todo is selected, this
                                             shortcut can be used to delete it.
                                         </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>
+                                            {startEditNotes.description}
+                                        </code>
+                                    </td>
+                                    <td>
+                                        <p>Start editing of notes</p>
                                     </td>
                                 </tr>
                             </tbody>

@@ -27,21 +27,21 @@ const App: React.FC = () => (
             <DeviceInformationContextProvider>
                 <AuthenticationContextProvider>
                     <ActivityContextProvider>
-                        <Container fluid="lg">
-                            <Row>
-                                <Col lg={{ span: 7, offset: 0 }}>
-                                    <TodoContextProvider>
+                        <TodoContextProvider>
+                            <Container fluid="lg">
+                                <Row>
+                                    <Col lg={{ span: 7, offset: 0 }}>
                                         <DndProvider options={HTML5toTouch}>
                                             <TodoList />
                                         </DndProvider>
-                                    </TodoContextProvider>
-                                    <OperationExplanation />
-                                </Col>
-                                <Col lg={{ span: 5, offset: 0 }}>
-                                    <EditNotes />
-                                </Col>
-                            </Row>
-                        </Container>
+                                        <OperationExplanation />
+                                    </Col>
+                                    <Col lg={{ span: 5, offset: 0 }}>
+                                        <EditNotes />
+                                    </Col>
+                                </Row>
+                            </Container>
+                        </TodoContextProvider>
                     </ActivityContextProvider>
                 </AuthenticationContextProvider>
                 <ToastContainer />
