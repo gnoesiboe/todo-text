@@ -26,7 +26,7 @@ const FilterTodos: React.FC = () => {
                         onClick={() => toggleHideNotActionable()}
                         active={hideNotActionable}
                         title="hide not-actionable"
-                        amount={matchingFilters.waiting}
+                        amount={matchingFilters.notActionable}
                     />
                 </DropdownItem>
                 <DropdownItem>

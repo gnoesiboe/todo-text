@@ -106,7 +106,7 @@ const initialValue: ContextValue = {
     toggleHideEvening: () => {},
     hideSnoozed: true,
     toggleHideSnoozed: () => {},
-    matchingFilters: { snoozed: 0, done: 0, evening: 0, waiting: 0 },
+    matchingFilters: { snoozed: 0, done: 0, evening: 0, notActionable: 0 },
     createNewItemAtTheStart: () => {},
 };
 

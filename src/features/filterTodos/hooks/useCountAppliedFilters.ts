@@ -24,7 +24,7 @@ export default function useCountAppliedFilters(): number {
     }
 
     if (hideNotActionable) {
-        totalCount += matchingFilters.waiting;
+        totalCount += matchingFilters.notActionable;
     }
 
     return totalCount;

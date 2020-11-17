@@ -7,7 +7,12 @@ import {
     isSnoozed,
     isWaiting,
 } from './../../../model/TodoListItem';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
+import {
+    get as getStoredFilters,
+    save,
+    StoredFilters,
+} from '../../../model/repository/filterRepository';
 
 export type ToggleHideNotWaitingHandler = () => void;
 export type ToggleHideDoneHandler = () => void;
@@ -15,7 +20,7 @@ export type ToggleHideEveningHandler = () => void;
 export type ToggleHideSnoozedHandler = () => void;
 
 export type MatchingFilters = {
-    waiting: number;
+    notActionable: number; // @todo rename to notActionable
     done: number;
     evening: number;
     snoozed: number;
@@ -24,12 +29,23 @@ export type MatchingFilters = {
 const eveningCheckInterval = 10000; // 10 minutes
 
 export default function useToggleFilters(items: TodoListItem[]) {
-    const [hideNotActionable, setHideNotActionable] = useState<boolean>(false);
-    const [hideDone, setHideDone] = useState<boolean>(false);
+    const persistedFilters = useMemo<StoredFilters | null>(
+        () => getStoredFilters(),
+        [],
+    );
+
+    const [hideNotActionable, setHideNotActionable] = useState<boolean>(
+        persistedFilters?.hideNotActionable || false,
+    );
+    const [hideDone, setHideDone] = useState<boolean>(
+        persistedFilters?.hideDone || false,
+    );
     const [hideEvening, setHideEvening] = useState<boolean>(
         !checkItIsCurrentlyEvening(),
     );
-    const [hideSnoozed, setHideSnoozed] = useState<boolean>(true);
+    const [hideSnoozed, setHideSnoozed] = useState<boolean>(
+        persistedFilters?.hideSnoozed || true,
+    );
 
     useEffect(() => {
         const reference = setInterval(() => {
@@ -40,6 +56,15 @@ export default function useToggleFilters(items: TodoListItem[]) {
 
         return () => clearInterval(reference);
     }, [setHideEvening, hideEvening]);
+
+    // save applied filters in local storage for cross request access
+    useEffect(() => {
+        save({
+            hideNotActionable,
+            hideDone,
+            hideSnoozed,
+        });
+    }, [hideNotActionable, hideDone, hideEvening, hideSnoozed]);
 
     const toggleHideNotActionable: ToggleHideNotWaitingHandler = () => {
         setHideNotActionable((currentValue) => !currentValue);
@@ -60,7 +85,7 @@ export default function useToggleFilters(items: TodoListItem[]) {
     const matchingFilters = items.reduce<MatchingFilters>(
         (matches, item) => {
             if (isWaiting(item)) {
-                matches.waiting++;
+                matches.notActionable++;
             }
 
             if (item.done) {
@@ -78,7 +103,7 @@ export default function useToggleFilters(items: TodoListItem[]) {
             return matches;
         },
         {
-            waiting: 0,
+            notActionable: 0,
             done: 0,
             evening: 0,
             snoozed: 0,
