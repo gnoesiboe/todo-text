@@ -33,7 +33,7 @@ export default function useManageEditorValue(mode: Mode) {
             if (isFileNotFoundError(error)) {
                 await pushDataToDropbox(
                     accessToken,
-                    '[]',
+                    '# Notes',
                     resolveDropboxNotesFileName(),
                 );
 
