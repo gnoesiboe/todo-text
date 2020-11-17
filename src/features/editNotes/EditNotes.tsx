@@ -1,7 +1,12 @@
 import React, { useRef } from 'react';
 import AceEditor from 'react-ace';
 import { Ace } from 'ace-builds';
-import { EditorContainer, ViewContainer } from './components/StyledComponents';
+import {
+    EditorContainer,
+    SavingIdicator,
+    FetchingIndicator,
+    ViewContainer,
+} from './components/StyledComponents';
 import { parseMarkdown } from '../../utility/markdownUtilities';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-tomorrow';
@@ -9,24 +14,30 @@ import useManageMode, { Mode } from './hooks/useManageMode';
 import useManageEditorValue from './hooks/useManageEditorValue';
 import useAddKeyboardBindings from './hooks/useAddKeyboardBindings';
 import useFocusEditorOnLoad from './hooks/useFocusEditorOnLoad';
+import usePersistNotesOnChange from './hooks/usePersistNotesOnChange';
 
 const EditNotes: React.FC = () => {
     const editorRef = useRef<Ace.Editor>();
 
-    const { value, onChange } = useManageEditorValue();
-
     const { mode, startEdit, stopEdit, onFocus, onBlur } = useManageMode();
+
+    const { value, onChange, isFetching } = useManageEditorValue(mode);
 
     useAddKeyboardBindings(mode, editorRef, stopEdit);
 
     const { onLoad } = useFocusEditorOnLoad(editorRef);
 
+    const { isSaving } = usePersistNotesOnChange(value, isFetching);
+
     if (mode === Mode.View) {
         return (
-            <ViewContainer
-                dangerouslySetInnerHTML={{ __html: parseMarkdown(value) }}
-                onDoubleClick={() => startEdit()}
-            />
+            <ViewContainer onDoubleClick={() => startEdit()}>
+                {isSaving && <SavingIdicator />}
+                {isFetching && <FetchingIndicator />}
+                <div
+                    dangerouslySetInnerHTML={{ __html: parseMarkdown(value) }}
+                />
+            </ViewContainer>
         );
     }
 

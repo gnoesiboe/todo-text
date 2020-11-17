@@ -12,6 +12,7 @@ export const Container = styled.div`
     background: #fff;
     margin-bottom: 30px;
     margin-right: 40px;
+    position: relative;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
         margin-right: 0;
@@ -23,15 +24,9 @@ export const Container = styled.div`
 `;
 
 const connectionIndicatorCss = css`
-    margin-top: 20px;
-    position: fixed;
-    top: 0;
-    right: 20px;
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
-        top: 10px;
-        right: 25px;
-    }
+    position: absolute;
+    top: 10px;
+    right: 10px;
 `;
 
 export const FetchingIndicator = styled(SyncIcon)`

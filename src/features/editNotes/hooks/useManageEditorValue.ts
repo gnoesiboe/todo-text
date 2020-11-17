@@ -1,42 +1,76 @@
-import { useState } from 'react';
+import { resolveDropboxNotesFileName } from './../../../utility/environmentUtlities';
+import { isFileNotFoundError } from './../../../dropbox/utility/errorIdentificationUtilities';
+import {
+    fetchDataFromDropbox,
+    pushDataToDropbox,
+} from './../../../dropbox/storage/dropboxStorage';
+import { useAuthenticationContext } from './../../../context/authenticationContext/AuthenticationContext';
+import { useEffect, useState } from 'react';
+import { notifyError, notifySuccess } from '../../../utility/notifier';
+import { Mode } from './useManageMode';
 
-const initialValue: string = `
-# Eerste titel
+export default function useManageEditorValue(mode: Mode) {
+    const [isFetching, setIsFetching] = useState<boolean>(false);
 
-* first item
-* second item
-* **bold**
+    const [value, setValue] = useState<string>('');
 
----
+    const { accessToken } = useAuthenticationContext();
 
-# Second title
+    const fetchNotes = async () => {
+        if (isFetching || !accessToken || mode !== Mode.View) {
+            return;
+        }
 
-* [ ] first [item](https://www.google.nl)
-* [x] second item
-* [ ] **bold** (https://www.freshheads.com)
-* [x] Done
-    * [ ] Some indented item
-    * [x] Another indented item
-* [ ] And back
+        setIsFetching(true);
 
----
+        try {
+            const notes = await fetchDataFromDropbox(accessToken);
 
-# Third title
+            if (notes) {
+                setValue(notes);
+            }
+        } catch (error) {
+            if (isFileNotFoundError(error)) {
+                await pushDataToDropbox(
+                    accessToken,
+                    '[]',
+                    resolveDropboxNotesFileName(),
+                );
 
-## Some sub-title
+                notifySuccess(
+                    'File did not exist (anymore) in Dropbox. We created a new one',
+                );
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry.
+                return;
+            }
 
+            const errorMessage =
+                'An error occurred while fetching the todos from dropbox';
 
+            notifyError(errorMessage);
 
+            console.error(errorMessage, error);
+        }
 
-Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-`.trim();
+        setIsFetching(false);
+    };
 
-export default function useManageEditorValue() {
-    const [value, setValue] = useState<string>(initialValue);
+    // initial fetch on mount
+    useEffect(() => {
+        fetchNotes();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    useEffect(() => {
+        const onWindowFocus = () => fetchNotes();
+
+        window.addEventListener('focus', onWindowFocus);
+
+        return () => window.removeEventListener('focus', onWindowFocus);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     const onChange = (newValue: string) => setValue(newValue);
 
-    return { value, onChange };
+    return { value, onChange, isFetching };
 }
