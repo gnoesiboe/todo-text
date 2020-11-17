@@ -1,10 +1,7 @@
 import React from 'react';
 import useToggleVisibility from '../../hooks/useToggleVisibility';
 import { Button, Table } from 'react-bootstrap';
-import Octicon, {
-    ChevronDownIcon,
-    ChevronUpIcon,
-} from '@primer/octicons-react';
+import { ChevronDownIcon, ChevronUpIcon } from '@primer/octicons-react';
 import ListItem from './components/ListItem';
 import {
     ButtonWrapper,
@@ -39,13 +36,11 @@ const OperationExplanation: React.FC = () => {
                 <Button onClick={() => toggle()} variant="link" size="sm">
                     {visible ? (
                         <>
-                            <Octicon icon={ChevronUpIcon} /> hide operation
-                            information
+                            <ChevronUpIcon /> hide operation information
                         </>
                     ) : (
                         <>
-                            <Octicon icon={ChevronDownIcon} /> show operation
-                            information
+                            <ChevronDownIcon /> show operation information
                         </>
                     )}
                 </Button>
