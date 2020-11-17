@@ -12,6 +12,8 @@ import { ThemeContextProvider } from './context/themeContext/ThemeContext';
 import { DndProvider } from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch'; // or any other pipeline
 import { DeviceInformationContextProvider } from './context/deviceInformationContext/DeviceInformationContext';
+import EditNotes from './features/editNotes/EditNotes';
+import { ActivityContextProvider } from './context/activityContext/ActivityContext';
 
 const AppContainer = styled.div`
     width: 100%;
@@ -24,18 +26,23 @@ const App: React.FC = () => (
         <AppContainer>
             <DeviceInformationContextProvider>
                 <AuthenticationContextProvider>
-                    <Container fluid="lg">
-                        <Row>
-                            <Col lg={{ span: 10, offset: 1 }}>
-                                <TodoContextProvider>
-                                    <DndProvider options={HTML5toTouch}>
-                                        <TodoList />
-                                    </DndProvider>
-                                </TodoContextProvider>
-                                <OperationExplanation />
-                            </Col>
-                        </Row>
-                    </Container>
+                    <ActivityContextProvider>
+                        <Container fluid="lg">
+                            <Row>
+                                <Col lg={{ span: 7, offset: 0 }}>
+                                    <TodoContextProvider>
+                                        <DndProvider options={HTML5toTouch}>
+                                            <TodoList />
+                                        </DndProvider>
+                                    </TodoContextProvider>
+                                    <OperationExplanation />
+                                </Col>
+                                <Col lg={{ span: 5, offset: 0 }}>
+                                    <EditNotes />
+                                </Col>
+                            </Row>
+                        </Container>
+                    </ActivityContextProvider>
                 </AuthenticationContextProvider>
                 <ToastContainer />
             </DeviceInformationContextProvider>
