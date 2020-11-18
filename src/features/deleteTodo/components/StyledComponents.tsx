@@ -3,7 +3,4 @@ import { actionButtonBase } from '../../todoListItem/components/StyledComponents
 
 export const Button = styled.button<{ visible: boolean }>`
     ${actionButtonBase};
-
-    right: 36px;
-    bottom: -18px;
 `;

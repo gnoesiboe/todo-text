@@ -20,7 +20,7 @@ export type ToggleHideEveningHandler = () => void;
 export type ToggleHideSnoozedHandler = () => void;
 
 export type MatchingFilters = {
-    notActionable: number; // @todo rename to notActionable
+    notActionable: number;
     done: number;
     evening: number;
     snoozed: number;
