@@ -20,6 +20,7 @@ import useStartEditWithKeyboardShortcut from './hooks/useStartEditWithKeyboardSh
 const EditNotes: React.FC = () => {
     const editorRef = useRef<Ace.Editor>();
 
+    // @todo move some stuff to ActivityContext and rename it to NotesContext
     const { mode, startEdit, stopEdit, onFocus, onBlur } = useManageMode();
 
     const { value, onChange, isFetching } = useManageEditorValue(mode);
