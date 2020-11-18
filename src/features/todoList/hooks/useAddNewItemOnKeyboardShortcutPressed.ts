@@ -5,6 +5,7 @@ import {
     createNewItemAfterCurrent as createNewItemAfterCurrentKeyDefinition,
     createNewItemBeforeCurrent as createNewItemBeforeCurrentKeyDefinition,
 } from '../../../constants/keyDefnitions';
+import useManageActivity from '../../../context/activityContext/hooks/useManageActivity';
 export default function useAddNewItemOnKeyboardShortcutPressed() {
     const {
         currentItem,
@@ -14,8 +15,10 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
         startEdit,
     } = useTodoContext();
 
+    const { isEditingNotes } = useManageActivity();
+
     useEffect(() => {
-        if (!currentItem || isEditing) {
+        if (!currentItem || isEditing || isEditingNotes) {
             return;
         }
 
@@ -48,5 +51,6 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
         startEdit,
         createNewItemBeforeCurrent,
         createNewItemAfterCurrent,
+        isEditingNotes,
     ]);
 }
