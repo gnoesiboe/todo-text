@@ -35,16 +35,16 @@ export default function useToggleFilters(items: TodoListItem[]) {
     );
 
     const [hideNotActionable, setHideNotActionable] = useState<boolean>(
-        persistedFilters?.hideNotActionable || false,
+        persistedFilters ? persistedFilters.hideNotActionable : false,
     );
     const [hideDone, setHideDone] = useState<boolean>(
-        persistedFilters?.hideDone || false,
+        persistedFilters ? persistedFilters.hideDone : false,
     );
     const [hideEvening, setHideEvening] = useState<boolean>(
         !checkItIsCurrentlyEvening(),
     );
     const [hideSnoozed, setHideSnoozed] = useState<boolean>(
-        persistedFilters?.hideSnoozed || true,
+        persistedFilters ? persistedFilters.hideSnoozed : true,
     );
 
     useEffect(() => {
