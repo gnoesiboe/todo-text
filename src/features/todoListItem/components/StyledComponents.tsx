@@ -219,18 +219,17 @@ export const actionButtonBase = css`
         border-color: #000;
         color: #000;
     }
-`;
 
-export const DragHandleBase = styled.button`
-    ${actionButtonBase};
-
-    left: 5px;
-    bottom: -20px;
+    &[disabled] {
+        color: #ddd;
+        cursor: not-allowed;
+    }
 `;
 
 export const EditTodoButtonBase = styled.button`
     ${actionButtonBase};
+`;
 
-    right: 5px;
-    bottom: -18px;
+export const SnoozeTodoButtonBase = styled.button`
+    ${actionButtonBase};
 `;

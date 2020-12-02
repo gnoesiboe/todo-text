@@ -7,6 +7,7 @@ import {
     isActionable,
     isHeading,
     hasNotes,
+    isSnoozed,
 } from '../../model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
@@ -34,6 +35,8 @@ import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 import EditTodoButton from './components/EditTodoButton';
 import { UnfoldIcon } from '@primer/octicons-react';
+import SnoozeTodoButton from './components/SnoozeTodoButton';
+import usePostponeTillTomorrow from './hooks/usePostponeTillTomorrow';
 
 type Props = {
     item: ItemModel;
@@ -59,6 +62,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     useScrollIntoView(dragPreviewRef, current);
 
     useStartEditingOnKeyDown(current);
+
+    const { onTomorrowClick } = usePostponeTillTomorrow(item, current);
 
     const waiting = isWaiting(item);
     const showStatusIcon = !item.done && !isDragging;
@@ -116,6 +121,10 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                     <ActionButtonWrapper>
                         {current && (
                             <>
+                                <SnoozeTodoButton
+                                    onClick={onTomorrowClick}
+                                    disabled={isSnoozed(item)}
+                                />
                                 <EditTodoButton onClick={() => startEdit()} />
                                 <DeleteTodo
                                     item={item}
