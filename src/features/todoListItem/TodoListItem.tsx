@@ -19,7 +19,6 @@ import {
     Value,
     WaitingIcon,
     QuickfixIcon,
-    DragHandle,
     HasNotesIndicator,
     ActionButtonWrapper,
 } from './components/StyledComponents';
@@ -34,7 +33,6 @@ import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
 import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 import EditTodoButton from './components/EditTodoButton';
-import { UnfoldIcon } from '@primer/octicons-react';
 import SnoozeTodoButton from './components/SnoozeTodoButton';
 import usePostponeTillTomorrow from './hooks/usePostponeTillTomorrow';
 
@@ -47,7 +45,7 @@ type Props = {
 const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     const { isEditing, stopEdit, startEdit } = useTodoContext();
 
-    const { dragPreviewRef, dragHandleRef, isDragging } = useDragAndDrop(
+    const { dragPreviewRef, isDragging } = useDragAndDrop(
         isEditing,
         index,
         item,
@@ -80,9 +78,6 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
         >
             <>
                 {/* @ts-ignore don't know how to fix ref */}
-                <DragHandle ref={dragHandleRef} current={current}>
-                    <UnfoldIcon />
-                </DragHandle>
                 <StatusIndicatorContainer>
                     {waiting && showStatusIcon && <WaitingIcon />}
                     {isQuickfix(item) && !waiting && showStatusIcon && (

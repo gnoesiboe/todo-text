@@ -1,3 +1,4 @@
+import { useTodoContext } from './../../../context/todoContext/TodoContext';
 import { DragObjectWithType } from 'react-dnd';
 import { TodoListItem } from './../../../model/TodoListItem';
 import { useRef } from 'react';
@@ -16,10 +17,11 @@ export default function useDragAndDrop(
     index: number,
     item: TodoListItem,
 ) {
-    const dragPreviewRef = useRef<HTMLDivElement>(null);
-    const dragHandleRef = useRef<HTMLDivElement>(null);
+    const { isSorting } = useTodoContext();
 
-    const allowDragDrop = !isEditing;
+    const dragPreviewRef = useRef<HTMLDivElement>(null);
+
+    const allowDragDrop = !isEditing && isSorting;
 
     const { isDragging, applyDragHandle, applyDragPreview } = useDragItem(
         item,
@@ -29,8 +31,7 @@ export default function useDragAndDrop(
 
     const { applyDrop } = useDropItem(dragPreviewRef, index);
 
-    applyDragPreview(applyDrop(dragPreviewRef));
-    applyDragHandle(dragHandleRef);
+    applyDragHandle(applyDragPreview(applyDrop(dragPreviewRef)));
 
-    return { dragPreviewRef, dragHandleRef, isDragging };
+    return { dragPreviewRef, isDragging };
 }

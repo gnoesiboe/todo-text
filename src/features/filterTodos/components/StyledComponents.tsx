@@ -49,7 +49,6 @@ export const Badge = styled.div`
 `;
 
 export const FilterContainer = styled.div`
-    margin-right: 10px;
     margin-top: 0;
 
     ${Button} {

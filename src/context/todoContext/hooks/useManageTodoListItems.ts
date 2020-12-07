@@ -96,6 +96,9 @@ export default function useManageTodoListItems() {
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
+        isSorting,
+        startSorting,
+        stopSorting,
     } = useMoveTodoListItems(currentItem, isEditing, setItems);
 
     const saveValue: SaveValueHandler = (id, value, done) => {
@@ -132,6 +135,9 @@ export default function useManageTodoListItems() {
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
+        isSorting,
+        startSorting,
+        stopSorting,
         currentItem,
         toggleCurrentItem,
         markCurrentItem,

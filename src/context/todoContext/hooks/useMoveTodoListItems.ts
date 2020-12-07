@@ -1,5 +1,5 @@
 import { TodoListItem } from './../../../model/TodoListItem';
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {
     applyMoveCurrentItemDown,
     applyMoveCurrentItemUp,
@@ -20,7 +20,15 @@ export default function useMoveTodoListItems(
     isEditing: boolean,
     setItems: Dispatch<SetStateAction<TodoListItem[]>>,
 ) {
+    const [isSorting, setIsSorting] = useState<boolean>(false);
+
+    const startSorting = () => setIsSorting(true);
+
+    const stopSorting = () => setIsSorting(false);
+
     const moveCurrentItemUp: MoveCurrentItemUpHandler = () => {
+        startSorting();
+
         if (isEditing) {
             return;
         }
@@ -29,6 +37,8 @@ export default function useMoveTodoListItems(
     };
 
     const moveCurrentItemDown: MoveCurrentItemDownHandler = () => {
+        startSorting();
+
         if (isEditing) {
             return;
         }
@@ -36,8 +46,20 @@ export default function useMoveTodoListItems(
         setItems((items) => applyMoveCurrentItemDown(items, currentItem));
     };
 
-    const moveToIndex: MoveToIndexHandler = (previousIndex, nextIndex) =>
-        setItems((items) => applyMoveToIndex(items, previousIndex, nextIndex));
+    const moveToIndex: MoveToIndexHandler = (previousIndex, nextIndex) => {
+        if (isEditing) {
+            return;
+        }
 
-    return { moveCurrentItemUp, moveCurrentItemDown, moveToIndex };
+        setItems((items) => applyMoveToIndex(items, previousIndex, nextIndex));
+    };
+
+    return {
+        moveCurrentItemUp,
+        moveCurrentItemDown,
+        moveToIndex,
+        isSorting,
+        startSorting,
+        stopSorting,
+    };
 }

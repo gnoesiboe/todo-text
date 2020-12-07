@@ -55,6 +55,9 @@ type ContextValue = {
     moveCurrentItemUp: MoveCurrentItemUpHandler;
     moveCurrentItemDown: MoveCurrentItemDownHandler;
     moveToIndex: MoveToIndexHandler;
+    isSorting: boolean;
+    startSorting: () => void;
+    stopSorting: () => void;
     currentItem: string | null;
     toggleCurrentItem: ToggleCurrentItemHandler;
     markCurrentItem: MarkCurrentItemHandler;
@@ -90,6 +93,9 @@ const initialValue: ContextValue = {
     moveCurrentItemUp: () => {},
     moveCurrentItemDown: () => {},
     moveToIndex: () => {},
+    isSorting: false,
+    startSorting: () => {},
+    stopSorting: () => {},
     currentItem: null,
     toggleCurrentItem: () => {},
     markCurrentItem: () => {},
@@ -127,6 +133,9 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
+        isSorting,
+        startSorting,
+        stopSorting,
         currentItem,
         toggleCurrentItem,
         markCurrentItem,
@@ -181,6 +190,9 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
+        isSorting,
+        startSorting,
+        stopSorting,
         currentItem,
         toggleCurrentItem,
         markCurrentItem,

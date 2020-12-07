@@ -47,13 +47,14 @@ export const Header = styled.div`
     top: 0;
     display: block;
     z-index: ${({ theme }) => theme.zIndex.todoListHeader};
-    padding: 5px 0px 5px 0;
+    padding: 5px 10px 5px 0;
     margin: 20px -${containerPaddingRightLeft * 2}px 20px -${containerPaddingRightLeft *
         2}px;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
+    gap: 10px;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
         margin-left: -${containerPaddingRightLeft}px;
@@ -78,5 +79,13 @@ export const Heading = styled.h1`
 
 export const AddTodoContainer = styled.div`
     flex: 1;
-    margin-left: 20px;
+    margin-left: 10px;
+`;
+
+export const SortButton = styled.button`
+    border: none;
+    padding: 0;
+    margin: 0;
+    background: none;
+    margin-right: 10px;
 `;

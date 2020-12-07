@@ -176,22 +176,6 @@ export const StatusIndicatorContainerWrapper = styled.div`
     }
 `;
 
-export const DragHandle = styled.div<{ current: boolean }>`
-    position: absolute;
-    left: -17px;
-    top: 0px;
-    cursor: pointer;
-    height: 100%;
-    background: #ccc;
-    color: #fff;
-    padding: 0 4px;
-    box-sizing: content-box;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    display: ${({ current }) => (current ? 'flex' : 'none')};
-`;
-
 export const HasNotesIndicator = styled(ChevronDownIcon)`
     position: absolute;
     right: 5px;

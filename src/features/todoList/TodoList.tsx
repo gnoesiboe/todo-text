@@ -8,6 +8,7 @@ import {
     SavingIdicator,
     FetchingIndicator,
     AddTodoContainer,
+    SortButton,
 } from './components/StyledComponents';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
 import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
@@ -24,9 +25,13 @@ import FilterTodos from '../filterTodos/FilterTodos';
 const TodoList: React.FC = () => {
     const {
         filteredItems,
+        items,
         isFetching,
         isSaving,
         currentItem,
+        isSorting,
+        startSorting,
+        stopSorting,
     } = useTodoContext();
 
     useNavigateToNextItemOnDownKeyPressed();
@@ -39,6 +44,8 @@ const TodoList: React.FC = () => {
     useAddNewItemOnKeyboardShortcutPressed();
     usePreventScrollWithArrowKeys();
 
+    const itemsToDisplay = isSorting ? items : filteredItems;
+
     return (
         <Container>
             {isSaving && <SavingIdicator />}
@@ -48,9 +55,18 @@ const TodoList: React.FC = () => {
                 <AddTodoContainer>
                     <AddTodo />
                 </AddTodoContainer>
-                <FilterTodos />
+                {isSorting ? (
+                    <SortButton onClick={() => stopSorting()}>done</SortButton>
+                ) : (
+                    <>
+                        <SortButton onClick={() => startSorting()}>
+                            sort
+                        </SortButton>
+                        <FilterTodos />
+                    </>
+                )}
             </Header>
-            {filteredItems.map((item, index) => (
+            {itemsToDisplay.map((item, index) => (
                 <TodoListItem
                     key={item.id}
                     index={index}
