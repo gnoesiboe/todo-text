@@ -8,7 +8,7 @@ export default function useStartEditWithKeyboardShortcut(
     startEdit: () => void,
     mode: Mode,
 ) {
-    const { isEditing } = useTodoContext();
+    const { isEditing, clearCurrentItem } = useTodoContext();
 
     useEffect(() => {
         if (isEditing) {
@@ -20,6 +20,8 @@ export default function useStartEditWithKeyboardShortcut(
                 return;
             }
 
+            clearCurrentItem();
+
             event.preventDefault();
 
             startEdit();
@@ -28,5 +30,7 @@ export default function useStartEditWithKeyboardShortcut(
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mode, startEdit, isEditing]);
 }
