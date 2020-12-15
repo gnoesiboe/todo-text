@@ -1,5 +1,5 @@
 import React from 'react';
-import DropdownItem from 'react-bootstrap/esm/DropdownItem';
+import { Dropdown } from 'react-bootstrap';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import ButtonGroupTitle from './components/ButtonGroupTitle';
 import FilterButton from './components/FilterButton';
@@ -21,38 +21,38 @@ const FilterTodos: React.FC = () => {
     return (
         <FilterContainer>
             <ButtonGroup title={<ButtonGroupTitle />}>
-                <DropdownItem>
+                <Dropdown.Item as="div">
                     <FilterButton
                         onClick={() => toggleHideNotActionable()}
                         active={hideNotActionable}
                         title="hide not-actionable"
                         amount={matchingFilters.notActionable}
                     />
-                </DropdownItem>
-                <DropdownItem>
+                </Dropdown.Item>
+                <Dropdown.Item as="div">
                     <FilterButton
                         onClick={() => toggleHideDone()}
                         active={hideDone}
                         title="hide done"
                         amount={matchingFilters.done}
                     />
-                </DropdownItem>
-                <DropdownItem>
+                </Dropdown.Item>
+                <Dropdown.Item as="div">
                     <FilterButton
                         onClick={() => toggleHideEvening()}
                         active={hideEvening}
                         title="hide evening"
                         amount={matchingFilters.evening}
                     />
-                </DropdownItem>
-                <DropdownItem>
+                </Dropdown.Item>
+                <Dropdown.Item as="div">
                     <FilterButton
                         onClick={() => toggleHideSnoozed()}
                         active={hideSnoozed}
                         title="hide snoozed"
                         amount={matchingFilters.snoozed}
                     />
-                </DropdownItem>
+                </Dropdown.Item>
             </ButtonGroup>
         </FilterContainer>
     );
