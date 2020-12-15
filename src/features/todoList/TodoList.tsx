@@ -54,9 +54,12 @@ const TodoList: React.FC = () => {
             {isFetching && <FetchingIndicator />}
             <Header>
                 <Heading>Tød□</Heading>
-                <AddTodoContainer>
-                    <AddTodo />
-                </AddTodoContainer>
+                {!isSorting && (
+                    <AddTodoContainer>
+                        <AddTodo />
+                    </AddTodoContainer>
+                )}
+
                 {isSorting ? (
                     <SortButton onClick={() => stopSorting()}>done</SortButton>
                 ) : (
