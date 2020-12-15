@@ -21,6 +21,7 @@ import useAddNewItemOnKeyboardShortcutPressed from './hooks/useAddNewItemOnKeybo
 import usePreventScrollWithArrowKeys from './hooks/usePreventScrollWithArrowKeys';
 import AddTodo from '../addTodo/AddTodo';
 import FilterTodos from '../filterTodos/FilterTodos';
+import useStartSortingWithKeyboardShortcut from './hooks/useStartSortingWithKeyboardShortcut';
 
 const TodoList: React.FC = () => {
     const {
@@ -43,6 +44,7 @@ const TodoList: React.FC = () => {
     useToggleDoneStatusOnKeyPressed();
     useAddNewItemOnKeyboardShortcutPressed();
     usePreventScrollWithArrowKeys();
+    useStartSortingWithKeyboardShortcut();
 
     const itemsToDisplay = isSorting ? items : filteredItems;
 

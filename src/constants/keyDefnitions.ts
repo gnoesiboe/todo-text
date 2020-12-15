@@ -113,3 +113,9 @@ export const startEditNotes: KeyDefinition = {
     key: 'n',
     description: 'n',
 };
+
+export const toggleSortingItems: KeyDefinition = {
+    ...baseKeyDefinition,
+    key: 's',
+    description: 's',
+};

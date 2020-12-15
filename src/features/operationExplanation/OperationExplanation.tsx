@@ -21,6 +21,7 @@ import {
     navigateToNext,
     navigateToPrevious,
     startEditNotes,
+    toggleSortingItems,
     submitAndCreateNewItemAfterCurrent,
     submitAndCreateNewItemBeforeCurrent,
     submitItemForm,
@@ -176,6 +177,16 @@ const OperationExplanation: React.FC = () => {
                                             Moves the currently selected item
                                             down the list (if possible).
                                         </p>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <code>
+                                            {toggleSortingItems.description}
+                                        </code>
+                                    </td>
+                                    <td>
+                                        <p>Toggles sorting mode.</p>
                                     </td>
                                 </tr>
                                 <tr>
