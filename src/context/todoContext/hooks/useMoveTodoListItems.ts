@@ -5,6 +5,7 @@ import {
     applyMoveCurrentItemUp,
     applyMoveToIndex,
 } from '../utility/todosMutators';
+import { notifyInfo } from '../../../utility/notifier';
 
 export type MoveCurrentItemUpHandler = () => void;
 
@@ -27,9 +28,13 @@ export default function useMoveTodoListItems(
     const stopSorting = () => setIsSorting(false);
 
     const moveCurrentItemUp: MoveCurrentItemUpHandler = () => {
-        startSorting();
-
         if (isEditing) {
+            return;
+        }
+
+        if (!isSorting) {
+            notifyInfo('Moving is only available in sort modus');
+
             return;
         }
 
@@ -37,9 +42,13 @@ export default function useMoveTodoListItems(
     };
 
     const moveCurrentItemDown: MoveCurrentItemDownHandler = () => {
-        startSorting();
-
         if (isEditing) {
+            return;
+        }
+
+        if (!isSorting) {
+            notifyInfo('Moving is only available in sort modus');
+
             return;
         }
 
@@ -48,6 +57,12 @@ export default function useMoveTodoListItems(
 
     const moveToIndex: MoveToIndexHandler = (previousIndex, nextIndex) => {
         if (isEditing) {
+            return;
+        }
+
+        if (!isSorting) {
+            notifyInfo('Moving is only available in sort modus');
+
             return;
         }
 
