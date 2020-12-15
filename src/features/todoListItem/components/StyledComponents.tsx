@@ -20,9 +20,11 @@ export const Container = styled.div<{
     current: boolean;
     isDragging: boolean;
     isEditing: boolean;
+    isSorting: boolean;
 }>`
     position: relative;
-    margin: 0 0 ${({ current }) => (current ? 30 : 5)}px -10px;
+    margin: 0 0
+        ${({ current, isSorting }) => (current && !isSorting ? 30 : 5)}px -10px;
     padding: 5px 0 3px 0;
     border-radius: 5px;
     transition: max-height 1s ease-in;

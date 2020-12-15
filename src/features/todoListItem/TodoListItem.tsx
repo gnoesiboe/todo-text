@@ -75,6 +75,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
             isEditing={isEditing}
             ref={dragPreviewRef}
             isDragging={isDragging}
+            isSorting={isSorting}
         >
             <>
                 {/* @ts-ignore don't know how to fix ref */}
