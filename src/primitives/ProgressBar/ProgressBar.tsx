@@ -1,5 +1,6 @@
 import React from 'react';
-import { Wrapper, Bar } from './components/StyledComponents';
+import Bar from './components/Bar';
+import Wrapper from './components/Wrapper';
 
 type Props = {
     done: number;
