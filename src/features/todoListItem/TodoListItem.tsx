@@ -20,7 +20,6 @@ import {
     WaitingIcon,
     QuickfixIcon,
     HasNotesIndicator,
-    ActionButtonWrapper,
 } from './components/StyledComponents';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
@@ -34,7 +33,8 @@ import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 import EditTodoButton from './components/EditTodoButton';
 import SnoozeTodoButton from './components/SnoozeTodoButton';
-import usePostponeTillTomorrow from './hooks/usePostponeTillTomorrow';
+import usePostpone from './hooks/usePostpone';
+import TodoActionButtonWrapper from '../../primitives/todoActionButtons/TodoActionButtonWrapper';
 
 type Props = {
     item: ItemModel;
@@ -61,7 +61,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
 
     useStartEditingOnKeyDown(current);
 
-    const { onTomorrowClick } = usePostponeTillTomorrow(item, current);
+    const { onTomorrowClick, onNextWeekClick } = usePostpone(item, current);
 
     const waiting = isWaiting(item);
     const showStatusIcon = !item.done && !isDragging;
@@ -114,13 +114,21 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                     </AutoHeightAnimate>
                 )}
                 {!isEditing && !isSorting && (
-                    <ActionButtonWrapper>
+                    <TodoActionButtonWrapper>
                         {current && (
                             <>
                                 <SnoozeTodoButton
                                     onClick={onTomorrowClick}
                                     disabled={isSnoozed(item)}
-                                />
+                                >
+                                    tomorrow
+                                </SnoozeTodoButton>
+                                <SnoozeTodoButton
+                                    onClick={onNextWeekClick}
+                                    disabled={isSnoozed(item)}
+                                >
+                                    next week
+                                </SnoozeTodoButton>
                                 <EditTodoButton onClick={() => startEdit()} />
                                 <DeleteTodo
                                     item={item}
@@ -128,7 +136,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                                 />
                             </>
                         )}
-                    </ActionButtonWrapper>
+                    </TodoActionButtonWrapper>
                 )}
 
                 {!item.done && (

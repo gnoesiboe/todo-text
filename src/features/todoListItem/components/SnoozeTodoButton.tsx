@@ -1,10 +1,18 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import { SnoozeTodoButtonBase } from './StyledComponents';
+import TodoActionButton from '../../../primitives/todoActionButtons/TodoActionButton';
 
-type Props = ButtonHTMLAttributes<HTMLButtonElement>;
+type Props = Omit<
+    ButtonHTMLAttributes<HTMLButtonElement>,
+    'children' | 'title'
+> & {
+    children: string;
+};
 
 const SnoozeTodoButton: React.FC<Props> = (props) => (
-    <SnoozeTodoButtonBase {...props}>tomorrow</SnoozeTodoButtonBase>
+    <TodoActionButton
+        {...props}
+        title="Snooze your todo for the indicated time"
+    />
 );
 
 export default SnoozeTodoButton;

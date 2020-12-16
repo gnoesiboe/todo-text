@@ -7,6 +7,8 @@ import {
     startOfToday,
     isBefore,
     isSameDay,
+    isMonday,
+    addWeeks,
 } from 'date-fns';
 
 export const checkItIsCurrentlyEvening = () => {
@@ -28,6 +30,7 @@ export const parseDate = (value: string): Date | null => {
 const supportedInexactDateIndicators = [
     'today',
     'tomorrow',
+    'next week',
     'monday',
     'tuesday',
     'wednesday',
@@ -52,6 +55,15 @@ export const transformInexactToExactDate = (value: string): string => {
 
     if (value === 'tomorrow') {
         return format(addDays(new Date(), 1), dateFormat);
+    }
+
+    if (value === 'next week') {
+        if (isMonday(new Date())) {
+            return format(addWeeks(new Date(), 1), dateFormat);
+        } else {
+            // script below can take care of monday
+            value = 'monday';
+        }
     }
 
     const normalizedValue = value.toLowerCase();

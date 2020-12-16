@@ -184,38 +184,3 @@ export const HasNotesIndicator = styled(ChevronDownIcon)`
     top: 5px;
     opacity: 0.3;
 `;
-
-export const ActionButtonWrapper = styled.div`
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: -22px;
-    padding-left: 40px;
-`;
-
-export const actionButtonBase = css`
-    border: none;
-    background: none;
-    padding: 3px 5px;
-    color: #999;
-    border-radius: 2px;
-    font-size: 0.8em;
-
-    &:hover {
-        border-color: #000;
-        color: #000;
-    }
-
-    &[disabled] {
-        color: #ddd;
-        cursor: not-allowed;
-    }
-`;
-
-export const EditTodoButtonBase = styled.button`
-    ${actionButtonBase};
-`;
-
-export const SnoozeTodoButtonBase = styled.button`
-    ${actionButtonBase};
-`;
