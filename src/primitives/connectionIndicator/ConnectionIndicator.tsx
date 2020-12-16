@@ -1,7 +1,7 @@
 import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
 import styled, { css } from 'styled-components';
-import rotate from '../../../primitives/keyframes/rotate';
-import wobble from '../../../primitives/keyframes/wobble';
+import rotate from '../keyframes/rotate';
+import wobble from '../keyframes/wobble';
 
 // @todo combine with connection indicators in TodoList/StyledComponents (as they are more or less the same)
 

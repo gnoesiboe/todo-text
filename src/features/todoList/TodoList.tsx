@@ -1,15 +1,7 @@
 import React from 'react';
 import TodoListItem from '../todoListItem/TodoListItem';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
-import {
-    Container,
-    Header,
-    Heading,
-    SavingIdicator,
-    FetchingIndicator,
-    AddTodoContainer,
-    SortButton,
-} from './components/StyledComponents';
+import SortButton from './components/SortButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
 import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
 import useMoveItemUpOnKeyboardShortcutPressed from './hooks/useMoveItemUpOnKeyboardShortcutPressed';
@@ -22,6 +14,14 @@ import usePreventScrollWithArrowKeys from './hooks/usePreventScrollWithArrowKeys
 import AddTodo from '../addTodo/AddTodo';
 import FilterTodos from '../filterTodos/FilterTodos';
 import useStartSortingWithKeyboardShortcut from './hooks/useStartSortingWithKeyboardShortcut';
+import Container from './components/Container';
+import {
+    FetchingIndicator,
+    SavingIndicator,
+} from '../../primitives/connectionIndicator/ConnectionIndicator';
+import Header from './components/Header';
+import Heading from './components/Heading';
+import AddTodoContainer from './components/AddTodoContainer';
 
 const TodoList: React.FC = () => {
     const {
@@ -50,7 +50,7 @@ const TodoList: React.FC = () => {
 
     return (
         <Container>
-            {isSaving && <SavingIdicator />}
+            {isSaving && <SavingIndicator />}
             {isFetching && <FetchingIndicator />}
             <Header>
                 <Heading>Tød□</Heading>

@@ -14,7 +14,7 @@ import { EditorContainer, ViewContainer } from './components/Container';
 import {
     SavingIndicator,
     FetchingIndicator,
-} from './components/ConnectionIndicator';
+} from '../../primitives/connectionIndicator/ConnectionIndicator';
 
 const EditNotes: React.FC = () => {
     const editorRef = useRef<Ace.Editor>();
