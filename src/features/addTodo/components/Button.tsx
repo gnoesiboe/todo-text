@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const AddTodoButton = styled.button`
+const Button = styled.button`
     border-radius: 50%;
     border: none;
     padding: 10px;
@@ -22,4 +22,4 @@ const AddTodoButton = styled.button`
     }
 `;
 
-export default AddTodoButton;
+export default Button;

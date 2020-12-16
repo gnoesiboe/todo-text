@@ -1,15 +1,15 @@
 import React from 'react';
-import AddTodoButton from './components/AddTodoButton';
-import { AddTodoIcon } from './components/AddTodoIcon';
+import Button from './components/Button';
+import ButtonIcon from './components/ButtonIcon';
 import useAddTodoOnButtonClick from './hooks/useAddTodoOnButtonClick';
 
 const AddTodo: React.FC = () => {
     const { onClick } = useAddTodoOnButtonClick();
 
     return (
-        <AddTodoButton onClick={onClick}>
-            <AddTodoIcon />
-        </AddTodoButton>
+        <Button onClick={onClick}>
+            <ButtonIcon />
+        </Button>
     );
 };
 
