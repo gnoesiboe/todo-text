@@ -4,10 +4,19 @@ import { useTodoContext } from 'context/todoContext/TodoContext';
 import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 
 export default function useStartSortingWithKeyboardShortcut() {
-    const { isSorting, startSorting, stopSorting } = useTodoContext();
+    const {
+        isSorting,
+        startSorting,
+        stopSorting,
+        isEditing,
+    } = useTodoContext();
 
     useEffect(() => {
         const onKeyUp = (event: WindowEventMap['keyup']) => {
+            if (isEditing) {
+                return;
+            }
+
             if (!checkKeyDefinitionIsPressed(toggleSortingItems, event)) {
                 return;
             }
@@ -20,5 +29,5 @@ export default function useStartSortingWithKeyboardShortcut() {
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [isSorting, startSorting, stopSorting]);
+    }, [isSorting, startSorting, stopSorting, isEditing]);
 }
