@@ -140,7 +140,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 {!item.done && (
                     <ProgressBar done={done} todo={todo} total={total} />
                 )}
-                {hasNotes(item) && !current && <HasNotesIndicator />}
+                {hasNotes(item) && <HasNotesIndicator reverse={current} />}
             </>
         </Container>
     );
