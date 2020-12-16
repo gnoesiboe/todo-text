@@ -1,17 +1,15 @@
 import React, { useRef } from 'react';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
 import type { TodoListItem } from '../../model/TodoListItem';
-import {
-    Form,
-    SubmitButton,
-    CancelButton,
-    TextareaAutosize,
-} from './components/StyledComponents';
 import useSuggestTags from './hooks/useSuggestTags';
 import {
     submitItemForm,
     stopEditWithoutSave,
 } from '../../constants/keyDefnitions';
+import Form from './components/Form';
+import Textarea from './components/Textarea';
+import SubmitButton from './components/SubmitButton';
+import CancelButton from './components/CancelButton';
 
 type Props = {
     item: TodoListItem;
@@ -33,7 +31,7 @@ const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
 
     return (
         <Form onSubmit={onSubmit}>
-            <TextareaAutosize
+            <Textarea
                 ref={textareaRef}
                 autoFocus
                 value={value}
