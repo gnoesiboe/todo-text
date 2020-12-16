@@ -1,9 +1,6 @@
 import React from 'react';
-import {
-    Input,
-    CheckboxReplacement,
-    Container,
-} from './components/StyledComponents';
+import CheckboxReplacement from './components/CheckboxReplacement';
+import Input from './components/Input';
 
 type Props = {
     checked: boolean;
@@ -22,7 +19,7 @@ const Checkbox: React.FC<Props> = ({
     muted = false,
     disabled = false,
 }) => (
-    <Container className={className}>
+    <span className={className}>
         <Input
             disabled={disabled}
             type="checkbox"
@@ -35,7 +32,7 @@ const Checkbox: React.FC<Props> = ({
             accented={accented}
             muted={muted}
         />
-    </Container>
+    </span>
 );
 
 export default Checkbox;
