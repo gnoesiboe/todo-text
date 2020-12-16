@@ -1,7 +1,6 @@
-import { PlusIcon } from '@primer/octicons-react';
 import styled from 'styled-components';
 
-export const Button = styled.button`
+const AddTodoButton = styled.button`
     border-radius: 50%;
     border: none;
     padding: 10px;
@@ -23,7 +22,4 @@ export const Button = styled.button`
     }
 `;
 
-export const Icon = styled(PlusIcon)`
-    height: 18px;
-    width: 18px;
-`;
+export default AddTodoButton;
