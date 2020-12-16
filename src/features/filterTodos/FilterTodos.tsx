@@ -1,9 +1,10 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
+import ButtonGroup from './components/ButtonGroup';
 import ButtonGroupTitle from './components/ButtonGroupTitle';
+import Container from './components/Container';
 import FilterButton from './components/FilterButton';
-import { ButtonGroup, FilterContainer } from './components/StyledComponents';
 
 const FilterTodos: React.FC = () => {
     const {
@@ -19,7 +20,7 @@ const FilterTodos: React.FC = () => {
     } = useTodoContext();
 
     return (
-        <FilterContainer>
+        <Container>
             <ButtonGroup title={<ButtonGroupTitle />}>
                 <Dropdown.Item as="div">
                     <FilterButton
@@ -54,7 +55,7 @@ const FilterTodos: React.FC = () => {
                     />
                 </Dropdown.Item>
             </ButtonGroup>
-        </FilterContainer>
+        </Container>
     );
 };
 

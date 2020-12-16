@@ -1,6 +1,6 @@
 import React from 'react';
 import useCountAppliedFilters from '../hooks/useCountAppliedFilters';
-import { Badge } from './StyledComponents';
+import Badge from './Badge';
 
 const ButtonGroupTitle: React.FC = () => {
     const noOfAppliedFilters = useCountAppliedFilters();
