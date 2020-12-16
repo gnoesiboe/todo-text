@@ -67,6 +67,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
 
     const heading = isHeading(item);
 
+    const snoozingButtonsDisabled = isSnoozed(item) || heading || item.done;
+
     return (
         <Container
             item={item}
@@ -115,22 +117,18 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 {!isEditing && !isSorting && current && (
                     <TodoActionButtonWrapper>
                         <>
-                            {!heading && (
-                                <>
-                                    <SnoozeTodoButton
-                                        onClick={onTomorrowClick}
-                                        disabled={isSnoozed(item)}
-                                    >
-                                        tomorrow
-                                    </SnoozeTodoButton>
-                                    <SnoozeTodoButton
-                                        onClick={onNextWeekClick}
-                                        disabled={isSnoozed(item)}
-                                    >
-                                        next week
-                                    </SnoozeTodoButton>
-                                </>
-                            )}
+                            <SnoozeTodoButton
+                                onClick={onTomorrowClick}
+                                disabled={snoozingButtonsDisabled}
+                            >
+                                tomorrow
+                            </SnoozeTodoButton>
+                            <SnoozeTodoButton
+                                onClick={onNextWeekClick}
+                                disabled={snoozingButtonsDisabled}
+                            >
+                                next week
+                            </SnoozeTodoButton>
                             <EditTodoButton onClick={() => startEdit()} />
                             <DeleteTodo item={item} />
                         </>
