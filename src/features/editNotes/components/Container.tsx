@@ -1,7 +1,4 @@
-import { DatabaseIcon, SyncIcon } from '@primer/octicons-react';
 import styled, { css } from 'styled-components';
-import rotate from '../../../primitives/keyframes/rotate';
-import wobble from '../../../primitives/keyframes/wobble';
 
 const sharedContainerStyle = css`
     border: 3px solid ${({ theme }) => theme.colors.first};
@@ -103,22 +100,4 @@ export const ViewContainer = styled.div`
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         margin: 50px 0;
     }
-`;
-
-// @todo combine with connection indicators in TodoList/StyledComponents (as they are more or less the same)
-
-const connectionIndicatorCss = css`
-    position: absolute;
-    top: 10px;
-    right: 10px;
-`;
-
-export const FetchingIndicator = styled(SyncIcon)`
-    ${connectionIndicatorCss}
-    animation: ${rotate} 2s linear infinite;
-`;
-
-export const SavingIdicator = styled(DatabaseIcon)`
-    ${connectionIndicatorCss}
-    animation: ${wobble} 2s linear infinite;
 `;
