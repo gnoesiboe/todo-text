@@ -65,6 +65,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
 
     const { done, todo, total } = determineProgress(item);
 
+    const heading = isHeading(item);
+
     return (
         <Container
             item={item}
@@ -82,7 +84,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         <QuickfixIcon />
                     )}
                 </StatusIndicatorContainer>
-                {!isHeading(item) && (
+                {!heading && (
                     <Checkbox
                         item={item}
                         isDragging={isDragging}
@@ -114,18 +116,22 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                     <TodoActionButtonWrapper>
                         {current && (
                             <>
-                                <SnoozeTodoButton
-                                    onClick={onTomorrowClick}
-                                    disabled={isSnoozed(item)}
-                                >
-                                    tomorrow
-                                </SnoozeTodoButton>
-                                <SnoozeTodoButton
-                                    onClick={onNextWeekClick}
-                                    disabled={isSnoozed(item)}
-                                >
-                                    next week
-                                </SnoozeTodoButton>
+                                {!heading && (
+                                    <>
+                                        <SnoozeTodoButton
+                                            onClick={onTomorrowClick}
+                                            disabled={isSnoozed(item)}
+                                        >
+                                            tomorrow
+                                        </SnoozeTodoButton>
+                                        <SnoozeTodoButton
+                                            onClick={onNextWeekClick}
+                                            disabled={isSnoozed(item)}
+                                        >
+                                            next week
+                                        </SnoozeTodoButton>
+                                    </>
+                                )}
                                 <EditTodoButton onClick={() => startEdit()} />
                                 <DeleteTodo
                                     item={item}
