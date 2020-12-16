@@ -1,3 +1,4 @@
+import { MouseEventHandler } from 'react';
 import { useTodoContext } from 'context/todoContext/TodoContext';
 import { splitAtLineBreak } from 'utility/stringUtilities';
 import { TodoListItem } from 'model/TodoListItem';
@@ -19,20 +20,26 @@ const applySnoozeTagToValue = (oldValue: string, snoozeTag: string): string => {
 export default function usePostpone(item: TodoListItem, current: boolean) {
     const { saveValue } = useTodoContext();
 
-    const onTomorrowClick = () => {
+    const onTomorrowClick: MouseEventHandler<HTMLButtonElement> = (event) => {
         if (!current) {
             return;
         }
+
+        // prevent deselecting the item in MainContainer
+        event.stopPropagation();
 
         const newValue = applySnoozeTagToValue(item.value, 'tomorrow');
 
         saveValue(item.id, newValue, item.done);
     };
 
-    const onNextWeekClick = () => {
+    const onNextWeekClick: MouseEventHandler<HTMLButtonElement> = (event) => {
         if (!current) {
             return;
         }
+
+        // prevent deselecting the item in MainContainer
+        event.stopPropagation();
 
         const newValue = applySnoozeTagToValue(item.value, 'next week');
 

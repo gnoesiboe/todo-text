@@ -8,6 +8,9 @@ export default function useDeleteTodoOnClick(item: TodoListItem) {
     const onClick: MouseEventHandler<HTMLButtonElement> = (event) => {
         event.preventDefault();
 
+        // prevent click from deselecting todo in MainContainer
+        event.stopPropagation();
+
         if (window.confirm('Are you sure?')) {
             deleteItem(item.id);
         }

@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { MouseEventHandler } from 'react';
 import { editCurrentItem } from 'constants/keyDefnitions';
 import TodoActionButton from 'primitives/todoActionButtons/TodoActionButton';
 
 type Props = {
-    onClick: () => void;
+    onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
 const EditTodoButton: React.FC<Props> = ({ onClick }) => (
