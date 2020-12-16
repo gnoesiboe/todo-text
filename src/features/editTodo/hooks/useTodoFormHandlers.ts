@@ -4,11 +4,11 @@ import {
     submitAndCreateNewItemAfterCurrent,
     submitAndCreateNewItemBeforeCurrent,
     submitItemForm,
-} from './../../../constants/keyDefnitions';
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
+} from 'constants/keyDefnitions';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { isValidValue } from './../utility/inputValidator';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import { TodoListItem } from 'model/TodoListItem';
 import {
     useState,
     FormEventHandler,

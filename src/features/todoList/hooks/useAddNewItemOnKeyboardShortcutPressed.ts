@@ -1,11 +1,12 @@
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { useEffect } from 'react';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import {
     createNewItemAfterCurrent as createNewItemAfterCurrentKeyDefinition,
     createNewItemBeforeCurrent as createNewItemBeforeCurrentKeyDefinition,
-} from '../../../constants/keyDefnitions';
-import useManageActivity from '../../../context/activityContext/hooks/useManageActivity';
+} from 'constants/keyDefnitions';
+import useManageActivity from 'context/activityContext/hooks/useManageActivity';
+
 export default function useAddNewItemOnKeyboardShortcutPressed() {
     const {
         currentItem,

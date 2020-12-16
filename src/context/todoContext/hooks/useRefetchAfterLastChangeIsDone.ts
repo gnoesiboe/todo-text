@@ -1,4 +1,4 @@
-import { TodoListItem } from './../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 import { useEffect } from 'react';
 
 // should be enough to save the last changes to dropbox

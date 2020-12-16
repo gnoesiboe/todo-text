@@ -1,4 +1,4 @@
-import { checkItIsCurrentlyEvening } from './../../../utility/dateTimeUtilities';
+import { checkItIsCurrentlyEvening } from 'utility/dateTimeUtilities';
 import {
     TodoListItem,
     isActionable,
@@ -6,13 +6,13 @@ import {
     isEvening,
     isSnoozed,
     isWaiting,
-} from './../../../model/TodoListItem';
+} from 'model/TodoListItem';
 import { useState, useEffect, useMemo } from 'react';
 import {
     get as getStoredFilters,
     save,
     StoredFilters,
-} from '../../../model/repository/filterRepository';
+} from 'model/repository/filterRepository';
 
 export type ToggleHideNotWaitingHandler = () => void;
 export type ToggleHideDoneHandler = () => void;

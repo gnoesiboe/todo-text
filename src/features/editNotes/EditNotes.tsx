@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import AceEditor from 'react-ace';
 import { Ace } from 'ace-builds';
-import { parseMarkdown } from '../../utility/markdownUtilities';
+import { parseMarkdown } from 'utility/markdownUtilities';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 import useManageMode, { Mode } from './hooks/useManageMode';
@@ -14,7 +14,7 @@ import { EditorContainer, ViewContainer } from './components/Container';
 import {
     SavingIndicator,
     FetchingIndicator,
-} from '../../primitives/connectionIndicator/ConnectionIndicator';
+} from 'primitives/connectionIndicator/ConnectionIndicator';
 
 const EditNotes: React.FC = () => {
     const editorRef = useRef<Ace.Editor>();

@@ -1,12 +1,12 @@
 import { MarkCurrentItemHandler } from './useManageCurrentItem';
 import { StartEditHandler } from './useManageIsEditingState';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 import {
     applyCreateNewItemAfter,
     applyCreateNewItemAtTheStart,
     applyCreateNewItemBefore,
 } from '../utility/todosMutators';
-import { generateId } from '../../../utility/idGenerator';
+import { generateId } from 'utility/idGenerator';
 import { Dispatch, SetStateAction } from 'react';
 
 export type CreateNewItemAfterCurrentHandler = () => void;

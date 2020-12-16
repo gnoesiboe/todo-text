@@ -1,5 +1,5 @@
 import React from 'react';
-import type { TodoListItem } from './../../model/TodoListItem';
+import type { TodoListItem } from 'model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
     DeleteItemHandler,

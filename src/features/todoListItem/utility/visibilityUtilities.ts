@@ -1,6 +1,6 @@
-import { isHeading } from './../../../model/TodoListItem';
-import type { TodoListItem } from '../../../model/TodoListItem';
-import { splitAtLineBreak } from '../../../utility/stringUtilities';
+import { isHeading } from 'model/TodoListItem';
+import type { TodoListItem } from 'model/TodoListItem';
+import { splitAtLineBreak } from 'utility/stringUtilities';
 
 type Formatter = (value: string) => string;
 

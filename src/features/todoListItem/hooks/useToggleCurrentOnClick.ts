@@ -1,5 +1,5 @@
-import { TodoListItem } from '../../../model/TodoListItem';
-import { useTodoContext } from '../../../context/todoContext/TodoContext';
+import { TodoListItem } from 'model/TodoListItem';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 
 export default function useToggleCurrentOnClick(item: TodoListItem) {
     const { toggleCurrentItem, isEditing } = useTodoContext();

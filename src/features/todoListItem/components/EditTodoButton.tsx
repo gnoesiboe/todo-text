@@ -1,6 +1,6 @@
 import React from 'react';
-import { editCurrentItem } from '../../../constants/keyDefnitions';
-import TodoActionButton from '../../../primitives/todoActionButtons/TodoActionButton';
+import { editCurrentItem } from 'constants/keyDefnitions';
+import TodoActionButton from 'primitives/todoActionButtons/TodoActionButton';
 
 type Props = {
     onClick: () => void;

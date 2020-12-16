@@ -1,7 +1,7 @@
-import { useIsEditingNotes } from './../../../context/activityContext/ActivityContext';
-import { navigateToNext } from './../../../constants/keyDefnitions';
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { useTodoContext } from '../../../context/todoContext/TodoContext';
+import { useIsEditingNotes } from 'context/activityContext/ActivityContext';
+import { navigateToNext } from 'constants/keyDefnitions';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useEffect } from 'react';
 
 export default function useNavigateToNextItemOnDownKeyPressed() {

@@ -1,5 +1,5 @@
-import { TodoListItem } from './../../../model/TodoListItem';
-import { createInitialCollection } from './../../../model/factory/todoListItemFactory';
+import { TodoListItem } from 'model/TodoListItem';
+import { createInitialCollection } from 'model/factory/todoListItemFactory';
 import { useEffect } from 'react';
 
 export default function useEnsureThereIsAlwaysOneItemToSelectAndEdit(

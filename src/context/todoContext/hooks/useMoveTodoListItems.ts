@@ -1,11 +1,11 @@
-import { TodoListItem } from './../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 import { Dispatch, SetStateAction, useState } from 'react';
 import {
     applyMoveCurrentItemDown,
     applyMoveCurrentItemUp,
     applyMoveToIndex,
 } from '../utility/todosMutators';
-import { notifyInfo } from '../../../utility/notifier';
+import { notifyInfo } from 'utility/notifier';
 
 export type MoveCurrentItemUpHandler = () => void;
 

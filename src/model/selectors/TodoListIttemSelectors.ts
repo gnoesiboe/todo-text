@@ -1,5 +1,5 @@
-import { splitAtLineBreak } from './../../utility/stringUtilities';
-import { parseDate } from '../../utility/dateTimeUtilities';
+import { splitAtLineBreak } from 'utility/stringUtilities';
+import { parseDate } from 'utility/dateTimeUtilities';
 import { TodoListItem } from './../TodoListItem';
 
 export const extractSnoozedDate = (item: TodoListItem): Date | null => {

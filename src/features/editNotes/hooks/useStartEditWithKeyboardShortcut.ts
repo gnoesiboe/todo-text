@@ -1,6 +1,6 @@
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
-import { startEditNotes } from './../../../constants/keyDefnitions';
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import { startEditNotes } from 'constants/keyDefnitions';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { useEffect } from 'react';
 import { Mode } from './useManageMode';
 

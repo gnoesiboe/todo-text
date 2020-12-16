@@ -1,11 +1,11 @@
-import { resolveDropboxFileName } from './../../../utility/environmentUtlities';
-import { pushDataToDropbox } from './../../../dropbox/storage/dropboxStorage';
-import { isFileNotFoundError } from './../../../dropbox/utility/errorIdentificationUtilities';
-import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
+import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { resolveDropboxFileName } from 'utility/environmentUtlities';
+import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
+import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
 import { useState, useEffect } from 'react';
-import { TodoListItem } from '../../../model/TodoListItem';
-import { fetchTodosFromDropbox } from '../../../dropbox/storage/dropboxStorage';
-import { notifyError, notifySuccess } from '../../../utility/notifier';
+import { TodoListItem } from 'model/TodoListItem';
+import { fetchTodosFromDropbox } from 'dropbox/storage/dropboxStorage';
+import { notifyError, notifySuccess } from 'utility/notifier';
 import { applyNewlyFetched } from '../utility/todosMutators';
 
 export default function useFetchTodoListItems(

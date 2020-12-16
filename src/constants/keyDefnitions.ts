@@ -1,4 +1,4 @@
-import { KeyDefinition } from './../utility/keyboardNavigationUtilities';
+import { KeyDefinition } from 'utility/keyboardNavigationUtilities';
 
 const baseKeyDefinition: KeyDefinition = {
     key: '',

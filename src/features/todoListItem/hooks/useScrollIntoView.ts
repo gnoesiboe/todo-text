@@ -1,5 +1,5 @@
 import { RefObject, useEffect } from 'react';
-import { isInViewport } from '../../../utility/viewportUtilities';
+import { isInViewport } from 'utility/viewportUtilities';
 
 export default function useScrollIntoView(
     ref: RefObject<HTMLDivElement>,

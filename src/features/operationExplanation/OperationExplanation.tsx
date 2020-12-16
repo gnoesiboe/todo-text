@@ -20,7 +20,7 @@ import {
     submitAndCreateNewItemBeforeCurrent,
     submitItemForm,
     toggleDoneStatus,
-} from '../../constants/keyDefnitions';
+} from 'constants/keyDefnitions';
 import ButtonWrapper from './components/ButtonWrapper';
 import ExplanationContainer from './components/ExplanationContainer';
 import ExplanationOutput from './components/ExplanationOutput';

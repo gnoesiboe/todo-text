@@ -1,4 +1,4 @@
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 
 export default function useCountAppliedFilters(): number {
     const {

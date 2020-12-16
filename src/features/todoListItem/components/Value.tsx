@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { isCancelled, TodoListItem } from '../../../model/TodoListItem';
+import { isCancelled, TodoListItem } from 'model/TodoListItem';
 
 export const valueMarginLeft: string = '45px';
 

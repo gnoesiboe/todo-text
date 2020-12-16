@@ -1,5 +1,5 @@
 import React, { ButtonHTMLAttributes } from 'react';
-import TodoActionButton from '../../../primitives/todoActionButtons/TodoActionButton';
+import TodoActionButton from 'primitives/todoActionButtons/TodoActionButton';
 
 type Props = Omit<
     ButtonHTMLAttributes<HTMLButtonElement>,

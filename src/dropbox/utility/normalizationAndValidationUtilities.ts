@@ -1,5 +1,5 @@
-import { TodoListItem, todoSchema } from '../../model/TodoListItem';
-import { notifyError } from '../../utility/notifier';
+import { TodoListItem, todoSchema } from 'model/TodoListItem';
+import { notifyError } from 'utility/notifier';
 
 const normalizeAndValidateTodo = (todo: any): TodoListItem => {
     const result = todoSchema.validate(todo);

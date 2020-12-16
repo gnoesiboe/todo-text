@@ -1,8 +1,8 @@
-import { resolveDropboxFileName } from './../../../utility/environmentUtlities';
-import { useAuthenticationContext } from './../../authenticationContext/AuthenticationContext';
-import { pushDataToDropbox } from '../../../dropbox/storage/dropboxStorage';
+import { resolveDropboxFileName } from 'utility/environmentUtlities';
+import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
 import { useEffect, useState } from 'react';
-import type { TodoListItem } from '../../../model/TodoListItem';
+import type { TodoListItem } from 'model/TodoListItem';
 
 const pushToDropboxThrottle = 3000; // 3 seconds
 

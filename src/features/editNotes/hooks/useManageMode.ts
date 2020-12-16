@@ -1,4 +1,4 @@
-import { useManageCurrentActivity } from './../../../context/activityContext/ActivityContext';
+import { useManageCurrentActivity } from 'context/activityContext/ActivityContext';
 import { useState } from 'react';
 
 export enum Mode {

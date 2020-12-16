@@ -1,4 +1,4 @@
-import { isDevelopmentEnvironment } from './../../../utility/environmentUtlities';
+import { isDevelopmentEnvironment } from 'utility/environmentUtlities';
 import { useEffect } from 'react';
 
 export default function useConfirmCloseWhenThereAreOpenChanges(

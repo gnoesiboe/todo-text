@@ -1,5 +1,5 @@
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import { TodoListItem } from 'model/TodoListItem';
 import { MouseEventHandler } from 'react';
 
 export default function useDeleteTodoOnClick(item: TodoListItem) {

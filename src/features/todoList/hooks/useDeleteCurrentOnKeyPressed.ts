@@ -1,7 +1,8 @@
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { useEffect } from 'react';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
-import { deleteCurrentItem } from '../../../constants/keyDefnitions';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import { deleteCurrentItem } from 'constants/keyDefnitions';
+
 export default function useDeleteCurrentOnKeyPressed() {
     const { currentItem, isEditing, deleteItem } = useTodoContext();
 

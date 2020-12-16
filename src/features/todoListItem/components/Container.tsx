@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import { TodoListItem } from '../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 
 const Container = styled.div<{
     item: TodoListItem;

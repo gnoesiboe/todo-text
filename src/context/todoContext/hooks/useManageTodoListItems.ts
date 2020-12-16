@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import type { TodoListItem } from '../../../model/TodoListItem';
+import type { TodoListItem } from 'model/TodoListItem';
 import {
     applyUpdate,
     applyDelete,

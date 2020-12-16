@@ -1,6 +1,6 @@
-import { useTodoContext } from '../../../context/todoContext/TodoContext';
-import { splitAtLineBreak } from '../../../utility/stringUtilities';
-import { TodoListItem } from '../../../model/TodoListItem';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import { splitAtLineBreak } from 'utility/stringUtilities';
+import { TodoListItem } from 'model/TodoListItem';
 
 const applySnoozeTagToValue = (oldValue: string, snoozeTag: string): string => {
     const [summaryLine, ...otherLines] = splitAtLineBreak(oldValue);

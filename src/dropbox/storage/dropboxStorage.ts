@@ -1,17 +1,17 @@
 import {
     resolveDropboxFileName,
     resolveDropboxNotesFileName,
-} from './../../utility/environmentUtlities';
-import { TodoListItem } from './../../model/TodoListItem';
+} from 'utility/environmentUtlities';
+import { TodoListItem } from 'model/TodoListItem';
 import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
 import {
     resolveDropboxApiKey,
     resolveDropboxApiSecret,
-} from '../../utility/environmentUtlities';
-import { formatBodyAsFormData } from '../../utility/requestUtilities';
+} from 'utility/environmentUtlities';
+import { formatBodyAsFormData } from 'utility/requestUtilities';
 import { getDropboxClient } from '../client/dropboxClient';
 import { createAuthorizationHeader } from '../utility/headerUtilities';
-import { notifyError } from '../../utility/notifier';
+import { notifyError } from 'utility/notifier';
 
 const apiHost = 'https://api.dropboxapi.com';
 const contentHost = 'https://content.dropboxapi.com';

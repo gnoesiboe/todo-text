@@ -1,12 +1,12 @@
-import { resolveDropboxNotesFileName } from './../../../utility/environmentUtlities';
-import { isFileNotFoundError } from './../../../dropbox/utility/errorIdentificationUtilities';
+import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
+import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
 import {
     fetchDataFromDropbox,
     pushDataToDropbox,
-} from './../../../dropbox/storage/dropboxStorage';
-import { useAuthenticationContext } from './../../../context/authenticationContext/AuthenticationContext';
+} from 'dropbox/storage/dropboxStorage';
+import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect, useState } from 'react';
-import { notifyError, notifySuccess } from '../../../utility/notifier';
+import { notifyError, notifySuccess } from 'utility/notifier';
 import { Mode } from './useManageMode';
 
 export default function useManageEditorValue(mode: Mode) {

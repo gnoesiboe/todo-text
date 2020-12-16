@@ -1,5 +1,5 @@
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
-import type { TodoListItem } from './../../../model/TodoListItem';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import type { TodoListItem } from 'model/TodoListItem';
 
 export default function useHandleDoneStatusChange(item: TodoListItem) {
     const { saveValue } = useTodoContext();

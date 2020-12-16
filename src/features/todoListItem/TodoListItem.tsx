@@ -8,26 +8,26 @@ import {
     isHeading,
     hasNotes,
     isSnoozed,
-} from '../../model/TodoListItem';
+} from 'model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
 import useToggleCurrentOnClick from './hooks/useToggleCurrentOnClick';
 import useHandleDoneStatusChange from './hooks/useHandleDoneStatusChange';
 import HasNotesIndicator from './components/HasNotesIndicator';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
-import { useTodoContext } from '../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
 import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
 import useDragAndDrop from './hooks/useDragAndDrop';
 import useScrollIntoView from './hooks/useScrollIntoView';
 import { determineProgress } from './utility/selectors';
-import ProgressBar from '../../primitives/ProgressBar/ProgressBar';
+import ProgressBar from 'primitives/ProgressBar/ProgressBar';
 import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 import EditTodoButton from './components/EditTodoButton';
 import SnoozeTodoButton from './components/SnoozeTodoButton';
 import usePostpone from './hooks/usePostpone';
-import TodoActionButtonWrapper from '../../primitives/todoActionButtons/TodoActionButtonWrapper';
+import TodoActionButtonWrapper from 'primitives/todoActionButtons/TodoActionButtonWrapper';
 import Container from './components/Container';
 import Checkbox from './components/Checkbox';
 import { Value } from './components/Value';

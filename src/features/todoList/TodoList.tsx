@@ -1,6 +1,6 @@
 import React from 'react';
 import TodoListItem from '../todoListItem/TodoListItem';
-import { useTodoContext } from '../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import SortButton from './components/SortButton';
 import useNavigateToNextItemOnDownKeyPressed from './hooks/useNavigateToNextItemOnDownKeyPressed';
 import useNavigateToPreviousItemOnUpKeyPressed from './hooks/useNavigateToPreviousItemOnUpKeyPressed';
@@ -18,7 +18,7 @@ import Container from './components/Container';
 import {
     FetchingIndicator,
     SavingIndicator,
-} from '../../primitives/connectionIndicator/ConnectionIndicator';
+} from 'primitives/connectionIndicator/ConnectionIndicator';
 import Header from './components/Header';
 import Heading from './components/Heading';
 import AddTodoContainer from './components/AddTodoContainer';

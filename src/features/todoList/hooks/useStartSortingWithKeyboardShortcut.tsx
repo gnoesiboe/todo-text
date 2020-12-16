@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
-import { toggleSortingItems } from '../../../constants/keyDefnitions';
-import { useTodoContext } from '../../../context/todoContext/TodoContext';
-import { checkKeyDefinitionIsPressed } from '../../../utility/keyboardNavigationUtilities';
+import { toggleSortingItems } from 'constants/keyDefnitions';
+import { useTodoContext } from 'context/todoContext/TodoContext';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 
 export default function useStartSortingWithKeyboardShortcut() {
     const { isSorting, startSorting, stopSorting } = useTodoContext();

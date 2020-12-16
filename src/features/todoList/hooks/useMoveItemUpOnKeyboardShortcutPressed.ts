@@ -1,7 +1,7 @@
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useEffect } from 'react';
-import { moveCurrentItemUp as moveCurrentItemUpKeyDefinition } from '../../../constants/keyDefnitions';
+import { moveCurrentItemUp as moveCurrentItemUpKeyDefinition } from 'constants/keyDefnitions';
 
 export default function useMoveItemUpOnKeyboardShortcutPressed() {
     const { moveCurrentItemUp, isEditing } = useTodoContext();

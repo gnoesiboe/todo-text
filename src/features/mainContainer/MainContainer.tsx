@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { Container as BootstrapContainer } from 'react-bootstrap';
 import styled from 'styled-components';
-import { useTodoContext } from '../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 
 type Props = {
     children: ReactNode;

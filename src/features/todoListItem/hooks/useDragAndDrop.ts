@@ -1,6 +1,6 @@
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { DragObjectWithType } from 'react-dnd';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 import { useRef } from 'react';
 import useDragItem from './useDragItem';
 import useDropItem from './useDropItem';

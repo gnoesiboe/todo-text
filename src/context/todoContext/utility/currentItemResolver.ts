@@ -1,4 +1,4 @@
-import { TodoListItem } from '../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 
 export function determineNextCurrentItem(
     currentItem: string | null,

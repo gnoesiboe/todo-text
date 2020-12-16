@@ -1,8 +1,8 @@
-import { isAfterToday } from './../utility/dateTimeUtilities';
+import { isAfterToday } from 'utility/dateTimeUtilities';
 import { extractSnoozedDate } from './selectors/TodoListIttemSelectors';
-import { generateId } from './../utility/idGenerator';
+import { generateId } from 'utility/idGenerator';
 import Joi from 'joi';
-import { splitAtLineBreak } from '../utility/stringUtilities';
+import { splitAtLineBreak } from 'utility/stringUtilities';
 
 export interface TodoListItem {
     id: string;

@@ -1,5 +1,5 @@
 import { DragObject, dragDropItemType } from './useDragAndDrop';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { TodoListItem } from 'model/TodoListItem';
 import { useDrag } from 'react-dnd';
 
 type CollectedProps = {

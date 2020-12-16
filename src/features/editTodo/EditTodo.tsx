@@ -1,11 +1,8 @@
 import React, { useRef } from 'react';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
-import type { TodoListItem } from '../../model/TodoListItem';
+import type { TodoListItem } from 'model/TodoListItem';
 import useSuggestTags from './hooks/useSuggestTags';
-import {
-    submitItemForm,
-    stopEditWithoutSave,
-} from '../../constants/keyDefnitions';
+import { submitItemForm, stopEditWithoutSave } from 'constants/keyDefnitions';
 import Form from './components/Form';
 import Textarea from './components/Textarea';
 import SubmitButton from './components/SubmitButton';

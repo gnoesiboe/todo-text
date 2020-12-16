@@ -1,8 +1,8 @@
-import { useIsEditingNotes } from './../../../context/activityContext/ActivityContext';
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { useIsEditingNotes } from 'context/activityContext/ActivityContext';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useEffect } from 'react';
-import { editCurrentItem } from '../../../constants/keyDefnitions';
+import { editCurrentItem } from 'constants/keyDefnitions';
 
 export default function useStartEditingOnKeyDown(current: boolean) {
     const { startEdit, isEditing } = useTodoContext();

@@ -1,7 +1,7 @@
-import { clear as clearTokenStorage } from '../../model/repository/accessTokenRepository';
+import { clear as clearTokenStorage } from 'model/repository/accessTokenRepository';
 import { isLoggedOutError } from '../utility/errorIdentificationUtilities';
 import axios, { AxiosInstance } from 'axios';
-import { notifyError } from '../../utility/notifier';
+import { notifyError } from 'utility/notifier';
 
 const reloadTimeoutLength = 3000; // 3 seconds
 

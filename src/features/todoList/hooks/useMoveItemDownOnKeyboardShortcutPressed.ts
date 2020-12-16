@@ -1,7 +1,7 @@
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { useTodoContext } from '../../../context/todoContext/TodoContext';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useEffect } from 'react';
-import { moveCurrentItemDown as moveCurrentItemDownKeyDefinition } from '../../../constants/keyDefnitions';
+import { moveCurrentItemDown as moveCurrentItemDownKeyDefinition } from 'constants/keyDefnitions';
 
 export default function useMoveItemDownOnKeyboardShortcutPressed() {
     const { moveCurrentItemDown, isEditing } = useTodoContext();

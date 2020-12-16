@@ -1,6 +1,6 @@
 import React from 'react';
 import { Dropdown } from 'react-bootstrap';
-import { useTodoContext } from '../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import ButtonGroup from './components/ButtonGroup';
 import ButtonGroupTitle from './components/ButtonGroupTitle';
 import Container from './components/Container';

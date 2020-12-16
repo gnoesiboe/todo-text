@@ -3,13 +3,13 @@ import {
     transformInexactToExactDate,
     isBeforeToday,
     isToday,
-} from './../../../utility/dateTimeUtilities';
-import { isActionable } from './../../../model/TodoListItem';
-import { createEmpty } from './../../../model/factory/todoListItemFactory';
-import { TodoListItem } from '../../../model/TodoListItem';
+} from 'utility/dateTimeUtilities';
+import { isActionable } from 'model/TodoListItem';
+import { createEmpty } from 'model/factory/todoListItemFactory';
+import { TodoListItem } from 'model/TodoListItem';
 import produce from 'immer';
 import { isEqual } from 'lodash';
-import { isExactDate } from '../../../utility/dateTimeUtilities';
+import { isExactDate } from 'utility/dateTimeUtilities';
 
 const transformDateIndicators = (items: TodoListItem[]) => {
     items.forEach((item) => {

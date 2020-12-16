@@ -1,8 +1,8 @@
-import { useIsEditingNotes } from './../../../context/activityContext/ActivityContext';
-import { checkKeyDefinitionIsPressed } from './../../../utility/keyboardNavigationUtilities';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { useIsEditingNotes } from 'context/activityContext/ActivityContext';
+import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useEffect } from 'react';
-import { navigateToPrevious } from '../../../constants/keyDefnitions';
+import { navigateToPrevious } from 'constants/keyDefnitions';
 
 export default function useNavigateToPreviousItemOnUpKeyPressed() {
     const { moveToPrevious, isEditing } = useTodoContext();

@@ -1,11 +1,11 @@
-import { redirectToAuthenticate } from './../../../dropbox/utility/redirectUtilities';
-import { fetchAccessToken } from '../../../dropbox/storage/dropboxStorage';
-import { parseQueryString } from '../../../utility/requestUtilities';
+import { redirectToAuthenticate } from 'dropbox/utility/redirectUtilities';
+import { fetchAccessToken } from 'dropbox/storage/dropboxStorage';
+import { parseQueryString } from 'utility/requestUtilities';
 import { useState, useEffect } from 'react';
 import {
     get as getTokenFromStorage,
     save as writeToStorage,
-} from '../../../model/repository/accessTokenRepository';
+} from 'model/repository/accessTokenRepository';
 
 export default function useResolveAccessTokenOrRedirect() {
     const [redirecting, setRedirecting] = useState<boolean>(false);

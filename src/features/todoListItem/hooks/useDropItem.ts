@@ -1,6 +1,6 @@
 import { dragDropItemType, DragObject } from './useDragAndDrop';
 import { XYCoord } from 'dnd-core';
-import { useTodoContext } from './../../../context/todoContext/TodoContext';
+import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useDrop, DropTargetMonitor } from 'react-dnd';
 import { RefObject } from 'react';
 

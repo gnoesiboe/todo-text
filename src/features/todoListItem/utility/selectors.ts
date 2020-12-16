@@ -1,5 +1,5 @@
-import { splitAtLineBreak } from '../../../utility/stringUtilities';
-import { TodoListItem } from './../../../model/TodoListItem';
+import { splitAtLineBreak } from 'utility/stringUtilities';
+import { TodoListItem } from 'model/TodoListItem';
 
 export const determineProgress = (item: TodoListItem) => {
     const lines = splitAtLineBreak(item.value);
