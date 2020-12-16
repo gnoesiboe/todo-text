@@ -6,15 +6,13 @@ import useDeleteTodoOnClick from './hooks/useDeleteTodoOnClick';
 
 type Props = {
     item: TodoListItem;
-    visible: boolean;
 };
 
-const DeleteTodo: React.FC<Props> = ({ item, visible }) => {
+const DeleteTodo: React.FC<Props> = ({ item }) => {
     const { onClick } = useDeleteTodoOnClick(item);
 
     return (
         <TodoActionButton
-            disabled={visible}
             onClick={onClick}
             title={`Delete todo (keyboard shortcut: ${deleteCurrentItem.description})`}
         >

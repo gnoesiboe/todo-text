@@ -112,33 +112,28 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                         />
                     </AutoHeightAnimate>
                 )}
-                {!isEditing && !isSorting && (
+                {!isEditing && !isSorting && current && (
                     <TodoActionButtonWrapper>
-                        {current && (
-                            <>
-                                {!heading && (
-                                    <>
-                                        <SnoozeTodoButton
-                                            onClick={onTomorrowClick}
-                                            disabled={isSnoozed(item)}
-                                        >
-                                            tomorrow
-                                        </SnoozeTodoButton>
-                                        <SnoozeTodoButton
-                                            onClick={onNextWeekClick}
-                                            disabled={isSnoozed(item)}
-                                        >
-                                            next week
-                                        </SnoozeTodoButton>
-                                    </>
-                                )}
-                                <EditTodoButton onClick={() => startEdit()} />
-                                <DeleteTodo
-                                    item={item}
-                                    visible={current && !isEditing}
-                                />
-                            </>
-                        )}
+                        <>
+                            {!heading && (
+                                <>
+                                    <SnoozeTodoButton
+                                        onClick={onTomorrowClick}
+                                        disabled={isSnoozed(item)}
+                                    >
+                                        tomorrow
+                                    </SnoozeTodoButton>
+                                    <SnoozeTodoButton
+                                        onClick={onNextWeekClick}
+                                        disabled={isSnoozed(item)}
+                                    >
+                                        next week
+                                    </SnoozeTodoButton>
+                                </>
+                            )}
+                            <EditTodoButton onClick={() => startEdit()} />
+                            <DeleteTodo item={item} />
+                        </>
                     </TodoActionButtonWrapper>
                 )}
 
