@@ -13,14 +13,7 @@ import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
 import useToggleCurrentOnClick from './hooks/useToggleCurrentOnClick';
 import useHandleDoneStatusChange from './hooks/useHandleDoneStatusChange';
-import {
-    Container,
-    Checkbox,
-    Value,
-    WaitingIcon,
-    QuickfixIcon,
-    HasNotesIndicator,
-} from './components/StyledComponents';
+import HasNotesIndicator from './components/HasNotesIndicator';
 import DeleteTodo from '../deleteTodo/DeleteTodo';
 import { useTodoContext } from '../../context/todoContext/TodoContext';
 import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
@@ -35,6 +28,10 @@ import EditTodoButton from './components/EditTodoButton';
 import SnoozeTodoButton from './components/SnoozeTodoButton';
 import usePostpone from './hooks/usePostpone';
 import TodoActionButtonWrapper from '../../primitives/todoActionButtons/TodoActionButtonWrapper';
+import Container from './components/Container';
+import Checkbox from './components/Checkbox';
+import { Value } from './components/Value';
+import { QuickfixIcon, WaitingIcon } from './components/StatusIndicator';
 
 type Props = {
     item: ItemModel;

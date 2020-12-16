@@ -1,59 +1,7 @@
-import styled, { css } from 'styled-components/macro';
-import BaseCheckbox from '../../../primitives/Checkbox/Checkbox';
+import styled from 'styled-components';
 import { isCancelled, TodoListItem } from '../../../model/TodoListItem';
-import {
-    QuestionIcon,
-    AlertIcon,
-    ChevronDownIcon,
-} from '@primer/octicons-react';
 
-interface ItemContextProps {
-    item: TodoListItem;
-    isDragging: boolean;
-}
-
-const statusTop: string = '11px';
-const valueMarginLeft: string = '45px';
-
-export const Container = styled.div<{
-    item: TodoListItem;
-    current: boolean;
-    isDragging: boolean;
-    isEditing: boolean;
-    isSorting: boolean;
-}>`
-    position: relative;
-    margin: 0 0
-        ${({ current, isSorting }) => (current && !isSorting ? 30 : 5)}px -10px;
-    padding: 5px 0 3px 0;
-    border-radius: 5px;
-    transition: max-height 1s ease-in;
-
-    ${({ isEditing, current }) => {
-        if (!current) {
-            return null;
-        }
-
-        return isEditing
-            ? 'background: rgba(231, 111, 81, 0.3) !important;'
-            : 'background: #eee;';
-    }}
-
-    ${({ isDragging, theme }) =>
-        isDragging &&
-        `
-            color: white !important;
-            background: ${theme.colors.third};
-        `}
-`;
-
-export const Checkbox = styled(BaseCheckbox)<ItemContextProps>`
-    position: absolute;
-    left: 10px;
-    top: ${statusTop};
-
-    ${({ isDragging }) => isDragging && `visibility: hidden;`}
-`;
+export const valueMarginLeft: string = '45px';
 
 export const Value = styled.div<{
     item: TodoListItem;
@@ -150,37 +98,4 @@ export const Value = styled.div<{
     .todo-list-item__value__sub-item--checked:before {
         content: '⊠ ';
     }
-`;
-
-const StatusIndicatorIconStyling = css`
-    margin-right: 5px;
-    display: inline;
-`;
-
-export const WaitingIcon = styled(QuestionIcon)`
-    ${StatusIndicatorIconStyling}
-    color: ${({ theme }) => theme.colors.fourth};
-`;
-
-export const QuickfixIcon = styled(AlertIcon)`
-    ${StatusIndicatorIconStyling}
-    color: ${({ theme }) => theme.colors.success};
-`;
-
-export const StatusIndicatorContainerWrapper = styled.div`
-    position: absolute;
-    left: calc(-${valueMarginLeft} - 20px);
-    top: 5px;
-    z-index: ${({ theme }) => theme.zIndex.statusIndicatorContainerWrapper};
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
-        display: none;
-    }
-`;
-
-export const HasNotesIndicator = styled(ChevronDownIcon)`
-    position: absolute;
-    right: 5px;
-    top: 5px;
-    opacity: 0.3;
 `;
