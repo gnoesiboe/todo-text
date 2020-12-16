@@ -3,13 +3,7 @@ import useToggleVisibility from '../../hooks/useToggleVisibility';
 import { Button, Table } from 'react-bootstrap';
 import { ChevronDownIcon, ChevronUpIcon } from '@primer/octicons-react';
 import ListItem from './components/ListItem';
-import {
-    ButtonWrapper,
-    ExplanationContainer,
-    ExplanationSection,
-    ExplanationSectionTitle,
-    ExplanationOutput,
-} from './components/StyledComponents';
+import ExplanationSectionTitle from './components/ExplanationSectionTitle';
 import {
     clearCurrentItem,
     createNewItemAfterCurrent,
@@ -27,6 +21,10 @@ import {
     submitItemForm,
     toggleDoneStatus,
 } from '../../constants/keyDefnitions';
+import ButtonWrapper from './components/ButtonWrapper';
+import ExplanationContainer from './components/ExplanationContainer';
+import ExplanationOutput from './components/ExplanationOutput';
+import ExplanationSection from './components/ExplanationSection';
 
 const OperationExplanation: React.FC = () => {
     const { visible, toggle } = useToggleVisibility(false);
