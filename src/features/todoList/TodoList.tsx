@@ -9,7 +9,6 @@ import useMoveItemDownOnKeyboardShortcutPressed from './hooks/useMoveItemDownOnK
 import useClearCurrentOnKeyPressed from './hooks/useClearCurrentOnKeyPressed';
 import useDeleteCurrentOnKeyPressed from './hooks/useDeleteCurrentOnKeyPressed';
 import useToggleDoneStatusOnKeyPressed from './hooks/useToggleDoneStatusOnKeyPressed';
-import useAddNewItemOnKeyboardShortcutPressed from './hooks/useAddNewItemOnKeyboardShortcutPressed';
 import usePreventScrollWithArrowKeys from './hooks/usePreventScrollWithArrowKeys';
 import AddTodo from '../addTodo/AddTodo';
 import FilterTodos from '../filterTodos/FilterTodos';
@@ -42,7 +41,6 @@ const TodoList: React.FC = () => {
     useClearCurrentOnKeyPressed();
     useDeleteCurrentOnKeyPressed();
     useToggleDoneStatusOnKeyPressed();
-    useAddNewItemOnKeyboardShortcutPressed();
     usePreventScrollWithArrowKeys();
     useStartSortingWithKeyboardShortcut();
 

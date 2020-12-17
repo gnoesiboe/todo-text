@@ -13,13 +13,14 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
         isEditing,
         createNewItemBeforeCurrent,
         createNewItemAfterCurrent,
+        createNewItemAtTheStart,
         startEdit,
     } = useTodoContext();
 
     const { isEditingNotes } = useManageActivity();
 
     useEffect(() => {
-        if (!currentItem || isEditing || isEditingNotes) {
+        if (isEditing || isEditingNotes) {
             return;
         }
 
@@ -30,7 +31,12 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
                     event,
                 )
             ) {
-                createNewItemAfterCurrent();
+                if (currentItem) {
+                    createNewItemAfterCurrent();
+                } else {
+                    createNewItemAtTheStart();
+                }
+
                 startEdit();
             } else if (
                 checkKeyDefinitionIsPressed(
