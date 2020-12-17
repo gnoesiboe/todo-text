@@ -7,6 +7,7 @@ import Form from './components/Form';
 import Textarea from './components/Textarea';
 import SubmitButton from './components/SubmitButton';
 import CancelButton from './components/CancelButton';
+import { isValidValue } from './utility/inputValidator';
 
 type Props = {
     item: TodoListItem;
@@ -40,6 +41,7 @@ const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
             <SubmitButton
                 type="submit"
                 title={`Save changes (keyboard shortcut: ${submitItemForm.description})`}
+                disabled={!isValidValue(value)}
             >
                 Save
             </SubmitButton>
