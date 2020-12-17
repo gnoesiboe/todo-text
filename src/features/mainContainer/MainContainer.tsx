@@ -11,6 +11,10 @@ const Container = styled(BootstrapContainer)`
     min-height: 100vh;
     margin-top: -20px;
     padding: 20px;
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.small}) {
+        padding: 5px;
+    }
 `;
 
 const MainContainer: React.FC<Props> = ({ children }) => {
