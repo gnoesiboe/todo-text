@@ -1,12 +1,6 @@
-import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
-import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
-import {
-    fetchDataFromDropbox,
-    pushDataToDropbox,
-} from 'dropbox/storage/dropboxStorage';
+import { fetchNotesFromDropbox } from 'dropbox/storage/dropboxStorage';
 import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect, useState } from 'react';
-import { notifyError, notifySuccess } from 'utility/notifier';
 import { Mode } from './useManageMode';
 
 export default function useManageEditorValue(mode: Mode) {
@@ -23,33 +17,10 @@ export default function useManageEditorValue(mode: Mode) {
 
         setIsFetching(true);
 
-        try {
-            const notes = await fetchDataFromDropbox(accessToken);
+        const notes = await fetchNotesFromDropbox(accessToken);
 
-            if (notes) {
-                setValue(notes);
-            }
-        } catch (error) {
-            if (isFileNotFoundError(error)) {
-                await pushDataToDropbox(
-                    accessToken,
-                    '# Notes',
-                    resolveDropboxNotesFileName(),
-                );
-
-                notifySuccess(
-                    'File did not exist (anymore) in Dropbox. We created a new one',
-                );
-
-                return;
-            }
-
-            const errorMessage =
-                'An error occurred while fetching the todos from dropbox';
-
-            notifyError(errorMessage);
-
-            console.error(errorMessage, error);
+        if (notes) {
+            setValue(notes);
         }
 
         setIsFetching(false);

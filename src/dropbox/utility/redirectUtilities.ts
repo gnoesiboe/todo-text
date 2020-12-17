@@ -1,14 +1,12 @@
-import { resolveDropboxApiKey } from 'utility/environmentUtlities';
-import { createQueryString } from 'utility/requestUtilities';
-
-const apiKey = resolveDropboxApiKey();
+import { createOfficialDropboxClient } from './../client/dropboxClient';
 
 export const redirectToAuthenticate = (redirectUri: string) => {
-    const queryString = createQueryString({
-        client_id: apiKey,
-        redirect_uri: redirectUri,
-        response_type: 'code',
-    });
+    // @ts-ignore → Somehow the Typescript types are wrong
+    const urlToRedirectTo = createOfficialDropboxClient().auth.getAuthenticationUrl(
+        redirectUri,
+        undefined,
+        'code',
+    );
 
-    window.location.href = `https://www.dropbox.com/oauth2/authorize?${queryString}`;
+    window.location.href = urlToRedirectTo;
 };

@@ -1,49 +1,47 @@
+import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
+import { isLoggedOutError } from './../utility/errorIdentificationUtilities';
+import { createOfficialDropboxClient } from './../client/dropboxClient';
 import {
     resolveDropboxFileName,
     resolveDropboxNotesFileName,
 } from 'utility/environmentUtlities';
 import { TodoListItem } from 'model/TodoListItem';
 import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
-import {
-    resolveDropboxApiKey,
-    resolveDropboxApiSecret,
-} from 'utility/environmentUtlities';
-import { formatBodyAsFormData } from 'utility/requestUtilities';
-import { getDropboxClient } from '../client/dropboxClient';
-import { createAuthorizationHeader } from '../utility/headerUtilities';
-import { notifyError } from 'utility/notifier';
-
-const apiHost = 'https://api.dropboxapi.com';
-const contentHost = 'https://content.dropboxapi.com';
-const notifyHost = 'https://notify.dropboxapi.com';
-
-const apiKey = resolveDropboxApiKey();
-const apiSecret = resolveDropboxApiSecret();
+import { notifyError, notifySuccess } from 'utility/notifier';
+import { clear as clearTokenStorage } from 'model/repository/accessTokenRepository';
 
 // @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
+
+const reloadTimeoutLength = 3000; // 3 seconds
+
+const redirectToLoginWhenLoggedOut = () => {
+    notifyError(
+        `Je bent uitgelogd, de pagina wordt over ${
+            reloadTimeoutLength / 1000
+        } seconden ververst om je opnieuw in te laten loggen`,
+    );
+
+    // clear token storage so a new token is requested
+    clearTokenStorage();
+
+    setTimeout(() => window.location.reload(), reloadTimeoutLength);
+
+    return;
+};
 
 export const fetchAccessToken = async (
     code: string,
     redirectUri: string,
 ): Promise<string> => {
-    const body = formatBodyAsFormData({
-        code,
-        grant_type: 'authorization_code',
-        redirect_uri: redirectUri,
-    });
+    const client = createOfficialDropboxClient();
 
-    const { data } = await getDropboxClient().post(
-        `${apiHost}/oauth2/token`,
-        body,
-        {
-            auth: {
-                username: apiKey,
-                password: apiSecret,
-            },
-        },
+    // @ts-ignore → Somehow the Typescript types are wrong
+    const { result } = await client.auth.getAccessTokenFromCode(
+        redirectUri,
+        code,
     );
 
-    return data.access_token;
+    return result.access_token;
 };
 
 export const pushDataToDropbox = async (
@@ -51,104 +49,140 @@ export const pushDataToDropbox = async (
     json: string,
     fileName: string,
 ) => {
-    const url = `${contentHost}/2/files/upload`;
+    const client = createOfficialDropboxClient(accessToken);
 
-    await getDropboxClient().post(url, json, {
-        headers: {
-            Authorization: createAuthorizationHeader(accessToken),
-            'Content-Type': 'application/octet-stream',
-            'Dropbox-API-Arg': JSON.stringify({
-                path: `/${fileName}`,
-                mode: 'overwrite',
-            }),
-        },
-    });
+    try {
+        client.filesUpload({
+            path: `/${fileName}`,
+            mode: {
+                '.tag': 'overwrite',
+            },
+            contents: json,
+        });
+    } catch (error) {
+        const errorMessage = 'An error occurred while persisting the todos';
+
+        notifyError(errorMessage);
+        console.error(errorMessage, error);
+
+        if (isLoggedOutError(error)) {
+            redirectToLoginWhenLoggedOut();
+        }
+    }
 };
 
-export const fetchDataFromDropbox = async (
+export const fetchNotesFromDropbox = async (
     accessToken: string,
 ): Promise<string | null> => {
-    const url = `${contentHost}/2/files/download`;
+    const client = createOfficialDropboxClient(accessToken);
 
-    const response = await getDropboxClient().post(url, undefined, {
-        headers: {
-            Authorization: createAuthorizationHeader(accessToken),
-            'Dropbox-API-Arg': JSON.stringify({
-                path: `/${resolveDropboxNotesFileName()}`,
-            }),
-        },
-    });
+    try {
+        const { result } = await client.filesDownload({
+            path: `/${resolveDropboxNotesFileName()}`,
+        });
 
-    if (!response || !response.data) {
+        // @ts-ignore → Somehow the types are wrong
+        return await new Response(result.fileBlob).text();
+    } catch (error) {
+        if (isLoggedOutError(error)) {
+            redirectToLoginWhenLoggedOut();
+
+            return null;
+        }
+
+        if (isFileNotFoundError(error)) {
+            const initialContent = '# notes';
+
+            await pushDataToDropbox(
+                accessToken,
+                initialContent,
+                resolveDropboxNotesFileName(),
+            );
+
+            notifySuccess(
+                'File did not exist (anymore) in Dropbox. We created a new one',
+            );
+
+            return initialContent;
+        }
+
+        const errorMessage =
+            'An error occurred while fetching the notes from Dropbox';
+
+        notifyError(errorMessage);
+        console.error(errorMessage, error);
+
         return null;
     }
-
-    return response.data;
 };
 
 export const fetchTodosFromDropbox = async (
     accessToken: string,
 ): Promise<TodoListItem[] | null> => {
-    const url = `${contentHost}/2/files/download`;
+    const client = createOfficialDropboxClient(accessToken);
 
-    const response = await getDropboxClient().post(url, undefined, {
-        headers: {
-            Authorization: createAuthorizationHeader(accessToken),
-            'Dropbox-API-Arg': JSON.stringify({
-                path: `/${resolveDropboxFileName()}`,
-            }),
-        },
-    });
+    try {
+        const { result } = await client.filesDownload({
+            path: `/${resolveDropboxFileName()}`,
+        });
 
-    if (!response || !response.data) {
+        // @ts-ignore → Somehow the types are wrong
+        const rawContent = await new Response(result.fileBlob).text();
+
+        const parsedContent = JSON.parse(rawContent);
+
+        return normalizeAndValidateTodos(parsedContent);
+    } catch (error) {
+        if (isLoggedOutError(error)) {
+            redirectToLoginWhenLoggedOut();
+
+            return null;
+        }
+
+        if (isFileNotFoundError(error)) {
+            await pushDataToDropbox(
+                accessToken,
+                '[]',
+                resolveDropboxFileName(),
+            );
+
+            notifySuccess(
+                'Todos did not exist (anymore) in Dropbox. We created a new one',
+            );
+
+            return [];
+        }
+
+        const errorMessage = 'An error occurred while fetching the todos';
+
+        notifyError(errorMessage);
+        console.error(errorMessage, error);
+
         return null;
     }
-
-    return normalizeAndValidateTodos(response.data);
 };
 
 const fetchFolderCursor = async (accessToken: string): Promise<string> => {
-    const url = `${apiHost}/2/files/list_folder`;
+    const client = createOfficialDropboxClient(accessToken);
 
-    const { data } = await getDropboxClient().post(
-        url,
-        {
-            path: '',
-        },
-        {
-            headers: {
-                Authorization: createAuthorizationHeader(accessToken),
-                'Content-Type': 'application/json',
-            },
-        },
-    );
+    const { result } = await client.filesListFolderGetLatestCursor({
+        path: '',
+    });
 
-    return data.cursor;
+    return result.cursor;
 };
 
-export const pollForChanges = async (accessToken: string): Promise<boolean> => {
-    const cursor = await fetchFolderCursor(accessToken);
-
-    const url = `${notifyHost}/2/files/list_folder/longpoll`;
-
+export const pollForChanges = async (
+    accessToken: string,
+): Promise<boolean | null> => {
     try {
-        const body = await getDropboxClient().post(
-            url,
-            {
-                cursor,
-            },
-            {
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            },
-        );
+        const cursor = await fetchFolderCursor(accessToken);
 
-        if (!body) {
-            return false;
-        }
+        const client = createOfficialDropboxClient();
 
-        return body?.data?.changes || false;
+        const { result } = await client.filesListFolderLongpoll({ cursor });
+
+        return result.changes;
     } catch (error) {
         const errorMessage =
             'An error occurred while polling the dropbox api for changes';
@@ -156,6 +190,10 @@ export const pollForChanges = async (accessToken: string): Promise<boolean> => {
         notifyError(errorMessage);
         console.error(errorMessage, error);
 
-        return false;
+        if (isLoggedOutError(error)) {
+            redirectToLoginWhenLoggedOut();
+        }
+
+        return null;
     }
 };

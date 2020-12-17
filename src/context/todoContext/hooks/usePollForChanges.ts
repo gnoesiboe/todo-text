@@ -2,8 +2,7 @@ import { useAuthenticationContext } from 'context/authenticationContext/Authenti
 import { useEffect } from 'react';
 import { pollForChanges as pollDropboxForChanges } from 'dropbox/storage/dropboxStorage';
 
-//@todo remove? No longer in use, but might be useful later on
-export default function usePollForChanges(refetchTodos: () => any) {
+export default function usePollForChanges(refetchTodos: () => void) {
     const { accessToken } = useAuthenticationContext();
 
     const pollForChanges = async (accessToken: string) => {
@@ -13,7 +12,9 @@ export default function usePollForChanges(refetchTodos: () => any) {
             refetchTodos();
         }
 
-        pollForChanges(accessToken);
+        if (hasChanges !== null) {
+            pollForChanges(accessToken);
+        }
     };
 
     useEffect(() => {

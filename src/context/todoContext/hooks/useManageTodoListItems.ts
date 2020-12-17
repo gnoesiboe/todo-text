@@ -16,6 +16,7 @@ import useMoveTodoListItems from './useMoveTodoListItems';
 import useManageIsEditingState from './useManageIsEditingState';
 import useManageCurrentItem from './useManageCurrentItem';
 import useManageItemCreation from './useManageItemCreation';
+import usePollForChanges from './usePollForChanges';
 
 export type SaveValueHandler = (
     id: string,
@@ -122,6 +123,8 @@ export default function useManageTodoListItems() {
             applyToggleDoneStatus(currentItems, currentItem),
         );
     };
+
+    usePollForChanges(refetchTodos);
 
     return {
         items,
