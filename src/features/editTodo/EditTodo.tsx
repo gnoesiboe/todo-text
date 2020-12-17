@@ -8,6 +8,7 @@ import Textarea from './components/Textarea';
 import SubmitButton from './components/SubmitButton';
 import CancelButton from './components/CancelButton';
 import { isValidValue } from './utility/inputValidator';
+import useHandleCancelClick from './hooks/useHandleCancelClick';
 
 type Props = {
     item: TodoListItem;
@@ -24,6 +25,8 @@ const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
         onValueChange,
         onValueBlur,
     } = useTodoFormHandlers(item);
+
+    const { onCancelClick } = useHandleCancelClick(item, value, onCancel);
 
     useSuggestTags(textareaRef);
 
@@ -49,7 +52,7 @@ const EditTodo: React.FC<Props> = ({ item, onCancel }) => {
                 type="submit"
                 variant="link"
                 title={`Cancel changes (keyboard shortcut: ${stopEditWithoutSave.description}))`}
-                onClick={() => onCancel()}
+                onClick={onCancelClick}
             >
                 Cancel
             </CancelButton>
