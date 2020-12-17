@@ -1,6 +1,9 @@
 import { RefObject, useEffect } from 'react';
 import { isInViewport } from 'utility/viewportUtilities';
 
+// take into account height of sticky header (on mobile and desktop);
+const offset = 300;
+
 export default function useScrollIntoView(
     ref: RefObject<HTMLDivElement>,
     current: boolean,
@@ -11,7 +14,9 @@ export default function useScrollIntoView(
 
             if (!isInViewport(el)) {
                 const newPosition =
-                    el.getBoundingClientRect().top + window.pageYOffset - 100;
+                    el.getBoundingClientRect().top +
+                    window.pageYOffset -
+                    offset;
 
                 window.scrollTo({ top: newPosition, behavior: 'smooth' });
             }
