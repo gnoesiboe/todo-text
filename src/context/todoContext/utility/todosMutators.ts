@@ -78,8 +78,9 @@ export function applyUpdate(
             return;
         }
 
-        const normalizedValue =
-            value && value.trim().length > 0 ? value.trim() : emptyValue;
+        // fallback to ensure that no empty todo list items occur. This should
+        // however never occur
+        const normalizedValue = value.trim() || emptyValue;
 
         nextItems[indexToChange].value = normalizedValue;
         nextItems[indexToChange].done = done;

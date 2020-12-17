@@ -102,12 +102,16 @@ export default function useTodoFormHandlers(item: TodoListItem) {
 
     const onValueChange: FormEventHandler<HTMLTextAreaElement> = (event) => {
         // @ts-ignore somehow the value prop is not present in typescript declaration
-        const value = event.target.value;
+        const newValue = event.target.value;
 
-        setValue(value);
+        setValue(newValue);
     };
 
     const onValueBlur: FocusEventHandler<HTMLTextAreaElement> = () => {
+        if (!isValidValue(value)) {
+            deleteItem(item.id);
+        }
+
         persistCurrentValue();
         stopEdit();
     };
