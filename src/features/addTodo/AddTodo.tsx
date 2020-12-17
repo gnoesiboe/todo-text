@@ -1,19 +1,39 @@
 import React from 'react';
-import Button from './components/Button';
+import HeaderButton from './components/HeaderButton';
 import ButtonIcon from './components/ButtonIcon';
 import useAddNewItemOnKeyboardShortcutPressed from './hooks/useAddNewItemOnKeyboardShortcutPressed';
 import useAddTodoOnButtonClick from './hooks/useAddTodoOnButtonClick';
+import TodoActionButton from 'primitives/todoActionButtons/TodoActionButton';
 
-const AddTodo: React.FC = () => {
+export enum ButtonType {
+    Header,
+    TodoAction,
+}
+
+type Props = {
+    buttonType: ButtonType;
+};
+
+const AddTodo: React.FC<Props> = ({ buttonType }) => {
     const { onClick } = useAddTodoOnButtonClick();
 
     useAddNewItemOnKeyboardShortcutPressed();
 
-    return (
-        <Button onClick={onClick}>
-            <ButtonIcon />
-        </Button>
-    );
+    if (buttonType === ButtonType.Header) {
+        return (
+            <HeaderButton onClick={onClick}>
+                <ButtonIcon />
+            </HeaderButton>
+        );
+    }
+
+    if (buttonType === ButtonType.TodoAction) {
+        return (
+            <TodoActionButton onClick={onClick}>add new below</TodoActionButton>
+        );
+    }
+
+    throw new Error('Should not get to this point');
 };
 
 export default AddTodo;

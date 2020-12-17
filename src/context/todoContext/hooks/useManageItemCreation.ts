@@ -49,6 +49,8 @@ export default function useManageItemCreation(
         );
 
         markCurrentItem(id);
+
+        startEdit(true);
     };
 
     const createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler = () => {

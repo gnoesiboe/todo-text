@@ -10,7 +10,7 @@ import useClearCurrentOnKeyPressed from './hooks/useClearCurrentOnKeyPressed';
 import useDeleteCurrentOnKeyPressed from './hooks/useDeleteCurrentOnKeyPressed';
 import useToggleDoneStatusOnKeyPressed from './hooks/useToggleDoneStatusOnKeyPressed';
 import usePreventScrollWithArrowKeys from './hooks/usePreventScrollWithArrowKeys';
-import AddTodo from '../addTodo/AddTodo';
+import AddTodo, { ButtonType } from '../addTodo/AddTodo';
 import FilterTodos from '../filterTodos/FilterTodos';
 import useStartSortingWithKeyboardShortcut from './hooks/useStartSortingWithKeyboardShortcut';
 import Container from './components/Container';
@@ -54,7 +54,7 @@ const TodoList: React.FC = () => {
                 <Heading>Tød□</Heading>
                 {!isSorting && (
                     <AddTodoContainer>
-                        <AddTodo />
+                        <AddTodo buttonType={ButtonType.Header} />
                     </AddTodoContainer>
                 )}
 

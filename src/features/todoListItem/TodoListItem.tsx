@@ -32,6 +32,7 @@ import Container from './components/Container';
 import Checkbox from './components/Checkbox';
 import { Value } from './components/Value';
 import { QuickfixIcon, WaitingIcon } from './components/StatusIndicator';
+import AddTodo, { ButtonType } from 'features/addTodo/AddTodo';
 
 type Props = {
     item: ItemModel;
@@ -137,6 +138,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                                 next week
                             </SnoozeTodoButton>
                             <EditTodoButton onClick={onEditButtonClick} />
+                            <AddTodo buttonType={ButtonType.TodoAction} />
                             <DeleteTodo item={item} />
                         </>
                     </TodoActionButtonWrapper>

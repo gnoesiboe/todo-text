@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-const Button = styled.button`
+const HeaderButton = styled.button`
     border-radius: 50%;
     border: none;
     padding: 10px;
@@ -22,4 +22,4 @@ const Button = styled.button`
     }
 `;
 
-export default Button;
+export default HeaderButton;
