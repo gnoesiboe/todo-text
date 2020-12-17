@@ -6,6 +6,7 @@ export const valueMarginLeft: string = '45px';
 export const Value = styled.div<{
     item: TodoListItem;
     isDragging: boolean;
+    isSorting: boolean;
     current: boolean;
 }>`
     margin-left: ${valueMarginLeft};
@@ -83,7 +84,8 @@ export const Value = styled.div<{
         font-size: 0.8em !important;
         min-height: 1em;
         padding-right: 15px;
-        display: ${({ current }) => (current ? 'block' : 'none')};
+        display: ${({ current, isSorting }) =>
+            current && !isSorting ? 'block' : 'none'};
     }
 
     .todo-list-item__value__sub-item {

@@ -118,6 +118,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                             dangerouslySetInnerHTML={{
                                 __html: prepareForVisibility(item),
                             }}
+                            isSorting={isSorting}
                             current={current}
                         />
                     </AutoHeightAnimate>
@@ -147,7 +148,9 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 {!item.done && (
                     <ProgressBar done={done} todo={todo} total={total} />
                 )}
-                {hasNotes(item) && <HasNotesIndicator reverse={current} />}
+                {hasNotes(item) && !isSorting && (
+                    <HasNotesIndicator reverse={current} />
+                )}
             </>
         </Container>
     );
