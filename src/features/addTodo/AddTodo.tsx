@@ -28,9 +28,7 @@ const AddTodo: React.FC<Props> = ({ buttonType }) => {
     }
 
     if (buttonType === ButtonType.TodoAction) {
-        return (
-            <TodoActionButton onClick={onClick}>add new below</TodoActionButton>
-        );
+        return <TodoActionButton onClick={onClick}>new below</TodoActionButton>;
     }
 
     throw new Error('Should not get to this point');

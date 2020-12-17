@@ -18,6 +18,11 @@ const TodoActionButton = styled.button`
         color: #ddd;
         cursor: not-allowed;
     }
+
+    @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
+        display: block;
+        margin-right: 0;
+    }
 `;
 
 export default TodoActionButton;
