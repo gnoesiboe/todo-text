@@ -7,7 +7,6 @@ const TodoActionButton = styled.button`
     color: #999;
     border-radius: 2px;
     font-size: 0.8em;
-    margin-right: 5px;
 
     &:hover {
         border-color: #000;
@@ -17,11 +16,6 @@ const TodoActionButton = styled.button`
     &[disabled] {
         color: #ddd;
         cursor: not-allowed;
-    }
-
-    @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
-        display: block;
-        margin-right: 0;
     }
 `;
 

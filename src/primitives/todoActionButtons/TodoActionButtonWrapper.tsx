@@ -6,13 +6,14 @@ const TodoActionButtonWrapper = styled.div`
     right: 0;
     bottom: -22px;
     padding-left: 40px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+    justify-content: flex-start;
 
     @media (max-width: ${({ theme }) => theme.breakpoints.medium}) {
         padding-left: 0;
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
+        justify-content: center;
     }
 `;
 
