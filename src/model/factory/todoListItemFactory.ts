@@ -1,6 +1,8 @@
 import { TodoListItem } from './../TodoListItem';
 import { generateId } from 'utility/idGenerator';
 
+export const emptyValue = '...';
+
 export const createEmpty = (id: string = generateId()) => ({
     id,
     value: '',
@@ -9,7 +11,7 @@ export const createEmpty = (id: string = generateId()) => ({
 
 const initialItem: TodoListItem = {
     id: generateId(),
-    value: '...',
+    value: emptyValue,
     done: false,
 };
 

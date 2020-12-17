@@ -1,3 +1,4 @@
+import { emptyValue } from './../../../model/factory/todoListItemFactory';
 import {
     parseDate,
     transformInexactToExactDate,
@@ -78,7 +79,7 @@ export function applyUpdate(
         }
 
         const normalizedValue =
-            value && value.trim().length > 0 ? value.trim() : '...';
+            value && value.trim().length > 0 ? value.trim() : emptyValue;
 
         nextItems[indexToChange].value = normalizedValue;
         nextItems[indexToChange].done = done;
