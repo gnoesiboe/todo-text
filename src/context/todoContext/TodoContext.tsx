@@ -136,7 +136,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
-        hasOpenChanges,
+        checkHasOpenChanges,
         isSaving,
         isEditing,
         createNewItemAfterCurrent,
@@ -155,7 +155,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         createNewItemAtTheStart,
     } = useManageTodoListItems();
 
-    useConfirmCloseWhenThereAreOpenChanges(hasOpenChanges);
+    useConfirmCloseWhenThereAreOpenChanges(checkHasOpenChanges);
 
     const value: ContextValue = {
         items,

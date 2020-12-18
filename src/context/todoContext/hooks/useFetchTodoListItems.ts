@@ -1,3 +1,4 @@
+import { CheckHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
 import { useState, useEffect, useCallback } from 'react';
 import { TodoListItem } from 'model/TodoListItem';
@@ -6,13 +7,14 @@ import { applyNewlyFetched } from '../utility/todosMutators';
 
 export default function useFetchTodoListItems(
     setItems: React.Dispatch<React.SetStateAction<TodoListItem[]>>,
+    checkHasOpenChanges: CheckHasOpenChangesHandler,
 ) {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
     const { accessToken } = useAuthenticationContext();
 
     const fetchTodos = useCallback(async () => {
-        if (isFetching || !accessToken) {
+        if (isFetching || !accessToken || checkHasOpenChanges()) {
             return;
         }
 
@@ -20,14 +22,16 @@ export default function useFetchTodoListItems(
 
         const incomingItems = await fetchTodosFromDropbox(accessToken);
 
-        if (Array.isArray(incomingItems)) {
+        // make sure that there are no open changes at this point. If there are
+        // we cancel updating the items state, to prevent loosing them.
+        if (Array.isArray(incomingItems) && !checkHasOpenChanges()) {
             setItems((currentItems) =>
                 applyNewlyFetched(currentItems, incomingItems),
             );
         }
 
         setIsFetching(false);
-    }, [accessToken, isFetching, setItems, setIsFetching]);
+    }, [accessToken, isFetching, setItems, setIsFetching, checkHasOpenChanges]);
 
     // initial fetch on mount
     useEffect(() => {

@@ -8,7 +8,6 @@ import {
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
 import { determineNextCurrentItem } from '../utility/currentItemResolver';
-import useRefetchAfterLastChangeIsDone from './useRefetchAfterLastChangeIsDone';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 import useToggleFilters from './useToggleFilters';
 import useNavigateThroughItems from './useNavigateThroughItems';
@@ -17,6 +16,7 @@ import useManageIsEditingState from './useManageIsEditingState';
 import useManageCurrentItem from './useManageCurrentItem';
 import useManageItemCreation from './useManageItemCreation';
 import usePollForChanges from './usePollForChanges';
+import useManageHasOpenChangesState from './useManageHasOpenChangesState';
 
 export type SaveValueHandler = (
     id: string,
@@ -34,11 +34,20 @@ export default function useManageTodoListItems() {
 
     const [items, setItems] = useState<TodoListItem[]>([]);
 
-    const { isFetching, refetchTodos } = useFetchTodoListItems(setItems);
+    const {
+        checkHasOpenChanges,
+        setHasOpenChanges,
+    } = useManageHasOpenChangesState();
 
-    const { hasOpenChanges, isSaving } = usePersistTodoListItemsOnChange(
+    const { isFetching, refetchTodos } = useFetchTodoListItems(
+        setItems,
+        checkHasOpenChanges,
+    );
+
+    const { isSaving } = usePersistTodoListItemsOnChange(
         items,
         isFetching,
+        setHasOpenChanges,
     );
 
     const {
@@ -75,13 +84,6 @@ export default function useManageTodoListItems() {
         markCurrentItem,
         startEdit,
         currentItem,
-    );
-
-    useRefetchAfterLastChangeIsDone(
-        currentItem,
-        refetchTodos,
-        items,
-        hasOpenChanges,
     );
 
     useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
@@ -145,7 +147,7 @@ export default function useManageTodoListItems() {
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
-        hasOpenChanges,
+        checkHasOpenChanges,
         isSaving,
         isEditing,
         createNewItemAfterCurrent,

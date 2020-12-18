@@ -1,11 +1,12 @@
+import { CheckHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { isDevelopmentEnvironment } from 'utility/environmentUtlities';
 import { useEffect } from 'react';
 
 export default function useConfirmCloseWhenThereAreOpenChanges(
-    hasOpenChanges: boolean,
+    checkHasOpenChanges: CheckHasOpenChangesHandler,
 ) {
     useEffect(() => {
-        if (hasOpenChanges && !isDevelopmentEnvironment) {
+        if (checkHasOpenChanges() && !isDevelopmentEnvironment) {
             window.onbeforeunload = () =>
                 'You have pending changes. Are you sure?';
 
@@ -13,5 +14,5 @@ export default function useConfirmCloseWhenThereAreOpenChanges(
                 window.onbeforeunload = null;
             };
         }
-    }, [hasOpenChanges]);
+    }, [checkHasOpenChanges]);
 }

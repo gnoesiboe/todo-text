@@ -1,3 +1,4 @@
+import { SetHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { resolveDropboxFileName } from 'utility/environmentUtlities';
 import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
 import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
@@ -9,12 +10,11 @@ const pushToDropboxThrottle = 3000; // 3 seconds
 export default function usePersistTodoListItemsOnChange(
     items: TodoListItem[],
     isFetching: boolean,
+    setHasOpenChanges: SetHasOpenChangesHandler,
 ) {
-    const [hasOpenChanges, setHasOpenChanges] = useState<boolean>(false);
-
     const [isSaving, setIsSaving] = useState<boolean>(false);
 
-    const isInitialRender = useRef<boolean>(true);
+    const isFirstRender = useRef<boolean>(true);
 
     const { accessToken } = useAuthenticationContext();
 
@@ -24,8 +24,14 @@ export default function usePersistTodoListItemsOnChange(
             return;
         }
 
-        setHasOpenChanges(isInitialRender.current ? false : true);
-        isInitialRender.current = false;
+        // prevent persisting the data on initial rendering, as there is no need to do so.
+        if (isFirstRender.current) {
+            isFirstRender.current = false;
+
+            return;
+        }
+
+        setHasOpenChanges(true);
 
         const handle = setTimeout(() => {
             setIsSaving(true);
@@ -46,5 +52,5 @@ export default function usePersistTodoListItemsOnChange(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [items]);
 
-    return { hasOpenChanges, isSaving };
+    return { isSaving };
 }
