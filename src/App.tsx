@@ -13,7 +13,7 @@ import { DndProvider } from 'react-dnd-multi-backend';
 import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 import { DeviceInformationContextProvider } from 'context/deviceInformationContext/DeviceInformationContext';
 import EditNotes from 'features/editNotes/EditNotes';
-import { ActivityContextProvider } from 'context/activityContext/ActivityContext';
+import { NotesContextProvider } from 'context/notesContext/NotesContext';
 import MainContainer from 'features/mainContainer/MainContainer';
 
 const AppContainer = styled.div`
@@ -27,7 +27,7 @@ const App: React.FC = () => (
         <AppContainer>
             <DeviceInformationContextProvider>
                 <AuthenticationContextProvider>
-                    <ActivityContextProvider>
+                    <NotesContextProvider>
                         <TodoContextProvider>
                             <MainContainer>
                                 <Row>
@@ -43,7 +43,7 @@ const App: React.FC = () => (
                                 </Row>
                             </MainContainer>
                         </TodoContextProvider>
-                    </ActivityContextProvider>
+                    </NotesContextProvider>
                 </AuthenticationContextProvider>
                 <ToastContainer />
             </DeviceInformationContextProvider>

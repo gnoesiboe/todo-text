@@ -1,4 +1,4 @@
-import { useIsEditingNotes } from 'context/activityContext/ActivityContext';
+import { useIsEditingNotes } from 'context/notesContext/NotesContext';
 import { navigateToNext } from 'constants/keyDefnitions';
 import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { useTodoContext } from 'context/todoContext/TodoContext';

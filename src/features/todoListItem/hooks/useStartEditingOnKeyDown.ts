@@ -1,4 +1,4 @@
-import { useIsEditingNotes } from 'context/activityContext/ActivityContext';
+import { useIsEditingNotes } from 'context/notesContext/NotesContext';
 import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { useTodoContext } from 'context/todoContext/TodoContext';
 import { useEffect } from 'react';

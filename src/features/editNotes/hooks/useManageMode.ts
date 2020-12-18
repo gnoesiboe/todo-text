@@ -1,4 +1,4 @@
-import { useManageCurrentActivity } from 'context/activityContext/ActivityContext';
+import { useManageEditingNotesState } from 'context/notesContext/NotesContext';
 import { useState } from 'react';
 
 export enum Mode {
@@ -9,7 +9,7 @@ export enum Mode {
 export default function useManageMode() {
     const [mode, setMode] = useState<Mode>(Mode.View);
 
-    const { startEditingNotes, stopEditingNotes } = useManageCurrentActivity();
+    const { startEditing, stopEditing } = useManageEditingNotesState();
 
     const startEdit = () => {
         setMode(Mode.Edit);
@@ -18,17 +18,17 @@ export default function useManageMode() {
     const stopEdit = () => {
         setMode(Mode.View);
 
-        stopEditingNotes();
+        stopEditing();
     };
 
     const onFocus = () => {
-        startEditingNotes();
+        startEditing();
     };
 
     const onBlur = () => {
         setMode(Mode.View);
 
-        stopEditingNotes();
+        stopEditing();
     };
 
     return { mode, startEdit, stopEdit, onFocus, onBlur };

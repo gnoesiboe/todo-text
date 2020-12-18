@@ -5,7 +5,7 @@ import {
     createNewItemAfterCurrent as createNewItemAfterCurrentKeyDefinition,
     createNewItemBeforeCurrent as createNewItemBeforeCurrentKeyDefinition,
 } from 'constants/keyDefnitions';
-import useManageActivity from 'context/activityContext/hooks/useManageActivity';
+import useManageIsEditingState from 'context/notesContext/hooks/useManageIsEditingState';
 
 export default function useAddNewItemOnKeyboardShortcutPressed() {
     const {
@@ -17,7 +17,7 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
         startEdit,
     } = useTodoContext();
 
-    const { isEditingNotes } = useManageActivity();
+    const { isEditing: isEditingNotes } = useManageIsEditingState();
 
     useEffect(() => {
         if (isEditing || isEditingNotes) {
