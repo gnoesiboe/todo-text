@@ -5,7 +5,6 @@ import { parseMarkdown } from 'utility/markdownUtilities';
 import 'ace-builds/src-noconflict/mode-markdown';
 import 'ace-builds/src-noconflict/theme-tomorrow';
 import useManageMode, { Mode } from './hooks/useManageMode';
-import useManageEditorValue from './hooks/useManageEditorValue';
 import useAddKeyboardBindings from './hooks/useAddKeyboardBindings';
 import useFocusEditorOnLoad from './hooks/useFocusEditorOnLoad';
 import usePersistNotesOnChange from './hooks/usePersistNotesOnChange';
@@ -15,14 +14,19 @@ import {
     SavingIndicator,
     FetchingIndicator,
 } from 'primitives/connectionIndicator/ConnectionIndicator';
+import {
+    useIsFetchingNotes,
+    useManageNotesState,
+} from 'context/notesContext/NotesContext';
 
 const EditNotes: React.FC = () => {
     const editorRef = useRef<Ace.Editor>();
 
-    // @todo move some stuff to ActivityContext and rename it to NotesContext
     const { mode, startEdit, stopEdit, onFocus, onBlur } = useManageMode();
 
-    const { value, onChange, isFetching } = useManageEditorValue(mode);
+    const isFetching = useIsFetchingNotes();
+
+    const { value, updateValue } = useManageNotesState();
 
     useAddKeyboardBindings(mode, editorRef, stopEdit);
 
@@ -32,38 +36,45 @@ const EditNotes: React.FC = () => {
 
     useStartEditWithKeyboardShortcut(startEdit, mode);
 
-    if (mode === Mode.View) {
-        return (
-            <ViewContainer onDoubleClick={() => startEdit()}>
-                {isSaving && <SavingIndicator />}
-                {isFetching && <FetchingIndicator />}
-                <div
-                    dangerouslySetInnerHTML={{ __html: parseMarkdown(value) }}
-                />
-            </ViewContainer>
-        );
-    }
+    switch (mode) {
+        case Mode.View:
+            return (
+                <ViewContainer onDoubleClick={() => startEdit()}>
+                    {isSaving && <SavingIndicator />}
+                    {isFetching && <FetchingIndicator />}
+                    <div
+                        dangerouslySetInnerHTML={{
+                            __html: parseMarkdown(value),
+                        }}
+                    />
+                </ViewContainer>
+            );
 
-    return (
-        <EditorContainer>
-            <AceEditor
-                mode="markdown"
-                onLoad={onLoad}
-                value={value}
-                onChange={onChange}
-                onFocus={onFocus}
-                theme="tomorrow"
-                name="notes"
-                fontSize={15}
-                height="calc(100vh - 80px)"
-                width="100%"
-                highlightActiveLine={false}
-                onBlur={onBlur}
-                showGutter={false}
-                wrapEnabled
-            />
-        </EditorContainer>
-    );
+        case Mode.Edit:
+            return (
+                <EditorContainer>
+                    <AceEditor
+                        mode="markdown"
+                        onLoad={onLoad}
+                        value={value}
+                        onChange={updateValue}
+                        onFocus={onFocus}
+                        theme="tomorrow"
+                        name="notes"
+                        fontSize={15}
+                        height="calc(100vh - 80px)"
+                        width="100%"
+                        highlightActiveLine={false}
+                        onBlur={onBlur}
+                        showGutter={false}
+                        wrapEnabled
+                    />
+                </EditorContainer>
+            );
+
+        default:
+            throw new Error('Should not get to this point');
+    }
 };
 
 export default EditNotes;

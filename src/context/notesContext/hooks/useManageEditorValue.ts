@@ -1,17 +1,16 @@
 import { fetchNotesFromDropbox } from 'dropbox/storage/dropboxStorage';
 import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
-import { useEffect, useState } from 'react';
-import { Mode } from './useManageMode';
+import { useCallback, useEffect, useState } from 'react';
 
-export default function useManageEditorValue(mode: Mode) {
+export default function useManageEditorValue() {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
     const [value, setValue] = useState<string>('');
 
     const { accessToken } = useAuthenticationContext();
 
-    const fetchNotes = async () => {
-        if (isFetching || !accessToken || mode !== Mode.View) {
+    const fetchNotes = useCallback(async () => {
+        if (isFetching || !accessToken) {
             return;
         }
 
@@ -24,24 +23,25 @@ export default function useManageEditorValue(mode: Mode) {
         }
 
         setIsFetching(false);
-    };
+    }, [isFetching, accessToken]);
 
     // initial fetch on mount
     useEffect(() => {
         fetchNotes();
+
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // re-fetch notes on mount
     useEffect(() => {
         const onWindowFocus = () => fetchNotes();
 
         window.addEventListener('focus', onWindowFocus);
 
         return () => window.removeEventListener('focus', onWindowFocus);
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [fetchNotes]);
 
-    const onChange = (newValue: string) => setValue(newValue);
+    const updateValue = (newValue: string) => setValue(newValue);
 
-    return { value, onChange, isFetching };
+    return { value, updateValue, isFetching };
 }
