@@ -1,3 +1,4 @@
+import { redirectAndNotifyUserWhenLoggedOut } from './../utility/redirectUtilities';
 import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
 import { isLoggedOutError } from './../utility/errorIdentificationUtilities';
 import { createOfficialDropboxClient } from './../client/dropboxClient';
@@ -8,26 +9,8 @@ import {
 import { TodoListItem } from 'model/TodoListItem';
 import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
 import { notifyError, notifySuccess } from 'utility/notifier';
-import { clear as clearTokenStorage } from 'model/repository/accessTokenRepository';
 
 // @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
-
-const reloadTimeoutLength = 3000; // 3 seconds
-
-const redirectToLoginWhenLoggedOut = () => {
-    notifyError(
-        `Je bent uitgelogd, de pagina wordt over ${
-            reloadTimeoutLength / 1000
-        } seconden ververst om je opnieuw in te laten loggen`,
-    );
-
-    // clear token storage so a new token is requested
-    clearTokenStorage();
-
-    setTimeout(() => window.location.reload(), reloadTimeoutLength);
-
-    return;
-};
 
 export const fetchAccessToken = async (
     code: string,
@@ -66,7 +49,7 @@ export const pushDataToDropbox = async (
         console.error(errorMessage, error);
 
         if (isLoggedOutError(error)) {
-            redirectToLoginWhenLoggedOut();
+            redirectAndNotifyUserWhenLoggedOut();
         }
     }
 };
@@ -85,7 +68,7 @@ export const fetchNotesFromDropbox = async (
         return await new Response(result.fileBlob).text();
     } catch (error) {
         if (isLoggedOutError(error)) {
-            redirectToLoginWhenLoggedOut();
+            redirectAndNotifyUserWhenLoggedOut();
 
             return null;
         }
@@ -134,7 +117,7 @@ export const fetchTodosFromDropbox = async (
         return normalizeAndValidateTodos(parsedContent);
     } catch (error) {
         if (isLoggedOutError(error)) {
-            redirectToLoginWhenLoggedOut();
+            redirectAndNotifyUserWhenLoggedOut();
 
             return null;
         }
@@ -191,7 +174,7 @@ export const pollForChanges = async (
         console.error(errorMessage, error);
 
         if (isLoggedOutError(error)) {
-            redirectToLoginWhenLoggedOut();
+            redirectAndNotifyUserWhenLoggedOut();
         }
 
         return null;
