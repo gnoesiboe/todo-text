@@ -2,18 +2,21 @@ import { useEffect } from 'react';
 import { toggleSortingItems } from 'constants/keyDefnitions';
 import { useTodoContext } from 'context/todoContext/TodoContext';
 import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
+import { useIsEditingNotes } from 'context/notesContext/NotesContext';
 
 export default function useStartSortingWithKeyboardShortcut() {
     const {
         isSorting,
         startSorting,
         stopSorting,
-        isEditing,
+        isEditing: isEditingTodos,
     } = useTodoContext();
+
+    const isEditingNotes = useIsEditingNotes();
 
     useEffect(() => {
         const onKeyUp = (event: WindowEventMap['keyup']) => {
-            if (isEditing) {
+            if (isEditingTodos || isEditingNotes) {
                 return;
             }
 
@@ -29,5 +32,5 @@ export default function useStartSortingWithKeyboardShortcut() {
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [isSorting, startSorting, stopSorting, isEditing]);
+    }, [isSorting, startSorting, stopSorting, isEditingTodos, isEditingNotes]);
 }
