@@ -144,39 +144,3 @@ export const fetchTodosFromDropbox = async (
         return null;
     }
 };
-
-const fetchFolderCursor = async (accessToken: string): Promise<string> => {
-    const client = createOfficialDropboxClient(accessToken);
-
-    const { result } = await client.filesListFolderGetLatestCursor({
-        path: '',
-    });
-
-    return result.cursor;
-};
-
-export const pollForChanges = async (
-    accessToken: string,
-): Promise<boolean | null> => {
-    try {
-        const cursor = await fetchFolderCursor(accessToken);
-
-        const client = createOfficialDropboxClient();
-
-        const { result } = await client.filesListFolderLongpoll({ cursor });
-
-        return result.changes;
-    } catch (error) {
-        const errorMessage =
-            'An error occurred while polling the dropbox api for changes';
-
-        notifyError(errorMessage);
-        console.error(errorMessage, error);
-
-        if (isLoggedOutError(error)) {
-            redirectAndNotifyUserWhenLoggedOut();
-        }
-
-        return null;
-    }
-};
