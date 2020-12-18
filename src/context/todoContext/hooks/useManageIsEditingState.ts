@@ -1,14 +1,12 @@
-import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 
 export type StopEditHandler = () => void;
 
 export type StartEditHandler = (ignoreCurrentItem?: boolean) => void;
 
-export default function useManageIsEditingState(
-    currentItem: string | null,
-    isEditing: boolean,
-    setIsEditing: Dispatch<SetStateAction<boolean>>,
-) {
+export default function useManageIsEditingState(currentItem: string | null) {
+    const [isEditing, setIsEditing] = useState<boolean>(false);
+
     const stopEdit: StopEditHandler = () => setIsEditing(false);
 
     const startEdit: StartEditHandler = (

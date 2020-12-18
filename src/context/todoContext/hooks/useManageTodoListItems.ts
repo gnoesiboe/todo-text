@@ -30,7 +30,6 @@ export type ToggleDoneStatusHandler = () => void;
 
 export default function useManageTodoListItems() {
     const [currentItem, setCurrentItem] = useState<string | null>(null);
-    const [isEditing, setIsEditing] = useState<boolean>(false);
 
     const [items, setItems] = useState<TodoListItem[]>([]);
 
@@ -63,17 +62,15 @@ export default function useManageTodoListItems() {
         matchingFilters,
     } = useToggleFilters(items);
 
+    const { isEditing, startEdit, stopEdit } = useManageIsEditingState(
+        currentItem,
+    );
+
     const {
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
     } = useManageCurrentItem(isEditing, currentItem, setCurrentItem);
-
-    const { startEdit, stopEdit } = useManageIsEditingState(
-        currentItem,
-        isEditing,
-        setIsEditing,
-    );
 
     const {
         createNewItemAfterCurrent,

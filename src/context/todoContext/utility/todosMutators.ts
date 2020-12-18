@@ -54,8 +54,8 @@ export function applyNewlyFetched(
     incomingItems: TodoListItem[],
 ): TodoListItem[] {
     // ensure that we do not end up in a refetch loop, as an === check tell's
-    // react that there were changes, even when there are none, but only different
-    // instances
+    // React that there were changes, even when there might be none as there
+    // might be different instances with the same values.
     if (isEqual(currentItems, incomingItems)) {
         return currentItems;
     }
