@@ -145,7 +145,6 @@ export default function useManageTodoListItems() {
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
-        refetchTodos,
         hasOpenChanges,
         isSaving,
         isEditing,

@@ -6,8 +6,6 @@ import useManageTodoListItems, {
     SaveValueHandler,
     ToggleDoneStatusHandler,
 } from './hooks/useManageTodoListItems';
-import useRefetchUpdatesAfterMount from './hooks/useRefetchUpdatesAfterMount';
-import useRefetchOnWindowFocus from './hooks/useRefetchOnWindowFocus';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 import {
     MatchingFilters,
@@ -44,7 +42,6 @@ type ContextValue = {
     items: TodoListItem[];
     filteredItems: TodoListItem[];
     isFetching: boolean;
-    hasOpenChanges: boolean;
     isSaving: boolean;
     saveValue: SaveValueHandler;
     deleteItem: DeleteItemHandler;
@@ -82,7 +79,6 @@ const initialValue: ContextValue = {
     items: [],
     filteredItems: [],
     isFetching: false,
-    hasOpenChanges: false,
     saveValue: () => {},
     isSaving: false,
     deleteItem: () => {},
@@ -140,7 +136,6 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
-        refetchTodos,
         hasOpenChanges,
         isSaving,
         isEditing,
@@ -160,26 +155,11 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         createNewItemAtTheStart,
     } = useManageTodoListItems();
 
-    useRefetchUpdatesAfterMount(
-        isFetching,
-        currentItem,
-        refetchTodos,
-        hasOpenChanges,
-    );
-
-    useRefetchOnWindowFocus(
-        isFetching,
-        currentItem,
-        refetchTodos,
-        hasOpenChanges,
-    );
-
     useConfirmCloseWhenThereAreOpenChanges(hasOpenChanges);
 
     const value: ContextValue = {
         items,
         isFetching,
-        hasOpenChanges,
         saveValue,
         isSaving,
         deleteItem,

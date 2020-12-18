@@ -1,5 +1,5 @@
 import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { TodoListItem } from 'model/TodoListItem';
 import { fetchTodosFromDropbox } from 'dropbox/storage/dropboxStorage';
 import { applyNewlyFetched } from '../utility/todosMutators';
@@ -11,7 +11,7 @@ export default function useFetchTodoListItems(
 
     const { accessToken } = useAuthenticationContext();
 
-    const fetchTodos = async () => {
+    const fetchTodos = useCallback(async () => {
         if (isFetching || !accessToken) {
             return;
         }
@@ -27,7 +27,7 @@ export default function useFetchTodoListItems(
         }
 
         setIsFetching(false);
-    };
+    }, [accessToken, isFetching, setItems, setIsFetching]);
 
     // initial fetch on mount
     useEffect(() => {
