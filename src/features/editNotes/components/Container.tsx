@@ -100,4 +100,12 @@ export const ViewContainer = styled.div`
         border-bottom: 1px solid rgba(0, 0, 0, 0.1);
         margin: 50px 0;
     }
+
+    pre {
+        border: 1px solid rgba(0, 0, 0, 0.2);
+        background: rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+        border-radius: 3px;
+        padding: 13px;
+    }
 `;
