@@ -11,6 +11,7 @@ export default function usePersistTodoListItemsOnChange(
     items: TodoListItem[],
     isFetching: boolean,
     setHasOpenChanges: SetHasOpenChangesHandler,
+    checkIsEditing: () => boolean,
 ) {
     const [isSaving, setIsSaving] = useState<boolean>(false);
 
@@ -24,7 +25,8 @@ export default function usePersistTodoListItemsOnChange(
             return;
         }
 
-        // prevent persisting the data on initial rendering, as there is no need to do so.
+        // prevent persisting the data on initial rendering, as this might result in throwing away
+        // all todos in Dropbox
         if (isFirstRender.current) {
             isFirstRender.current = false;
 
@@ -32,6 +34,10 @@ export default function usePersistTodoListItemsOnChange(
         }
 
         setHasOpenChanges(true);
+
+        if (checkIsEditing()) {
+            return;
+        }
 
         const handle = setTimeout(() => {
             setIsSaving(true);

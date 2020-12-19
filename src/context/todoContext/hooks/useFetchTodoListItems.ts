@@ -8,6 +8,7 @@ import { applyNewlyFetched } from '../utility/todosMutators';
 export default function useFetchTodoListItems(
     setItems: React.Dispatch<React.SetStateAction<TodoListItem[]>>,
     checkHasOpenChanges: CheckHasOpenChangesHandler,
+    checkIsEditing: () => boolean,
 ) {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
@@ -24,14 +25,25 @@ export default function useFetchTodoListItems(
 
         // make sure that there are no open changes at this point. If there are
         // we cancel updating the items state, to prevent loosing them.
-        if (Array.isArray(incomingItems) && !checkHasOpenChanges()) {
+        if (
+            Array.isArray(incomingItems) &&
+            !checkHasOpenChanges() &&
+            !checkIsEditing()
+        ) {
             setItems((currentItems) =>
                 applyNewlyFetched(currentItems, incomingItems),
             );
         }
 
         setIsFetching(false);
-    }, [accessToken, isFetching, setItems, setIsFetching, checkHasOpenChanges]);
+    }, [
+        accessToken,
+        isFetching,
+        setItems,
+        setIsFetching,
+        checkHasOpenChanges,
+        checkIsEditing,
+    ]);
 
     // initial fetch on mount
     useEffect(() => {

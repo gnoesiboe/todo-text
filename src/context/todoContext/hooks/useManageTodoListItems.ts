@@ -38,15 +38,24 @@ export default function useManageTodoListItems() {
         setHasOpenChanges,
     } = useManageHasOpenChangesState();
 
+    const {
+        isEditing,
+        checkIsEditing,
+        startEdit,
+        stopEdit,
+    } = useManageIsEditingState(currentItem);
+
     const { isFetching, refetchTodos } = useFetchTodoListItems(
         setItems,
         checkHasOpenChanges,
+        checkIsEditing,
     );
 
     const { isSaving } = usePersistTodoListItemsOnChange(
         items,
         isFetching,
         setHasOpenChanges,
+        checkIsEditing,
     );
 
     const {
@@ -61,10 +70,6 @@ export default function useManageTodoListItems() {
         toggleHideSnoozed,
         matchingFilters,
     } = useToggleFilters(items);
-
-    const { isEditing, startEdit, stopEdit } = useManageIsEditingState(
-        currentItem,
-    );
 
     const {
         toggleCurrentItem,
