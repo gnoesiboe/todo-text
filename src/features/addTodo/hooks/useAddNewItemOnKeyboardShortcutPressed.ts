@@ -58,6 +58,7 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
         startEdit,
         createNewItemBeforeCurrent,
         createNewItemAfterCurrent,
+        createNewItemAtTheStart,
         isEditingNotes,
     ]);
 }
