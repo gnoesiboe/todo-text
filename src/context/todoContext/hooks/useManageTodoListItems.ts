@@ -6,7 +6,6 @@ import {
     applyToggleDoneStatus,
 } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
-import useEnsureThereIsAlwaysOneItemToSelectAndEdit from './useEnsureThereIsAlwaysOneItemToSelectAndEdit';
 import { determineNextCurrentItem } from '../utility/currentItemResolver';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
 import useToggleFilters from './useToggleFilters';
@@ -87,8 +86,6 @@ export default function useManageTodoListItems() {
         startEdit,
         currentItem,
     );
-
-    useEnsureThereIsAlwaysOneItemToSelectAndEdit(items, isFetching, setItems);
 
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
         currentItem,
