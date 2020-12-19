@@ -1,6 +1,6 @@
 import { SetHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { resolveDropboxFileName } from 'utility/environmentUtlities';
-import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
 import { useEffect, useState, useRef } from 'react';
 import type { TodoListItem } from 'model/TodoListItem';
@@ -17,7 +17,7 @@ export default function usePersistTodoListItemsOnChange(
 
     const isFirstRender = useRef<boolean>(true);
 
-    const { accessToken } = useAuthenticationContext();
+    const accessToken = useAuthenticationAccessToken();
 
     // use timeout for persistance to bundle multiple changes into one after timeout has cleared
     useEffect(() => {

@@ -1,5 +1,5 @@
 import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
-import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect, useState } from 'react';
 import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
 
@@ -12,7 +12,7 @@ export default function usePersistNotesOnChange(
     const [hasOpenChanges, setHasOpenChanges] = useState<boolean>(false);
     const [isSaving, setIsSaving] = useState<boolean>(false);
 
-    const { accessToken } = useAuthenticationContext();
+    const accessToken = useAuthenticationAccessToken();
 
     useEffect(() => {
         setHasOpenChanges(true);

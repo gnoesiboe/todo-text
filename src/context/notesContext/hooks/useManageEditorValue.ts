@@ -1,5 +1,5 @@
 import { fetchNotesFromDropbox } from 'dropbox/storage/dropboxStorage';
-import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useCallback, useEffect, useState } from 'react';
 
 export default function useManageEditorValue() {
@@ -7,7 +7,7 @@ export default function useManageEditorValue() {
 
     const [value, setValue] = useState<string>('');
 
-    const { accessToken } = useAuthenticationContext();
+    const accessToken = useAuthenticationAccessToken();
 
     const fetchNotes = useCallback(async () => {
         if (isFetching || !accessToken) {

@@ -1,9 +1,9 @@
-import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect } from 'react';
 import pollDropboxForChanges from 'dropbox/handler/pollForChanges';
 
 export default function usePollForChanges(refetchTodos: () => void) {
-    const { accessToken } = useAuthenticationContext();
+    const accessToken = useAuthenticationAccessToken();
 
     const pollForChanges = async (accessToken: string) => {
         const hasChanges = await pollDropboxForChanges(accessToken);

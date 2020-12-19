@@ -1,5 +1,5 @@
 import { CheckHasOpenChangesHandler } from './useManageHasOpenChangesState';
-import { useAuthenticationContext } from 'context/authenticationContext/AuthenticationContext';
+import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useState, useEffect, useCallback } from 'react';
 import { TodoListItem } from 'model/TodoListItem';
 import { fetchTodosFromDropbox } from 'dropbox/storage/dropboxStorage';
@@ -12,7 +12,7 @@ export default function useFetchTodoListItems(
 ) {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
-    const { accessToken } = useAuthenticationContext();
+    const accessToken = useAuthenticationAccessToken();
 
     const fetchTodos = useCallback(async () => {
         if (isFetching || !accessToken || checkHasOpenChanges()) {
