@@ -1,7 +1,7 @@
 import MarkdownIt from 'markdown-it';
 import taskListsPlugin from 'markdown-it-task-checkbox';
 import codeHighlighter from 'highlight.js';
-import 'highlight.js/styles/github.css';
+import 'highlight.js/styles/tomorrow.css';
 
 let instance: MarkdownIt;
 
