@@ -29,9 +29,7 @@ function getInstance() {
 }
 
 export function parseMarkdown(markdown: string) {
-    const instance = getInstance();
-
-    return instance.render(markdown, {
+    return getInstance().render(markdown, {
         breaks: true,
         linkify: true,
     });
