@@ -1,4 +1,4 @@
-import { fetchNotesFromDropbox } from 'dropbox/storage/dropboxStorage';
+import fetchNotesFromDropbox from 'dropbox/handler/fetchNotes';
 import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useCallback, useEffect, useState } from 'react';
 

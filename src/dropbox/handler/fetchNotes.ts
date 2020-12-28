@@ -1,14 +1,12 @@
-import { redirectAndNotifyUserWhenLoggedOut } from './../utility/redirectUtilities';
+import { redirectAndNotifyUserWhenLoggedOut } from '../utility/redirectUtilities';
 import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
-import { isLoggedOutError } from './../utility/errorIdentificationUtilities';
-import { createDropboxClient } from './../client/dropboxClient';
+import { isLoggedOutError } from '../utility/errorIdentificationUtilities';
+import { createDropboxClient } from '../client/dropboxClient';
 import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
 import { notifyError, notifySuccess } from 'utility/notifier';
 import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
 
-export const fetchNotesFromDropbox = async (
-    accessToken: string,
-): Promise<string | null> => {
+const fetchNotes = async (accessToken: string): Promise<string | null> => {
     const client = createDropboxClient(accessToken);
 
     try {
@@ -50,3 +48,5 @@ export const fetchNotesFromDropbox = async (
         return null;
     }
 };
+
+export default fetchNotes;
