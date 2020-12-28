@@ -1,4 +1,4 @@
-import React, { MouseEventHandler } from 'react';
+import React from 'react';
 import {
     TodoListItem as ItemModel,
     isMust,
@@ -70,13 +70,6 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
 
     const snoozingButtonsDisabled = isSnoozed(item) || heading || item.done;
 
-    const onEditButtonClick: MouseEventHandler = (event) => {
-        // prevent deselecting the item in MainContainer
-        event.stopPropagation();
-
-        startEdit();
-    };
-
     return (
         <Container
             item={item}
@@ -138,7 +131,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                             >
                                 next week
                             </SnoozeTodoButton>
-                            <EditTodoButton onClick={onEditButtonClick} />
+                            <EditTodoButton onClick={() => startEdit()} />
                             <AddTodo buttonType={ButtonType.TodoAction} />
                             <DeleteTodo item={item} />
                         </>

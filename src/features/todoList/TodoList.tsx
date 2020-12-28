@@ -21,6 +21,8 @@ import {
 import Header from './components/Header';
 import Heading from './components/Heading';
 import AddTodoContainer from './components/AddTodoContainer';
+import OutsideClickHandler from 'react-outside-click-handler';
+import useClearCurrentOnOutsideClick from './hooks/useClearCurrentOnOutsideClick';
 
 const TodoList: React.FC = () => {
     const {
@@ -44,40 +46,46 @@ const TodoList: React.FC = () => {
     usePreventScrollWithArrowKeys();
     useStartSortingWithKeyboardShortcut();
 
+    const onOutsideClick = useClearCurrentOnOutsideClick();
+
     const itemsToDisplay = isSorting ? items : filteredItems;
 
     return (
-        <Container>
-            {isSaving && <SavingIndicator />}
-            {isFetching && <FetchingIndicator />}
-            <Header>
-                <Heading>Tød□</Heading>
-                {!isSorting && (
-                    <AddTodoContainer>
-                        <AddTodo buttonType={ButtonType.Header} />
-                    </AddTodoContainer>
-                )}
+        <OutsideClickHandler onOutsideClick={onOutsideClick}>
+            <Container>
+                {isSaving && <SavingIndicator />}
+                {isFetching && <FetchingIndicator />}
+                <Header>
+                    <Heading>Tød□</Heading>
+                    {!isSorting && (
+                        <AddTodoContainer>
+                            <AddTodo buttonType={ButtonType.Header} />
+                        </AddTodoContainer>
+                    )}
 
-                {isSorting ? (
-                    <SortButton onClick={() => stopSorting()}>done</SortButton>
-                ) : (
-                    <>
-                        <SortButton onClick={() => startSorting()}>
-                            sort
+                    {isSorting ? (
+                        <SortButton onClick={() => stopSorting()}>
+                            done
                         </SortButton>
-                        <FilterTodos />
-                    </>
-                )}
-            </Header>
-            {itemsToDisplay.map((item, index) => (
-                <TodoListItem
-                    key={item.id}
-                    index={index}
-                    item={item}
-                    current={currentItem === item.id}
-                />
-            ))}
-        </Container>
+                    ) : (
+                        <>
+                            <SortButton onClick={() => startSorting()}>
+                                sort
+                            </SortButton>
+                            <FilterTodos />
+                        </>
+                    )}
+                </Header>
+                {itemsToDisplay.map((item, index) => (
+                    <TodoListItem
+                        key={item.id}
+                        index={index}
+                        item={item}
+                        current={currentItem === item.id}
+                    />
+                ))}
+            </Container>
+        </OutsideClickHandler>
     );
 };
 

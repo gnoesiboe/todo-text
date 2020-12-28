@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import TodoList from 'features/todoList/TodoList';
 import { TodoContextProvider } from 'context/todoContext/TodoContext';
 import 'bootstrap/dist/css/bootstrap.css';
@@ -14,7 +14,6 @@ import HTML5toTouch from 'react-dnd-multi-backend/dist/esm/HTML5toTouch';
 import { DeviceInformationContextProvider } from 'context/deviceInformationContext/DeviceInformationContext';
 import EditNotes from 'features/editNotes/EditNotes';
 import { NotesContextProvider } from 'context/notesContext/NotesContext';
-import MainContainer from 'features/mainContainer/MainContainer';
 
 const AppContainer = styled.div`
     width: 100%;
@@ -29,7 +28,7 @@ const App: React.FC = () => (
                 <AuthenticationContextProvider>
                     <NotesContextProvider>
                         <TodoContextProvider>
-                            <MainContainer>
+                            <Container fluid="lg">
                                 <Row>
                                     <Col lg={{ span: 7, offset: 0 }}>
                                         <DndProvider options={HTML5toTouch}>
@@ -41,7 +40,7 @@ const App: React.FC = () => (
                                         <EditNotes />
                                     </Col>
                                 </Row>
-                            </MainContainer>
+                            </Container>
                         </TodoContextProvider>
                     </NotesContextProvider>
                 </AuthenticationContextProvider>

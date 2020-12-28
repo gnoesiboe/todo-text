@@ -9,14 +9,10 @@ export default function useAddTodoOnButtonClick() {
         currentItem,
     } = useTodoContext();
 
-    const onClick: MouseEventHandler = (event) => {
+    const onClick: MouseEventHandler = () => {
         if (isEditing) {
             return;
         }
-
-        // prevent click event from being caught by the MainContainer, wich
-        // results in the current todo list item being lost.
-        event.stopPropagation();
 
         if (currentItem) {
             createNewItemAfterCurrent();
