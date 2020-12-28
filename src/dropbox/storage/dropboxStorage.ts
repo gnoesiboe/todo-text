@@ -2,12 +2,7 @@ import { redirectAndNotifyUserWhenLoggedOut } from './../utility/redirectUtiliti
 import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
 import { isLoggedOutError } from './../utility/errorIdentificationUtilities';
 import { createDropboxClient } from './../client/dropboxClient';
-import {
-    resolveDropboxFileName,
-    resolveDropboxNotesFileName,
-} from 'utility/environmentUtlities';
-import { TodoListItem } from 'model/TodoListItem';
-import { normalizeAndValidateTodos } from '../utility/normalizationAndValidationUtilities';
+import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
 import { notifyError, notifySuccess } from 'utility/notifier';
 
 // @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
@@ -91,52 +86,6 @@ export const fetchNotesFromDropbox = async (
 
         const errorMessage =
             'An error occurred while fetching the notes from Dropbox';
-
-        notifyError(errorMessage);
-        console.error(errorMessage, error);
-
-        return null;
-    }
-};
-
-export const fetchTodosFromDropbox = async (
-    accessToken: string,
-): Promise<TodoListItem[] | null> => {
-    const client = createDropboxClient(accessToken);
-
-    try {
-        const { result } = await client.filesDownload({
-            path: `/${resolveDropboxFileName()}`,
-        });
-
-        // @ts-ignore → Somehow the types are wrong
-        const rawContent = await new Response(result.fileBlob).text();
-
-        const parsedContent = JSON.parse(rawContent);
-
-        return normalizeAndValidateTodos(parsedContent);
-    } catch (error) {
-        if (isLoggedOutError(error)) {
-            redirectAndNotifyUserWhenLoggedOut();
-
-            return null;
-        }
-
-        if (isFileNotFoundError(error)) {
-            await pushDataToDropbox(
-                accessToken,
-                '[]',
-                resolveDropboxFileName(),
-            );
-
-            notifySuccess(
-                'Todos did not exist (anymore) in Dropbox. We created a new one',
-            );
-
-            return [];
-        }
-
-        const errorMessage = 'An error occurred while fetching the todos';
 
         notifyError(errorMessage);
         console.error(errorMessage, error);
