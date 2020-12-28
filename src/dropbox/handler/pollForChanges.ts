@@ -1,10 +1,10 @@
 import { redirectAndNotifyUserWhenLoggedOut } from '../utility/redirectUtilities';
 import { isLoggedOutError } from '../utility/errorIdentificationUtilities';
 import { notifyError } from 'utility/notifier';
-import { createOfficialDropboxClient } from '../client/dropboxClient';
+import { createDropboxClient } from '../client/dropboxClient';
 
 const fetchFolderCursor = async (accessToken: string): Promise<string> => {
-    const client = createOfficialDropboxClient(accessToken);
+    const client = createDropboxClient(accessToken);
 
     const { result } = await client.filesListFolderGetLatestCursor({
         path: '',
@@ -17,7 +17,7 @@ const pollForChanges = async (accessToken: string): Promise<boolean | null> => {
     try {
         const cursor = await fetchFolderCursor(accessToken);
 
-        const client = createOfficialDropboxClient();
+        const client = createDropboxClient();
 
         const { result } = await client.filesListFolderLongpoll({ cursor });
 

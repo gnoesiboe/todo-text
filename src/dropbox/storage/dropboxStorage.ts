@@ -1,7 +1,7 @@
 import { redirectAndNotifyUserWhenLoggedOut } from './../utility/redirectUtilities';
 import { isFileNotFoundError } from 'dropbox/utility/errorIdentificationUtilities';
 import { isLoggedOutError } from './../utility/errorIdentificationUtilities';
-import { createOfficialDropboxClient } from './../client/dropboxClient';
+import { createDropboxClient } from './../client/dropboxClient';
 import {
     resolveDropboxFileName,
     resolveDropboxNotesFileName,
@@ -16,7 +16,7 @@ export const fetchAccessToken = async (
     code: string,
     redirectUri: string,
 ): Promise<string> => {
-    const client = createOfficialDropboxClient();
+    const client = createDropboxClient();
 
     // @ts-ignore → Somehow the Typescript types are wrong
     const { result } = await client.auth.getAccessTokenFromCode(
@@ -32,7 +32,7 @@ export const pushDataToDropbox = async (
     json: string,
     fileName: string,
 ) => {
-    const client = createOfficialDropboxClient(accessToken);
+    const client = createDropboxClient(accessToken);
 
     try {
         client.filesUpload({
@@ -57,7 +57,7 @@ export const pushDataToDropbox = async (
 export const fetchNotesFromDropbox = async (
     accessToken: string,
 ): Promise<string | null> => {
-    const client = createOfficialDropboxClient(accessToken);
+    const client = createDropboxClient(accessToken);
 
     try {
         const { result } = await client.filesDownload({
@@ -102,7 +102,7 @@ export const fetchNotesFromDropbox = async (
 export const fetchTodosFromDropbox = async (
     accessToken: string,
 ): Promise<TodoListItem[] | null> => {
-    const client = createOfficialDropboxClient(accessToken);
+    const client = createDropboxClient(accessToken);
 
     try {
         const { result } = await client.filesDownload({
