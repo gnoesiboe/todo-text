@@ -6,23 +6,6 @@ import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
 import { notifyError, notifySuccess } from 'utility/notifier';
 import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
 
-// @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
-
-export const fetchAccessToken = async (
-    code: string,
-    redirectUri: string,
-): Promise<string> => {
-    const client = createDropboxClient();
-
-    // @ts-ignore → Somehow the Typescript types are wrong
-    const { result } = await client.auth.getAccessTokenFromCode(
-        redirectUri,
-        code,
-    );
-
-    return result.access_token;
-};
-
 export const fetchNotesFromDropbox = async (
     accessToken: string,
 ): Promise<string | null> => {

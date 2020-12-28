@@ -1,11 +1,11 @@
 import { redirectToAuthenticate } from 'dropbox/utility/redirectUtilities';
-import { fetchAccessToken } from 'dropbox/storage/dropboxStorage';
 import { parseQueryString } from 'utility/requestUtilities';
 import { useState, useEffect } from 'react';
 import {
     get as getTokenFromStorage,
     save as writeToStorage,
 } from 'model/repository/accessTokenRepository';
+import fetchDropboxAccessToken from 'dropbox/handler/fetchAccessToken';
 
 export default function useResolveAccessTokenOrRedirect() {
     const [redirecting, setRedirecting] = useState<boolean>(false);
@@ -39,7 +39,7 @@ export default function useResolveAccessTokenOrRedirect() {
 
             setFetching(true);
 
-            fetchAccessToken(code, redirectUri)
+            fetchDropboxAccessToken(code, redirectUri)
                 .then((token) => setAccessToken(token))
                 .then(() => {
                     // remove code from url query params
