@@ -1,7 +1,7 @@
 import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
 import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect, useState } from 'react';
-import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
+import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
 
 const pushToDropboxThrottle = 3000; // 3 seconds
 

@@ -4,6 +4,7 @@ import { isLoggedOutError } from './../utility/errorIdentificationUtilities';
 import { createDropboxClient } from './../client/dropboxClient';
 import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
 import { notifyError, notifySuccess } from 'utility/notifier';
+import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
 
 // @todo implement https://www.dropbox.com/lp/developers/reference/oauth-guide for security reasons!
 
@@ -20,33 +21,6 @@ export const fetchAccessToken = async (
     );
 
     return result.access_token;
-};
-
-export const pushDataToDropbox = async (
-    accessToken: string,
-    json: string,
-    fileName: string,
-) => {
-    const client = createDropboxClient(accessToken);
-
-    try {
-        client.filesUpload({
-            path: `/${fileName}`,
-            mode: {
-                '.tag': 'overwrite',
-            },
-            contents: json,
-        });
-    } catch (error) {
-        const errorMessage = 'An error occurred while persisting the todos';
-
-        notifyError(errorMessage);
-        console.error(errorMessage, error);
-
-        if (isLoggedOutError(error)) {
-            redirectAndNotifyUserWhenLoggedOut();
-        }
-    }
 };
 
 export const fetchNotesFromDropbox = async (

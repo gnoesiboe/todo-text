@@ -1,9 +1,9 @@
 import { SetHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { resolveDropboxFileName } from 'utility/environmentUtlities';
 import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
-import { pushDataToDropbox } from 'dropbox/storage/dropboxStorage';
 import { useEffect, useState, useRef } from 'react';
 import type { TodoListItem } from 'model/TodoListItem';
+import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
 
 const pushToDropboxThrottle = 3000; // 3 seconds
 
