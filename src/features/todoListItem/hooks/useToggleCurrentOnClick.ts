@@ -1,8 +1,10 @@
 import { MouseEventHandler } from 'react';
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import { useTodoContext } from 'context/todoContext/TodoContext';
 
-export default function useToggleCurrentOnClick(item: TodoListItem) {
+export default function useToggleCurrentOnClick(
+    item: TodoListItem<ParsedTodoValue | string>,
+) {
     const { toggleCurrentItem, isEditing } = useTodoContext();
 
     const onClick: MouseEventHandler = () => {

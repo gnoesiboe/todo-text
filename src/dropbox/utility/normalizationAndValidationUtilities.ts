@@ -1,4 +1,8 @@
-import { TodoListItem, todoSchema } from 'model/TodoListItem';
+import {
+    TodoListItem,
+    todoSchema,
+    TodoListItemCollection,
+} from 'model/TodoListItem';
 import { notifyError } from 'utility/notifier';
 
 const normalizeAndValidateTodo = (todo: any): TodoListItem => {
@@ -15,7 +19,9 @@ const normalizeAndValidateTodo = (todo: any): TodoListItem => {
     return result.value;
 };
 
-export const normalizeAndValidateTodos = (todos: any): TodoListItem[] => {
+export const normalizeAndValidateTodos = (
+    todos: any,
+): TodoListItemCollection => {
     if (!Array.isArray(todos)) {
         return [];
     }

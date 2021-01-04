@@ -1,6 +1,6 @@
+import { TodoListItemCollection } from 'model/TodoListItem';
 import { MarkCurrentItemHandler } from './useManageCurrentItem';
 import { StartEditHandler } from './useManageIsEditingState';
-import { TodoListItem } from 'model/TodoListItem';
 import {
     applyCreateNewItemAfter,
     applyCreateNewItemAtTheStart,
@@ -16,7 +16,7 @@ export type CreateNewItemBeforeCurrentHandler = () => void;
 export type CreateNewItemAtTheStartHandler = () => void;
 
 export default function useManageItemCreation(
-    setItems: Dispatch<SetStateAction<TodoListItem[]>>,
+    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
     markCurrentItem: MarkCurrentItemHandler,
     startEdit: StartEditHandler,
     currentItem: string | null,

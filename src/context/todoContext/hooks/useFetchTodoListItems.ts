@@ -1,12 +1,12 @@
+import { TodoListItemCollection } from 'model/TodoListItem';
 import { CheckHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useState, useEffect, useCallback } from 'react';
-import { TodoListItem } from 'model/TodoListItem';
 import { applyNewlyFetched } from '../utility/todosMutators';
 import fetchTodos from 'dropbox/handler/fetchTodos';
 
 export default function useFetchTodoListItems(
-    setItems: React.Dispatch<React.SetStateAction<TodoListItem[]>>,
+    setItems: React.Dispatch<React.SetStateAction<TodoListItemCollection>>,
     checkHasOpenChanges: CheckHasOpenChangesHandler,
     checkIsEditing: () => boolean,
 ) {

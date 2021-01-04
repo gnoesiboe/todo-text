@@ -1,8 +1,8 @@
 import styled from 'styled-components';
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 
 const Container = styled.div<{
-    item: TodoListItem;
+    item: TodoListItem<ParsedTodoValue | string>;
     current: boolean;
     isDragging: boolean;
     isEditing: boolean;

@@ -1,14 +1,43 @@
-import { isAfterToday } from 'utility/dateTimeUtilities';
-import { extractSnoozedDate } from './selectors/TodoListIttemSelectors';
 import { generateId } from 'utility/idGenerator';
 import Joi from 'joi';
-import { splitAtLineBreak } from 'utility/stringUtilities';
 
-export interface TodoListItem {
+export interface TodoListItem<ValueType = string> {
     id: string;
-    value: string;
+    value: ValueType;
     done: boolean;
 }
+
+export type TodoListItemCollection<ValueType = string> = Array<
+    TodoListItem<ValueType>
+>;
+
+export type ParsedTodoNote = {
+    note: string;
+    isTodo: boolean;
+    done: boolean | null;
+};
+
+export type ParsedTodoProgress = {
+    done: number;
+    todo: number;
+    total: number;
+};
+
+export type ParsedTodoValue = {
+    raw: string;
+    summary: string;
+    notes: Array<ParsedTodoNote>;
+    progress: ParsedTodoProgress;
+    isCancelled: boolean;
+    isHeading: boolean;
+    isMust: boolean;
+    isWaiting: boolean;
+    isQuickfix: boolean;
+    snoozedUntil: Date | null;
+    isSnoozed: boolean;
+    isEvening: boolean;
+    isActionable: boolean;
+};
 
 export const todoSchema = Joi.object({
     id: Joi.string()
@@ -19,35 +48,3 @@ export const todoSchema = Joi.object({
     value: Joi.string().default(''),
     done: Joi.boolean().required().default(false),
 });
-
-export const isCancelled = (item: TodoListItem) =>
-    !!item.value.match(/^~~[^~]+~~$/);
-
-export const isHeading = (item: TodoListItem) => !!item.value.match(/^# .*$/);
-
-export const isMust = (item: TodoListItem) => !!item.value.match(/@must/);
-
-export const isWaiting = (item: TodoListItem) =>
-    !!item.value.match(/^.*@waiting/);
-
-export const isQuickfix = (item: TodoListItem) =>
-    !!item.value.match(/^.*@quickfix/);
-
-export const isActionable = (item: TodoListItem) =>
-    !isWaiting(item) && !isCancelled(item) && !isHeading(item);
-
-export const hasNotes = (item: TodoListItem) =>
-    splitAtLineBreak(item.value).length > 1;
-
-export const isEvening = (item: TodoListItem) =>
-    !!item.value.match(/^.*@evening/);
-
-export const isSnoozed = (item: TodoListItem): boolean => {
-    const date = extractSnoozedDate(item);
-
-    if (!date) {
-        return false;
-    }
-
-    return isAfterToday(date);
-};

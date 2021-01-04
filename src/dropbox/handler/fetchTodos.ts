@@ -1,3 +1,4 @@
+import { TodoListItemCollection } from 'model/TodoListItem';
 import { notifySuccess, notifyError } from 'utility/notifier';
 import { redirectAndNotifyUserWhenLoggedOut } from '../utility/redirectUtilities';
 import {
@@ -6,13 +7,12 @@ import {
 } from '../utility/errorIdentificationUtilities';
 import { resolveDropboxFileName } from '../../utility/environmentUtlities';
 import { createDropboxClient } from '../client/dropboxClient';
-import { TodoListItem } from 'model/TodoListItem';
 import { normalizeAndValidateTodos } from 'dropbox/utility/normalizationAndValidationUtilities';
 import pushDataToDropbox from './pushDataToDropbox';
 
 const fetchTodos = async (
     accessToken: string,
-): Promise<TodoListItem[] | null> => {
+): Promise<TodoListItemCollection | null> => {
     const client = createDropboxClient(accessToken);
 
     try {

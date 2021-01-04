@@ -1,5 +1,5 @@
 import { DragObject, dragDropItemType } from './useDragAndDrop';
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import { useDrag } from 'react-dnd';
 
 type CollectedProps = {
@@ -7,7 +7,7 @@ type CollectedProps = {
 };
 
 export default function useDragItem(
-    item: TodoListItem,
+    item: TodoListItem<ParsedTodoValue | string>,
     index: number,
     enabled: boolean,
 ) {

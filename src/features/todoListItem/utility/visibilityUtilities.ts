@@ -1,4 +1,4 @@
-import { isHeading } from 'model/TodoListItem';
+import { ParsedTodoValue } from 'model/TodoListItem';
 import type { TodoListItem } from 'model/TodoListItem';
 import { splitAtLineBreak } from 'utility/stringUtilities';
 
@@ -89,12 +89,14 @@ const applyFormatters = (value: string, ...formatters: Formatter[]): string => {
     return out;
 };
 
-export const prepareForVisibility = (item: TodoListItem): string => {
-    if (isHeading(item)) {
-        return formatAsHeading(item.value);
+export const prepareForVisibility = (
+    item: TodoListItem<ParsedTodoValue>,
+): string => {
+    if (item.value.isHeading) {
+        return formatAsHeading(item.value.raw);
     }
 
-    return splitAtLineBreak(item.value).reduce<string>(
+    return splitAtLineBreak(item.value.raw).reduce<string>(
         (accumulator, currentLine, currentIndex) => {
             const formatters = [
                 applyTagging,

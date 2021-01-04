@@ -8,7 +8,7 @@ import {
 import { checkKeyDefinitionIsPressed } from 'utility/keyboardNavigationUtilities';
 import { isValidValue } from './../utility/inputValidator';
 import { useTodoContext } from 'context/todoContext/TodoContext';
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import {
     useState,
     FormEventHandler,
@@ -16,8 +16,10 @@ import {
     FocusEventHandler,
 } from 'react';
 
-export default function useTodoFormHandlers(item: TodoListItem) {
-    const [value, setValue] = useState<string>(item.value);
+export default function useTodoFormHandlers(
+    item: TodoListItem<ParsedTodoValue>,
+) {
+    const [value, setValue] = useState<string>(item.value.raw);
 
     const {
         deleteItem,

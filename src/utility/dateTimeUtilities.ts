@@ -27,7 +27,19 @@ export const parseDate = (value: string): Date | null => {
     return isValidDate(date) ? date : null;
 };
 
-const supportedInexactDateIndicators = [
+export type InexactDateInidicator =
+    | 'today'
+    | 'tomorrow'
+    | 'next week'
+    | 'monday'
+    | 'tuesday'
+    | 'wednesday'
+    | 'thursday'
+    | 'friday'
+    | 'saturday'
+    | 'sunday';
+
+const supportedInexactDateIndicators: InexactDateInidicator[] = [
     'today',
     'tomorrow',
     'next week',
@@ -42,7 +54,9 @@ const supportedInexactDateIndicators = [
 
 const dateFormat = 'yyyy-MM-dd';
 
-export const transformInexactToExactDate = (value: string): string => {
+export const transformInexactToExactDate = (
+    value: InexactDateInidicator,
+): string => {
     if (!supportedInexactDateIndicators.includes(value)) {
         console.warn('Incorrect, inexact value supplied:', value);
 

@@ -1,5 +1,8 @@
 import React from 'react';
-import type { TodoListItem } from 'model/TodoListItem';
+import type {
+    ParsedTodoValue,
+    TodoListItemCollection,
+} from 'model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
     DeleteItemHandler,
@@ -37,10 +40,11 @@ import {
     CreateNewItemAtTheStartHandler,
     CreateNewItemBeforeCurrentHandler,
 } from './hooks/useManageItemCreation';
+import { SnoozeCurrentItemUntilHandler } from './hooks/useSnoozeCurrentItem';
 
 type ContextValue = {
-    items: TodoListItem[];
-    filteredItems: TodoListItem[];
+    items: TodoListItemCollection<ParsedTodoValue>;
+    filteredItems: TodoListItemCollection<ParsedTodoValue>;
     isFetching: boolean;
     isSaving: boolean;
     saveValue: SaveValueHandler;
@@ -73,6 +77,7 @@ type ContextValue = {
     toggleHideSnoozed: ToggleHideSnoozedHandler;
     matchingFilters: MatchingFilters;
     createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
+    snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler;
 };
 
 const initialValue: ContextValue = {
@@ -110,6 +115,7 @@ const initialValue: ContextValue = {
     toggleHideSnoozed: () => {},
     matchingFilters: { snoozed: 0, done: 0, evening: 0, notActionable: 0 },
     createNewItemAtTheStart: () => {},
+    snoozeCurrentItemUntil: () => {},
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -153,6 +159,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         filteredItems,
         matchingFilters,
         createNewItemAtTheStart,
+        snoozeCurrentItemUntil,
     } = useManageTodoListItems();
 
     useConfirmCloseWhenThereAreOpenChanges(checkHasOpenChanges);
@@ -192,6 +199,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         filteredItems,
         matchingFilters,
         createNewItemAtTheStart,
+        snoozeCurrentItemUntil,
     };
 
     return (

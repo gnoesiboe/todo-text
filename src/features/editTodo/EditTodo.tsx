@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import useTodoFormHandlers from './hooks/useTodoFormHandlers';
-import type { TodoListItem } from 'model/TodoListItem';
+import type { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import useSuggestTags from './hooks/useSuggestTags';
 import { submitItemForm, stopEditWithoutSave } from 'constants/keyDefnitions';
 import Form from './components/Form';
@@ -11,7 +11,7 @@ import { isValidValue } from './utility/inputValidator';
 import useHandleCancelClick from './hooks/useHandleCancelClick';
 
 type Props = {
-    item: TodoListItem;
+    item: TodoListItem<ParsedTodoValue>;
     onCancel: () => void;
 };
 

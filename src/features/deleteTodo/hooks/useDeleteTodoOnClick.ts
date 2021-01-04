@@ -1,8 +1,10 @@
 import { useTodoContext } from 'context/todoContext/TodoContext';
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import { MouseEventHandler } from 'react';
 
-export default function useDeleteTodoOnClick(item: TodoListItem) {
+export default function useDeleteTodoOnClick(
+    item: TodoListItem<ParsedTodoValue | string>,
+) {
     const { deleteItem } = useTodoContext();
 
     const onClick: MouseEventHandler<HTMLButtonElement> = (event) => {

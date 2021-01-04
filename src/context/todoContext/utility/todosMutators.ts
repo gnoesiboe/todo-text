@@ -1,18 +1,20 @@
-import { emptyValue } from './../../../model/factory/todoListItemFactory';
+import { parseTodoValue } from './todoListValueParser';
+import { InexactDateInidicator } from 'utility/dateTimeUtilities';
+import { splitAtLineBreak } from 'utility/stringUtilities';
+import { TodoListItemCollection } from 'model/TodoListItem';
+import { emptyValue } from 'model/factory/todoListItemFactory';
 import {
     parseDate,
     transformInexactToExactDate,
     isBeforeToday,
     isToday,
 } from 'utility/dateTimeUtilities';
-import { isActionable } from 'model/TodoListItem';
 import { createEmpty } from 'model/factory/todoListItemFactory';
-import { TodoListItem } from 'model/TodoListItem';
 import produce from 'immer';
 import { isEqual } from 'lodash';
 import { isExactDate } from 'utility/dateTimeUtilities';
 
-const transformDateIndicators = (items: TodoListItem[]) => {
+const transformDateIndicators = (items: TodoListItemCollection) => {
     items.forEach((item) => {
         const match = item.value.match(/@snoozeUntil\(([^)]+)\)/);
 
@@ -20,7 +22,7 @@ const transformDateIndicators = (items: TodoListItem[]) => {
             return;
         }
 
-        const value = match[1];
+        const value = match[1] as InexactDateInidicator;
 
         if (!value) {
             return;
@@ -50,9 +52,9 @@ const transformDateIndicators = (items: TodoListItem[]) => {
 };
 
 export function applyNewlyFetched(
-    currentItems: TodoListItem[],
-    incomingItems: TodoListItem[],
-): TodoListItem[] {
+    currentItems: TodoListItemCollection,
+    incomingItems: TodoListItemCollection,
+): TodoListItemCollection {
     // ensure that we do not end up in a refetch loop, as an === check tell's
     // React that there were changes, even when there might be none as there
     // might be different instances with the same values.
@@ -66,12 +68,12 @@ export function applyNewlyFetched(
 }
 
 export function applyUpdate(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     id: string,
     value: string,
     done: boolean,
-): TodoListItem[] {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+): TodoListItemCollection {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         const indexToChange = nextItems.findIndex((item) => item.id === id);
 
         if (indexToChange === -1) {
@@ -90,10 +92,10 @@ export function applyUpdate(
 }
 
 export function applyDelete(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     id: string,
-): TodoListItem[] {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+): TodoListItemCollection {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         const indexToDelete = nextItems.findIndex((item) => item.id === id);
 
         if (indexToDelete === -1) {
@@ -107,14 +109,14 @@ export function applyDelete(
 }
 
 export function applyMoveCurrentItemUp(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     currentId: string | null,
-): TodoListItem[] {
+): TodoListItemCollection {
     if (!currentId) {
         return currentItems;
     }
 
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         const indexOfItemToBeMoved = nextItems.findIndex(
             (item) => item.id === currentId,
         );
@@ -138,14 +140,14 @@ export function applyMoveCurrentItemUp(
 }
 
 export function applyMoveCurrentItemDown(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     currentId: string | null,
-): TodoListItem[] {
+): TodoListItemCollection {
     if (!currentId) {
         return currentItems;
     }
 
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         const indexOfItemToBeMoved = nextItems.findIndex(
             (item) => item.id === currentId,
         );
@@ -169,11 +171,11 @@ export function applyMoveCurrentItemDown(
 }
 
 export function applyMoveToIndex(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     previousIndex: number,
     nextIndex: number,
-): TodoListItem[] {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+): TodoListItemCollection {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         if (!currentItems[previousIndex]) {
             return currentItems;
         }
@@ -185,20 +187,20 @@ export function applyMoveToIndex(
 }
 
 export function applyCreateNewItemAtTheStart(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     id: string,
-): TodoListItem[] {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+): TodoListItemCollection {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         nextItems.splice(0, 0, createEmpty(id));
     });
 }
 
 export function applyCreateNewItemAfter(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     currentItemId: string,
     id: string,
-): TodoListItem[] {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+): TodoListItemCollection {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         const currentIndex = nextItems.findIndex(
             (item) => item.id === currentItemId,
         );
@@ -212,11 +214,11 @@ export function applyCreateNewItemAfter(
 }
 
 export function applyCreateNewItemBefore(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     currentItemId: string,
     id: string,
-): TodoListItem[] {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
+): TodoListItemCollection {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
         const currentIndex = nextItems.findIndex(
             (item) => item.id === currentItemId,
         );
@@ -230,20 +232,59 @@ export function applyCreateNewItemBefore(
 }
 
 export function applyToggleDoneStatus(
-    currentItems: TodoListItem[],
+    currentItems: TodoListItemCollection,
     currentItemId: string,
 ) {
-    return produce<TodoListItem[]>(currentItems, (nextItems) => {
-        const currentItem = nextItems.find((item) => item.id === currentItemId);
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
+        const newCurrentItem = nextItems.find(
+            (item) => item.id === currentItemId,
+        );
 
-        if (!currentItem) {
+        if (!newCurrentItem) {
             return;
         }
 
-        if (!isActionable(currentItem)) {
+        if (!parseTodoValue(newCurrentItem).value.isActionable) {
             return;
         }
 
-        currentItem.done = !currentItem.done;
+        newCurrentItem.done = !newCurrentItem.done;
+    });
+}
+
+export function applySnoozeItemUntil(
+    currentItems: TodoListItemCollection,
+    currentItemId: string,
+    until: InexactDateInidicator,
+) {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
+        const nextCurrentItem = nextItems.find(
+            (item) => item.id === currentItemId,
+        );
+
+        if (!nextCurrentItem) {
+            return;
+        }
+
+        const [summaryLine, ...otherLines] = splitAtLineBreak(
+            nextCurrentItem.value,
+        );
+
+        let augmentedSummaryLine = summaryLine;
+
+        // if already snoozed, remove snoozed line first
+        augmentedSummaryLine = summaryLine.replace(
+            /@snoozeUntil\([^)]+\)/g,
+            '',
+        );
+
+        // add new snooze tag
+        augmentedSummaryLine += ` @snoozeUntil(${until})`;
+
+        nextCurrentItem.value = [augmentedSummaryLine, ...otherLines].join(
+            '\n',
+        );
+
+        transformDateIndicators(nextItems);
     });
 }

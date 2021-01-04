@@ -1,12 +1,5 @@
 import { checkItIsCurrentlyEvening } from 'utility/dateTimeUtilities';
-import {
-    TodoListItem,
-    isActionable,
-    isHeading,
-    isEvening,
-    isSnoozed,
-    isWaiting,
-} from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
 import { useState, useEffect, useMemo } from 'react';
 import {
     get as getStoredFilters,
@@ -28,7 +21,9 @@ export type MatchingFilters = {
 
 const eveningCheckInterval = 10000; // 10 minutes
 
-export default function useToggleFilters(items: TodoListItem[]) {
+export default function useToggleFilters(
+    items: TodoListItemCollection<ParsedTodoValue>,
+) {
     const persistedFilters = useMemo<StoredFilters | null>(
         () => getStoredFilters(),
         [],
@@ -84,7 +79,7 @@ export default function useToggleFilters(items: TodoListItem[]) {
 
     const matchingFilters = items.reduce<MatchingFilters>(
         (matches, item) => {
-            if (isWaiting(item)) {
+            if (item.value.isWaiting) {
                 matches.notActionable++;
             }
 
@@ -92,11 +87,11 @@ export default function useToggleFilters(items: TodoListItem[]) {
                 matches.done++;
             }
 
-            if (isEvening(item)) {
+            if (item.value.isEvening) {
                 matches.evening++;
             }
 
-            if (isSnoozed(item)) {
+            if (item.value.isSnoozed) {
                 matches.snoozed++;
             }
 
@@ -111,7 +106,11 @@ export default function useToggleFilters(items: TodoListItem[]) {
     );
 
     const filteredItems = items.filter((item) => {
-        if (hideNotActionable && !isActionable(item) && !isHeading(item)) {
+        if (
+            hideNotActionable &&
+            !item.value.isActionable &&
+            !item.value.isHeading
+        ) {
             return false;
         }
 
@@ -119,11 +118,11 @@ export default function useToggleFilters(items: TodoListItem[]) {
             return false;
         }
 
-        if (isEvening(item) && hideEvening) {
+        if (item.value.isEvening && hideEvening) {
             return false;
         }
 
-        if (isSnoozed(item) && hideSnoozed) {
+        if (item.value.isSnoozed && hideSnoozed) {
             return false;
         }
 

@@ -1,14 +1,14 @@
+import { TodoListItemCollection } from 'model/TodoListItem';
 import { SetHasOpenChangesHandler } from './useManageHasOpenChangesState';
 import { resolveDropboxFileName } from 'utility/environmentUtlities';
 import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect, useState, useRef } from 'react';
-import type { TodoListItem } from 'model/TodoListItem';
 import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
 
 const pushToDropboxThrottle = 3000; // 3 seconds
 
 export default function usePersistTodoListItemsOnChange(
-    items: TodoListItem[],
+    items: TodoListItemCollection,
     isFetching: boolean,
     setHasOpenChanges: SetHasOpenChangesHandler,
     checkIsEditing: () => boolean,

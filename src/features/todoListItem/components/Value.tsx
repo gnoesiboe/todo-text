@@ -1,10 +1,10 @@
 import styled from 'styled-components';
-import { isCancelled, TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 
 export const valueMarginLeft: string = '45px';
 
 export const Value = styled.div<{
-    item: TodoListItem;
+    item: TodoListItem<ParsedTodoValue>;
     isDragging: boolean;
     isSorting: boolean;
     current: boolean;
@@ -16,7 +16,7 @@ export const Value = styled.div<{
     padding: 0 0 5px;
     cursor: pointer;
 
-    ${({ item }) => isCancelled(item) && `text-decoration: line-through;`}
+    ${({ item }) => item.value.isCancelled && `text-decoration: line-through;`}
     ${({ item }) =>
         item.done &&
         `

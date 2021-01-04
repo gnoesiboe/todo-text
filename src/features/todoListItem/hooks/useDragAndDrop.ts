@@ -1,6 +1,6 @@
 import { useTodoContext } from 'context/todoContext/TodoContext';
 import { DragObjectWithType } from 'react-dnd';
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import { useRef } from 'react';
 import useDragItem from './useDragItem';
 import useDropItem from './useDropItem';
@@ -15,7 +15,7 @@ export const dragDropItemType = 'only';
 export default function useDragAndDrop(
     isEditing: boolean,
     index: number,
-    item: TodoListItem,
+    item: TodoListItem<ParsedTodoValue | string>,
 ) {
     const { isSorting } = useTodoContext();
 

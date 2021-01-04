@@ -1,14 +1,5 @@
 import React from 'react';
-import {
-    TodoListItem as ItemModel,
-    isMust,
-    isWaiting,
-    isQuickfix,
-    isActionable,
-    isHeading,
-    hasNotes,
-    isSnoozed,
-} from 'model/TodoListItem';
+import { TodoListItem as ItemModel, ParsedTodoValue } from 'model/TodoListItem';
 import EditTodo from '../editTodo/EditTodo';
 import { prepareForVisibility } from './utility/visibilityUtilities';
 import useToggleCurrentOnClick from './hooks/useToggleCurrentOnClick';
@@ -20,7 +11,6 @@ import useStartEditingOnKeyDown from './hooks/useStartEditingOnKeyDown';
 import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
 import useDragAndDrop from './hooks/useDragAndDrop';
 import useScrollIntoView from './hooks/useScrollIntoView';
-import { determineProgress } from './utility/selectors';
 import ProgressBar from 'primitives/ProgressBar/ProgressBar';
 import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
@@ -35,7 +25,7 @@ import { QuickfixIcon, WaitingIcon } from './components/StatusIndicator';
 import AddTodo, { ButtonType } from 'features/addTodo/AddTodo';
 
 type Props = {
-    item: ItemModel;
+    item: ItemModel<ParsedTodoValue>;
     current: boolean;
     index: number;
 };
@@ -59,16 +49,12 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
 
     useStartEditingOnKeyDown(current);
 
-    const { onTomorrowClick, onNextWeekClick } = usePostpone(item, current);
+    const { onTomorrowClick, onNextWeekClick } = usePostpone();
 
-    const waiting = isWaiting(item);
     const showStatusIcon = !item.done && !isDragging;
 
-    const { done, todo, total } = determineProgress(item);
-
-    const heading = isHeading(item);
-
-    const snoozingButtonsDisabled = isSnoozed(item) || heading || item.done;
+    const snoozingButtonsDisabled =
+        item.value.isSnoozed || item.value.isHeading || item.done;
 
     return (
         <Container
@@ -82,20 +68,20 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
             <>
                 {/* @ts-ignore don't know how to fix ref */}
                 <StatusIndicatorContainer>
-                    {waiting && showStatusIcon && <WaitingIcon />}
-                    {isQuickfix(item) && !waiting && showStatusIcon && (
-                        <QuickfixIcon />
-                    )}
+                    {item.value.isWaiting && showStatusIcon && <WaitingIcon />}
+                    {item.value.isQuickfix &&
+                        !item.value.isWaiting &&
+                        showStatusIcon && <QuickfixIcon />}
                 </StatusIndicatorContainer>
-                {!heading && (
+                {!item.value.isHeading && (
                     <Checkbox
                         item={item}
                         isDragging={isDragging}
-                        accented={isMust(item)}
+                        accented={item.value.isMust}
                         checked={item.done}
                         muted={item.done}
                         onChange={onDoneChanged}
-                        disabled={!isActionable(item)}
+                        disabled={!item.value.isActionable}
                     />
                 )}
 
@@ -138,10 +124,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                     </TodoActionButtonWrapper>
                 )}
 
-                {!item.done && (
-                    <ProgressBar done={done} todo={todo} total={total} />
-                )}
-                {hasNotes(item) && !isSorting && (
+                {!item.done && <ProgressBar {...item.value.progress} />}
+                {item.value.notes.length > 0 && !isSorting && (
                     <HasNotesIndicator reverse={current} />
                 )}
             </>

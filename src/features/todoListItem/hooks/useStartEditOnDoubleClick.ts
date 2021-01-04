@@ -1,7 +1,9 @@
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import { useTodoContext } from 'context/todoContext/TodoContext';
 
-export default function useStartEditOnDoubleClick(item: TodoListItem) {
+export default function useStartEditOnDoubleClick(
+    item: TodoListItem<ParsedTodoValue | string>,
+) {
     const { startEdit, markCurrentItem, isEditing } = useTodoContext();
 
     const onDoubleClick = () => {

@@ -1,5 +1,5 @@
+import type { TodoListItemCollection } from 'model/TodoListItem';
 import { useState } from 'react';
-import type { TodoListItem } from 'model/TodoListItem';
 import {
     applyUpdate,
     applyDelete,
@@ -16,6 +16,8 @@ import useManageCurrentItem from './useManageCurrentItem';
 import useManageItemCreation from './useManageItemCreation';
 import usePollForChanges from './usePollForChanges';
 import useManageHasOpenChangesState from './useManageHasOpenChangesState';
+import { transformToParsedCollection } from '../utility/todoListValueParser';
+import useSnoozeCurrentItem from './useSnoozeCurrentItem';
 
 export type SaveValueHandler = (
     id: string,
@@ -30,7 +32,7 @@ export type ToggleDoneStatusHandler = () => void;
 export default function useManageTodoListItems() {
     const [currentItem, setCurrentItem] = useState<string | null>(null);
 
-    const [items, setItems] = useState<TodoListItem[]>([]);
+    const [items, setItems] = useState<TodoListItemCollection>([]);
 
     const {
         checkHasOpenChanges,
@@ -57,6 +59,10 @@ export default function useManageTodoListItems() {
         checkIsEditing,
     );
 
+    const snoozeCurrentItemUntil = useSnoozeCurrentItem(setItems, currentItem);
+
+    const parsedItems = transformToParsedCollection(items);
+
     const {
         filteredItems,
         hideDone,
@@ -68,7 +74,7 @@ export default function useManageTodoListItems() {
         toggleHideEvening,
         toggleHideSnoozed,
         matchingFilters,
-    } = useToggleFilters(items);
+    } = useToggleFilters(parsedItems);
 
     const {
         toggleCurrentItem,
@@ -128,7 +134,7 @@ export default function useManageTodoListItems() {
     usePollForChanges(refetchTodos);
 
     return {
-        items,
+        items: parsedItems,
         isFetching,
         stopEdit,
         startEdit,
@@ -163,5 +169,6 @@ export default function useManageTodoListItems() {
         toggleHideSnoozed,
         matchingFilters,
         createNewItemAtTheStart,
+        snoozeCurrentItemUntil,
     };
 }

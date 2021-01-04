@@ -1,4 +1,4 @@
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
 import { Dispatch, SetStateAction } from 'react';
 import {
     determineNextCurrentItem,
@@ -12,7 +12,7 @@ export type MoveToPreviousHandler = () => void;
 export default function useNavigateThroughItems(
     currentItem: string | null,
     isEditing: boolean,
-    filteredItems: TodoListItem[],
+    filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
     setCurrentItem: Dispatch<SetStateAction<string | null>>,
 ) {
     const moveToNext: MoveToNextHandler = () => {

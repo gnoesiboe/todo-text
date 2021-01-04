@@ -1,4 +1,4 @@
-import { TodoListItem } from 'model/TodoListItem';
+import { TodoListItemCollection } from 'model/TodoListItem';
 import { Dispatch, SetStateAction, useState } from 'react';
 import {
     applyMoveCurrentItemDown,
@@ -19,7 +19,7 @@ export type MoveToIndexHandler = (
 export default function useMoveTodoListItems(
     currentItem: string | null,
     isEditing: boolean,
-    setItems: Dispatch<SetStateAction<TodoListItem[]>>,
+    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
 ) {
     const [isSorting, setIsSorting] = useState<boolean>(false);
 

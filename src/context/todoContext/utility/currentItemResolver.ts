@@ -1,8 +1,8 @@
-import { TodoListItem } from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
 
 export function determineNextCurrentItem(
     currentItem: string | null,
-    items: TodoListItem[],
+    items: TodoListItemCollection<ParsedTodoValue | string>,
 ): string | null {
     const currentIndex = items.findIndex(
         (cursorItem) => cursorItem.id === currentItem,
@@ -21,7 +21,7 @@ export function determineNextCurrentItem(
 
 export function determinePreviousCurrentItem(
     currentItem: string | null,
-    items: TodoListItem[],
+    items: TodoListItemCollection<ParsedTodoValue | string>,
 ): string | null {
     const currentIndex = items.findIndex(
         (cursorItem) => cursorItem.id === currentItem,
