@@ -51,5 +51,14 @@ export default function useFetchTodoListItems(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
+    // refetch on window focus
+    useEffect(() => {
+        const onWindowFocus = () => fetchTodosFromDropbox();
+
+        window.addEventListener('focus', onWindowFocus);
+
+        return () => window.removeEventListener('focus', onWindowFocus);
+    }, [fetchTodosFromDropbox]);
+
     return { isFetching, refetchTodos: fetchTodosFromDropbox };
 }
