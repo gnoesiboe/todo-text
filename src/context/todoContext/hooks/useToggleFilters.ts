@@ -1,22 +1,19 @@
 import { checkItIsCurrentlyEvening } from 'utility/dateTimeUtilities';
 import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
-import { useState, useEffect, useMemo } from 'react';
-import {
-    get as getStoredFilters,
-    save,
-    StoredFilters,
-} from 'model/repository/filterRepository';
+import { useState, useEffect } from 'react';
 
 export type ToggleHideNotWaitingHandler = () => void;
 export type ToggleHideDoneHandler = () => void;
 export type ToggleHideEveningHandler = () => void;
 export type ToggleHideSnoozedHandler = () => void;
+export type ToggleHideNonePriorityHandler = () => void;
 
 export type MatchingFilters = {
     notActionable: number;
     done: number;
     evening: number;
     snoozed: number;
+    nonePriority: number;
 };
 
 const eveningCheckInterval = 10000; // 10 minutes
@@ -24,23 +21,13 @@ const eveningCheckInterval = 10000; // 10 minutes
 export default function useToggleFilters(
     items: TodoListItemCollection<ParsedTodoValue>,
 ) {
-    const persistedFilters = useMemo<StoredFilters | null>(
-        () => getStoredFilters(),
-        [],
-    );
-
-    const [hideNotActionable, setHideNotActionable] = useState<boolean>(
-        persistedFilters ? persistedFilters.hideNotActionable : false,
-    );
-    const [hideDone, setHideDone] = useState<boolean>(
-        persistedFilters ? persistedFilters.hideDone : false,
-    );
+    const [hideNotActionable, setHideNotActionable] = useState<boolean>(false);
+    const [hideDone, setHideDone] = useState<boolean>(false);
     const [hideEvening, setHideEvening] = useState<boolean>(
         !checkItIsCurrentlyEvening(),
     );
-    const [hideSnoozed, setHideSnoozed] = useState<boolean>(
-        persistedFilters ? persistedFilters.hideSnoozed : true,
-    );
+    const [hideSnoozed, setHideSnoozed] = useState<boolean>(true);
+    const [hideNonePriority, setHideNonePriority] = useState<boolean>(false);
 
     useEffect(() => {
         const reference = setInterval(() => {
@@ -51,15 +38,6 @@ export default function useToggleFilters(
 
         return () => clearInterval(reference);
     }, [setHideEvening, hideEvening]);
-
-    // save applied filters in local storage for cross request access
-    useEffect(() => {
-        save({
-            hideNotActionable,
-            hideDone,
-            hideSnoozed,
-        });
-    }, [hideNotActionable, hideDone, hideEvening, hideSnoozed]);
 
     const toggleHideNotActionable: ToggleHideNotWaitingHandler = () => {
         setHideNotActionable((currentValue) => !currentValue);
@@ -75,6 +53,10 @@ export default function useToggleFilters(
 
     const toggleHideSnoozed: ToggleHideSnoozedHandler = () => {
         setHideSnoozed((currentValue) => !currentValue);
+    };
+
+    const toggleHideNonePriority: ToggleHideNonePriorityHandler = () => {
+        setHideNonePriority((currentValue) => !currentValue);
     };
 
     const matchingFilters = items.reduce<MatchingFilters>(
@@ -95,6 +77,10 @@ export default function useToggleFilters(
                 matches.snoozed++;
             }
 
+            if (!item.value.isMust) {
+                matches.nonePriority++;
+            }
+
             return matches;
         },
         {
@@ -102,6 +88,7 @@ export default function useToggleFilters(
             done: 0,
             evening: 0,
             snoozed: 0,
+            nonePriority: 0,
         },
     );
 
@@ -126,6 +113,11 @@ export default function useToggleFilters(
             return false;
         }
 
+        // include headings to still be able to group todo's
+        if (!item.value.isMust && hideNonePriority && !item.value.isHeading) {
+            return false;
+        }
+
         return true;
     });
 
@@ -138,6 +130,8 @@ export default function useToggleFilters(
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
+        hideNonePriority,
+        toggleHideNonePriority,
         matchingFilters,
         filteredItems,
     };

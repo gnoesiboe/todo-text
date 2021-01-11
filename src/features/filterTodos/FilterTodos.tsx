@@ -17,11 +17,21 @@ const FilterTodos: React.FC = () => {
         hideSnoozed,
         toggleHideSnoozed,
         matchingFilters,
+        hideNonePriority,
+        toggleHideNonePriority,
     } = useTodoContext();
 
     return (
         <Container>
             <ButtonGroup title={<ButtonGroupTitle />}>
+                <Dropdown.Item as="div">
+                    <FilterButton
+                        onClick={() => toggleHideNonePriority()}
+                        active={hideNonePriority}
+                        title="hide non-priority"
+                        amount={matchingFilters.nonePriority}
+                    />
+                </Dropdown.Item>
                 <Dropdown.Item as="div">
                     <FilterButton
                         onClick={() => toggleHideNotActionable()}

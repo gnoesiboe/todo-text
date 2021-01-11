@@ -16,6 +16,7 @@ import {
     ToggleHideEveningHandler,
     ToggleHideNotWaitingHandler,
     ToggleHideSnoozedHandler,
+    ToggleHideNonePriorityHandler,
 } from './hooks/useToggleFilters';
 import {
     MoveToNextHandler,
@@ -75,6 +76,8 @@ type ContextValue = {
     toggleHideEvening: ToggleHideEveningHandler;
     hideSnoozed: boolean;
     toggleHideSnoozed: ToggleHideSnoozedHandler;
+    hideNonePriority: boolean;
+    toggleHideNonePriority: ToggleHideNonePriorityHandler;
     matchingFilters: MatchingFilters;
     createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
     snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler;
@@ -113,7 +116,15 @@ const initialValue: ContextValue = {
     toggleHideEvening: () => {},
     hideSnoozed: true,
     toggleHideSnoozed: () => {},
-    matchingFilters: { snoozed: 0, done: 0, evening: 0, notActionable: 0 },
+    hideNonePriority: false,
+    toggleHideNonePriority: () => {},
+    matchingFilters: {
+        snoozed: 0,
+        done: 0,
+        evening: 0,
+        notActionable: 0,
+        nonePriority: 0,
+    },
     createNewItemAtTheStart: () => {},
     snoozeCurrentItemUntil: () => {},
 };
@@ -156,6 +167,8 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
+        hideNonePriority,
+        toggleHideNonePriority,
         filteredItems,
         matchingFilters,
         createNewItemAtTheStart,
@@ -196,6 +209,8 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
+        hideNonePriority,
+        toggleHideNonePriority,
         filteredItems,
         matchingFilters,
         createNewItemAtTheStart,

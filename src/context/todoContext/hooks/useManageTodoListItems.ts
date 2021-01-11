@@ -69,11 +69,13 @@ export default function useManageTodoListItems() {
         hideNotActionable,
         hideEvening,
         hideSnoozed,
+        hideNonePriority,
         toggleHideDone,
         toggleHideNotActionable,
         toggleHideEvening,
         toggleHideSnoozed,
         matchingFilters,
+        toggleHideNonePriority,
     } = useToggleFilters(parsedItems);
 
     const {
@@ -163,10 +165,12 @@ export default function useManageTodoListItems() {
         hideNotActionable,
         hideEvening,
         hideSnoozed,
+        hideNonePriority,
         toggleHideDone,
         toggleHideNotActionable,
         toggleHideEvening,
         toggleHideSnoozed,
+        toggleHideNonePriority,
         matchingFilters,
         createNewItemAtTheStart,
         snoozeCurrentItemUntil,
