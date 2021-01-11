@@ -1,10 +1,6 @@
 import type { TodoListItemCollection } from 'model/TodoListItem';
 import { useState } from 'react';
-import {
-    applyUpdate,
-    applyDelete,
-    applyToggleDoneStatus,
-} from '../utility/todosMutators';
+import { applyUpdate, applyDelete } from '../utility/todosMutators';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import { determineNextCurrentItem } from '../utility/currentItemResolver';
 import usePersistTodoListItemsOnChange from './usePersistTodoListItemsOnChange';
@@ -18,6 +14,8 @@ import usePollForChanges from './usePollForChanges';
 import useManageHasOpenChangesState from './useManageHasOpenChangesState';
 import { transformToParsedCollection } from '../utility/todoListValueParser';
 import useSnoozeCurrentItem from './useSnoozeCurrentItem';
+import useManageDoneStatus from './useManageDoneStatus';
+import useStateWithSyncedRef from 'hooks/useStateWithSyncedRef';
 
 export type SaveValueHandler = (
     id: string,
@@ -27,10 +25,10 @@ export type SaveValueHandler = (
 
 export type DeleteItemHandler = (id: string) => void;
 
-export type ToggleDoneStatusHandler = () => void;
-
 export default function useManageTodoListItems() {
-    const [currentItem, setCurrentItem] = useState<string | null>(null);
+    const [getCurrentItem, setCurrentItem, currentItem] = useStateWithSyncedRef<
+        string | null
+    >(null);
 
     const [items, setItems] = useState<TodoListItemCollection>([]);
 
@@ -102,6 +100,12 @@ export default function useManageTodoListItems() {
         setCurrentItem,
     );
 
+    const { toggleDoneStatus, toggleSubItemDoneStatus } = useManageDoneStatus(
+        setItems,
+        getCurrentItem,
+        isEditing,
+    );
+
     const {
         moveCurrentItemUp,
         moveCurrentItemDown,
@@ -121,16 +125,6 @@ export default function useManageTodoListItems() {
         setItems(applyDelete(items, id));
 
         setCurrentItem(nextCurrentItem);
-    };
-
-    const toggleDoneStatus: ToggleDoneStatusHandler = () => {
-        if (!currentItem || isEditing) {
-            return;
-        }
-
-        setItems((currentItems) =>
-            applyToggleDoneStatus(currentItems, currentItem),
-        );
     };
 
     usePollForChanges(refetchTodos);
@@ -160,6 +154,7 @@ export default function useManageTodoListItems() {
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleDoneStatus,
+        toggleSubItemDoneStatus,
         filteredItems,
         hideDone,
         hideNotActionable,

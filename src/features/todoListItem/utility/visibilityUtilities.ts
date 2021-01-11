@@ -73,11 +73,11 @@ const applySubItem: Formatter = (value) => {
     return value
         .replace(
             /^[*-]{1,1} \[ \] (.*)$/,
-            '<div class="todo-list-item__value__sub-item">$1</div>',
+            '<button class="todo-list-item__value__sub-item">$1</button>',
         )
         .replace(
             /^[*-]{1,1} \[x\] (.*)$/,
-            '<div class="todo-list-item__value__sub-item todo-list-item__value__sub-item--checked">$1</div>',
+            '<button class="todo-list-item__value__sub-item todo-list-item__value__sub-item--checked">$1</button>',
         );
 };
 

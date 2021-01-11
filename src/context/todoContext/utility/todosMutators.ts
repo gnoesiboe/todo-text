@@ -1,4 +1,4 @@
-import { parseTodoValue } from './todoListValueParser';
+import { parseTodoValue, determineNoteTodoStatus } from './todoListValueParser';
 import { InexactDateInidicator } from 'utility/dateTimeUtilities';
 import { splitAtLineBreak } from 'utility/stringUtilities';
 import { TodoListItemCollection } from 'model/TodoListItem';
@@ -249,6 +249,55 @@ export function applyToggleDoneStatus(
         }
 
         newCurrentItem.done = !newCurrentItem.done;
+    });
+}
+
+export function applyToggleSubItemDoneStatus(
+    currentItems: TodoListItemCollection,
+    currentItemId: string,
+    toggleItemIndex: number,
+) {
+    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
+        const newCurrentItem = nextItems.find(
+            (item) => item.id === currentItemId,
+        );
+
+        if (!newCurrentItem) {
+            return;
+        }
+
+        const [summary, ...notes] = splitAtLineBreak(newCurrentItem.value);
+
+        let currentItemIndex = 0;
+
+        const newNotes = notes.map((note) => {
+            const todoStatus = determineNoteTodoStatus(note);
+
+            if (todoStatus === null) {
+                // not a todo list item
+
+                return note;
+            }
+
+            if (currentItemIndex !== toggleItemIndex) {
+                currentItemIndex++;
+
+                return note;
+            }
+
+            const newNote =
+                todoStatus === false
+                    ? note.replace(/^([*-]{1,1}) \[ \]/, '$1 [x]')
+                    : note.replace(/^([*-]{1,1}) \[x\]/, '$1 [ ]');
+
+            currentItemIndex++;
+
+            return newNote;
+        });
+
+        const newValue = [summary, ...newNotes].join('\n');
+
+        newCurrentItem.value = newValue;
     });
 }
 

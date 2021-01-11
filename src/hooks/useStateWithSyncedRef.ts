@@ -1,6 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
-
-type StateCreator = <S>(oldState: S) => S;
+import { Dispatch, SetStateAction, useCallback, useRef, useState } from 'react';
 
 /**
  * To be used when you need to use a `useRef` to be able to access the latest state of
@@ -14,12 +12,7 @@ type StateCreator = <S>(oldState: S) => S;
  */
 export default function useStateWithSyncedRef<S>(
     initialState: S,
-): [
-    () => S,
-    (newState: S | StateCreator) => void,
-    S,
-    React.MutableRefObject<S>,
-] {
+): [() => S, Dispatch<SetStateAction<S>>, S, React.MutableRefObject<S>] {
     const [state, _setState] = useState<S>(initialState);
 
     const ref = useRef<S>(state);

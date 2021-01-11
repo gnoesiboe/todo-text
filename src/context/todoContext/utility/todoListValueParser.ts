@@ -8,7 +8,7 @@ import type {
 } from 'model/TodoListItem';
 import { isAfterToday, parseDate } from 'utility/dateTimeUtilities';
 
-const determineNoteTodoStatus = (note: string): boolean | null => {
+export const determineNoteTodoStatus = (note: string): boolean | null => {
     const match = note.match(/^[*-]{1,1} \[([ x]{1,1})\]/);
 
     if (!match) {

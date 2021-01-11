@@ -23,6 +23,7 @@ import Checkbox from './components/Checkbox';
 import { Value } from './components/Value';
 import { QuickfixIcon, WaitingIcon } from './components/StatusIndicator';
 import AddTodo, { ButtonType } from 'features/addTodo/AddTodo';
+import useToggleSubItemCheckedStatusOnClick from './hooks/useToggleSubItemCheckedStatusOnClick';
 
 type Props = {
     item: ItemModel<ParsedTodoValue>;
@@ -48,6 +49,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
     useScrollIntoView(dragPreviewRef, current);
 
     useStartEditingOnKeyDown(current);
+
+    useToggleSubItemCheckedStatusOnClick(dragPreviewRef, item);
 
     const { onTomorrowClick, onNextWeekClick } = usePostpone();
 

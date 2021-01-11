@@ -7,7 +7,6 @@ import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
     DeleteItemHandler,
     SaveValueHandler,
-    ToggleDoneStatusHandler,
 } from './hooks/useManageTodoListItems';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 import {
@@ -42,6 +41,10 @@ import {
     CreateNewItemBeforeCurrentHandler,
 } from './hooks/useManageItemCreation';
 import { SnoozeCurrentItemUntilHandler } from './hooks/useSnoozeCurrentItem';
+import {
+    ToggleDoneStatusHandler,
+    ToggleSubItemDoneStatusHandler,
+} from './hooks/useManageDoneStatus';
 
 type ContextValue = {
     items: TodoListItemCollection<ParsedTodoValue>;
@@ -67,6 +70,7 @@ type ContextValue = {
     createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler;
     createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler;
     toggleDoneStatus: ToggleDoneStatusHandler;
+    toggleSubItemDoneStatus: ToggleSubItemDoneStatusHandler;
     isEditing: boolean;
     hideDone: boolean;
     toggleHideDone: ToggleHideDoneHandler;
@@ -107,6 +111,7 @@ const initialValue: ContextValue = {
     createNewItemAfterCurrent: () => {},
     createNewItemBeforeCurrent: () => {},
     toggleDoneStatus: () => {},
+    toggleSubItemDoneStatus: () => {},
     isEditing: false,
     hideDone: false,
     toggleHideDone: () => {},
@@ -159,6 +164,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleDoneStatus,
+        toggleSubItemDoneStatus,
         hideNotActionable,
         toggleHideNotActionable,
         hideDone,
@@ -200,6 +206,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleDoneStatus,
+        toggleSubItemDoneStatus,
         isEditing,
         hideNotActionable,
         toggleHideNotActionable,
