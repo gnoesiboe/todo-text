@@ -38,4 +38,6 @@ body,
 /* bootstrap adjustments */
 .container-lg {
     max-width: 1400px;
+    padding-right: 10px;
+    padding-left: 10px;
 }
