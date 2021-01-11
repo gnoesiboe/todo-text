@@ -47,7 +47,7 @@ export const Value = styled.div<{
 
     .todo-list-item__value__tag {
         color: #999;
-        font-size: 0.9em;
+        font-size: 0.8em;
     }
 
     .todo-list-item__value__link {
