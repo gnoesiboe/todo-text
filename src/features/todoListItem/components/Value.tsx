@@ -89,10 +89,11 @@ export const Value = styled.div<{
     }
 
     .todo-list-item__value__sub-item {
-        padding: 0 0 5px 40px;
+        padding: 0 0 5px 17px;
         border: none;
         background: none;
         text-align: left;
+        color: #666;
     }
 
     .todo-list-item__value__sub-item:before {

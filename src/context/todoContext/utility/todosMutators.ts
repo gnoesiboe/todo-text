@@ -1,18 +1,18 @@
-import { parseTodoValue, determineNoteTodoStatus } from './todoListValueParser';
-import { InexactDateInidicator } from 'utility/dateTimeUtilities';
-import { splitAtLineBreak } from 'utility/stringUtilities';
-import { TodoListItemCollection } from 'model/TodoListItem';
-import { emptyValue } from 'model/factory/todoListItemFactory';
+import { determineNoteTodoStatus } from './todoListValueParser';
 import {
+    InexactDateInidicator,
+    isBeforeToday,
+    isExactDate,
+    isToday,
     parseDate,
     transformInexactToExactDate,
-    isBeforeToday,
-    isToday,
 } from 'utility/dateTimeUtilities';
-import { createEmpty } from 'model/factory/todoListItemFactory';
+import { splitAtLineBreak } from 'utility/stringUtilities';
+import { TodoListItem, TodoListItemCollection } from 'model/TodoListItem';
+import { emptyValue } from 'model/factory/todoListItemFactory';
 import produce from 'immer';
 import { isEqual } from 'lodash';
-import { isExactDate } from 'utility/dateTimeUtilities';
+import { sortItemsByRank } from './sortingUtilities';
 
 const transformDateIndicators = (items: TodoListItemCollection) => {
     items.forEach((item) => {
@@ -64,30 +64,37 @@ export function applyNewlyFetched(
 
     transformDateIndicators(incomingItems);
 
-    return incomingItems;
+    return sortItemsByRank(incomingItems);
 }
 
 export function applyUpdate(
     currentItems: TodoListItemCollection,
     id: string,
-    value: string,
-    done: boolean,
+    updates: Partial<TodoListItem>,
 ): TodoListItemCollection {
     return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const indexToChange = nextItems.findIndex((item) => item.id === id);
+        const itemToChange = nextItems.find(
+            (cursorItem) => cursorItem.id === id,
+        );
 
-        if (indexToChange === -1) {
+        if (!itemToChange) {
             return;
         }
 
-        // fallback to ensure that no empty todo list items occur. This should
-        // however never occur
-        const normalizedValue = value.trim() || emptyValue;
+        const { value, ...otherUpdates } = updates;
 
-        nextItems[indexToChange].value = normalizedValue;
-        nextItems[indexToChange].done = done;
+        if (value) {
+            itemToChange.value = value.trim() || emptyValue;
+        }
+
+        Object.keys(otherUpdates).forEach((property) => {
+            // @ts-ignore → Typescript does not know that the property is a valid key for TodoListItem
+            itemToChange[property] = otherUpdates[property];
+        });
 
         transformDateIndicators(nextItems);
+
+        return sortItemsByRank(nextItems);
     });
 }
 
@@ -108,197 +115,59 @@ export function applyDelete(
     });
 }
 
-export function applyMoveCurrentItemUp(
+export function applyCreateNewItem(
     currentItems: TodoListItemCollection,
-    currentId: string | null,
+    newItem: TodoListItem,
 ): TodoListItemCollection {
-    if (!currentId) {
-        return currentItems;
-    }
+    const nextItems = sortItemsByRank([...currentItems, newItem]);
 
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const indexOfItemToBeMoved = nextItems.findIndex(
-            (item) => item.id === currentId,
-        );
-
-        if (indexOfItemToBeMoved === -1) {
-            return;
+    const withUpdatedRanks = nextItems.map((cursorItem) => {
+        if (cursorItem.id === newItem.id || cursorItem.rank < newItem.rank) {
+            return cursorItem;
         }
 
-        const nextIndex = indexOfItemToBeMoved - 1;
-
-        if (nextIndex < 0) {
-            return;
-        }
-
-        // first extract item
-        const extractedItem = nextItems.splice(indexOfItemToBeMoved, 1)[0];
-
-        // then re-add it
-        nextItems.splice(nextIndex, 0, extractedItem);
+        return {
+            ...cursorItem,
+            rank: cursorItem.rank + 1,
+        };
     });
+
+    return sortItemsByRank(withUpdatedRanks);
 }
 
-export function applyMoveCurrentItemDown(
-    currentItems: TodoListItemCollection,
-    currentId: string | null,
-): TodoListItemCollection {
-    if (!currentId) {
-        return currentItems;
-    }
-
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const indexOfItemToBeMoved = nextItems.findIndex(
-            (item) => item.id === currentId,
-        );
-
-        if (indexOfItemToBeMoved === -1) {
-            return;
-        }
-
-        const nextIndex = indexOfItemToBeMoved + 1;
-
-        if (nextItems[nextIndex] === undefined) {
-            return;
-        }
-
-        // first extract item
-        const extractedItem = nextItems.splice(indexOfItemToBeMoved, 1)[0];
-
-        // then re-add it
-        nextItems.splice(nextIndex, 0, extractedItem);
-    });
-}
-
-export function applyMoveToIndex(
-    currentItems: TodoListItemCollection,
-    previousIndex: number,
-    nextIndex: number,
-): TodoListItemCollection {
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        if (!currentItems[previousIndex]) {
-            return currentItems;
-        }
-
-        const itemToMove = nextItems.splice(previousIndex, 1)[0];
-
-        nextItems.splice(nextIndex, 0, itemToMove);
-    });
-}
-
-export function applyCreateNewItemAtTheStart(
-    currentItems: TodoListItemCollection,
-    id: string,
-): TodoListItemCollection {
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        nextItems.splice(0, 0, createEmpty(id));
-    });
-}
-
-export function applyCreateNewItemAfter(
-    currentItems: TodoListItemCollection,
-    currentItemId: string,
-    id: string,
-): TodoListItemCollection {
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const currentIndex = nextItems.findIndex(
-            (item) => item.id === currentItemId,
-        );
-
-        if (currentIndex === -1) {
-            return;
-        }
-
-        nextItems.splice(currentIndex + 1, 0, createEmpty(id));
-    });
-}
-
-export function applyCreateNewItemBefore(
-    currentItems: TodoListItemCollection,
-    currentItemId: string,
-    id: string,
-): TodoListItemCollection {
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const currentIndex = nextItems.findIndex(
-            (item) => item.id === currentItemId,
-        );
-
-        if (currentIndex === -1) {
-            return;
-        }
-
-        nextItems.splice(currentIndex, 0, createEmpty(id));
-    });
-}
-
-export function applyToggleDoneStatus(
-    currentItems: TodoListItemCollection,
-    currentItemId: string,
-) {
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const newCurrentItem = nextItems.find(
-            (item) => item.id === currentItemId,
-        );
-
-        if (!newCurrentItem) {
-            return;
-        }
-
-        if (!parseTodoValue(newCurrentItem).value.isActionable) {
-            return;
-        }
-
-        newCurrentItem.done = !newCurrentItem.done;
-    });
-}
-
-export function applyToggleSubItemDoneStatus(
-    currentItems: TodoListItemCollection,
-    currentItemId: string,
+export function applyToggleSubItemDoneValueChange(
+    currentValue: string,
     toggleItemIndex: number,
-) {
-    return produce<TodoListItemCollection>(currentItems, (nextItems) => {
-        const newCurrentItem = nextItems.find(
-            (item) => item.id === currentItemId,
-        );
+): string {
+    const [summary, ...notes] = splitAtLineBreak(currentValue);
 
-        if (!newCurrentItem) {
-            return;
+    let currentItemIndex = 0;
+
+    const newNotes = notes.map((note) => {
+        const todoStatus = determineNoteTodoStatus(note);
+
+        if (todoStatus === null) {
+            // not a todo list item
+
+            return note;
         }
 
-        const [summary, ...notes] = splitAtLineBreak(newCurrentItem.value);
-
-        let currentItemIndex = 0;
-
-        const newNotes = notes.map((note) => {
-            const todoStatus = determineNoteTodoStatus(note);
-
-            if (todoStatus === null) {
-                // not a todo list item
-
-                return note;
-            }
-
-            if (currentItemIndex !== toggleItemIndex) {
-                currentItemIndex++;
-
-                return note;
-            }
-
-            const newNote =
-                todoStatus === false
-                    ? note.replace(/^([*-]{1,1}) \[ \]/, '$1 [x]')
-                    : note.replace(/^([*-]{1,1}) \[x\]/, '$1 [ ]');
-
+        if (currentItemIndex !== toggleItemIndex) {
             currentItemIndex++;
 
-            return newNote;
-        });
+            return note;
+        }
 
-        const newValue = [summary, ...newNotes].join('\n');
+        const newNote = !todoStatus
+            ? note.replace(/^([*-]{1,1}) \[ \]/, '$1 [x]')
+            : note.replace(/^([*-]{1,1}) \[x\]/, '$1 [ ]');
 
-        newCurrentItem.value = newValue;
+        currentItemIndex++;
+
+        return newNote;
     });
+
+    return [summary, ...newNotes].join('\n');
 }
 
 export function applySnoozeItemUntil(
@@ -319,7 +188,7 @@ export function applySnoozeItemUntil(
             nextCurrentItem.value,
         );
 
-        let augmentedSummaryLine = summaryLine;
+        let augmentedSummaryLine: string;
 
         // if already snoozed, remove snoozed line first
         augmentedSummaryLine = summaryLine.replace(

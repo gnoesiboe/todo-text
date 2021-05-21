@@ -9,15 +9,15 @@ export type SnoozeCurrentItemUntilHandler = (
 
 export default function useSnoozeCurrentItem(
     setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
-    currentItem: string | null,
+    currentItemId: string | null,
 ) {
     const snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler = (until) => {
-        if (!currentItem) {
+        if (!currentItemId) {
             return;
         }
 
         setItems((currentItems) =>
-            applySnoozeItemUntil(currentItems, currentItem, until),
+            applySnoozeItemUntil(currentItems, currentItemId, until),
         );
     };
 

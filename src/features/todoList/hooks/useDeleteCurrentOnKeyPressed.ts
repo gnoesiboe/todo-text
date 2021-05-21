@@ -4,10 +4,10 @@ import { useTodoContext } from 'context/todoContext/TodoContext';
 import { deleteCurrentItem } from 'constants/keyDefnitions';
 
 export default function useDeleteCurrentOnKeyPressed() {
-    const { currentItem, isEditing, deleteItem } = useTodoContext();
+    const { currentItemId, isEditing, deleteItem } = useTodoContext();
 
     useEffect(() => {
-        if (!currentItem || isEditing) {
+        if (!currentItemId || isEditing) {
             return;
         }
 
@@ -17,7 +17,7 @@ export default function useDeleteCurrentOnKeyPressed() {
             }
 
             if (window.confirm('Alre you sure?')) {
-                deleteItem(currentItem);
+                deleteItem(currentItemId);
             }
         };
 
@@ -26,5 +26,5 @@ export default function useDeleteCurrentOnKeyPressed() {
         return () => {
             window.removeEventListener('keyup', onKeyUp);
         };
-    }, [currentItem, isEditing, deleteItem]);
+    }, [currentItemId, isEditing, deleteItem]);
 }

@@ -1,32 +1,31 @@
-import fetchNotesFromDropbox from 'dropbox/handler/fetchNotes';
-import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useCallback, useEffect, useState } from 'react';
+import { fetchOneWithUserId } from '../../../repository/noteRepository';
+import { useLoggedInUser } from '../../authenticationContext/AuthenticationContext';
 
 export default function useManageEditorValue() {
     const [isFetching, setIsFetching] = useState<boolean>(false);
 
     const [value, setValue] = useState<string>('');
 
-    const accessToken = useAuthenticationAccessToken();
+    const user = useLoggedInUser();
 
     const fetchNotes = useCallback(async () => {
-        if (isFetching || !accessToken) {
+        if (isFetching || !user) {
             return;
         }
 
         setIsFetching(true);
 
-        const notes = await fetchNotesFromDropbox(accessToken);
+        const note = await fetchOneWithUserId(user.id);
 
-        if (notes) {
-            setValue(notes);
-        }
+        setValue(note?.value || '');
 
         setIsFetching(false);
-    }, [isFetching, accessToken]);
+    }, [isFetching, user]);
 
     // initial fetch on mount
     useEffect(() => {
+        // noinspection JSIgnoredPromiseFromCall
         fetchNotes();
 
         // eslint-disable-next-line react-hooks/exhaustive-deps

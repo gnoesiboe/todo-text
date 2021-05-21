@@ -1,11 +1,12 @@
-import { generateId } from 'utility/idGenerator';
-import Joi from 'joi';
+import { FirestoreTodoListItem } from '../firebase/model/FirestoreTodoListItem';
 
-export interface TodoListItem<ValueType = string> {
+export type TodoListItem<ValueType = string> = {
     id: string;
+    userId: FirestoreTodoListItem['userId'];
     value: ValueType;
-    done: boolean;
-}
+    done: FirestoreTodoListItem['done'];
+    rank: FirestoreTodoListItem['rank'];
+};
 
 export type TodoListItemCollection<ValueType = string> = Array<
     TodoListItem<ValueType>
@@ -39,12 +40,7 @@ export type ParsedTodoValue = {
     isActionable: boolean;
 };
 
-export const todoSchema = Joi.object({
-    id: Joi.string()
-        .uuid()
-        .min(0)
-        .required()
-        .default(() => generateId()),
-    value: Joi.string().default(''),
-    done: Joi.boolean().required().default(false),
-});
+export type TodoListItemCollectionUpdates = Record<
+    string,
+    Partial<Omit<TodoListItem, 'id'>>
+>;

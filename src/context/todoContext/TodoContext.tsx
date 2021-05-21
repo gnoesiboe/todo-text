@@ -1,12 +1,12 @@
 import React from 'react';
 import type {
     ParsedTodoValue,
+    TodoListItem,
     TodoListItemCollection,
 } from 'model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
 import useManageTodoListItems, {
-    DeleteItemHandler,
-    SaveValueHandler,
+    UpdateItemHandler,
 } from './hooks/useManageTodoListItems';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 import {
@@ -41,17 +41,14 @@ import {
     CreateNewItemBeforeCurrentHandler,
 } from './hooks/useManageItemCreation';
 import { SnoozeCurrentItemUntilHandler } from './hooks/useSnoozeCurrentItem';
-import {
-    ToggleDoneStatusHandler,
-    ToggleSubItemDoneStatusHandler,
-} from './hooks/useManageDoneStatus';
+import { ToggleSubItemDoneStatusHandler } from './hooks/useManageSubItemDoneStatus';
+import { DeleteItemHandler } from './hooks/useManageItemDeletion';
 
 type ContextValue = {
     items: TodoListItemCollection<ParsedTodoValue>;
     filteredItems: TodoListItemCollection<ParsedTodoValue>;
     isFetching: boolean;
-    isSaving: boolean;
-    saveValue: SaveValueHandler;
+    updateItem: UpdateItemHandler;
     deleteItem: DeleteItemHandler;
     stopEdit: StopEditHandler;
     startEdit: StartEditHandler;
@@ -63,13 +60,13 @@ type ContextValue = {
     isSorting: boolean;
     startSorting: () => void;
     stopSorting: () => void;
-    currentItem: string | null;
+    currentItemId: string | null;
+    currentItem: TodoListItem<ParsedTodoValue> | null;
     toggleCurrentItem: ToggleCurrentItemHandler;
     markCurrentItem: MarkCurrentItemHandler;
     clearCurrentItem: ClearCurrentItemHandler;
     createNewItemAfterCurrent: CreateNewItemAfterCurrentHandler;
     createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler;
-    toggleDoneStatus: ToggleDoneStatusHandler;
     toggleSubItemDoneStatus: ToggleSubItemDoneStatusHandler;
     isEditing: boolean;
     hideDone: boolean;
@@ -91,27 +88,26 @@ const initialValue: ContextValue = {
     items: [],
     filteredItems: [],
     isFetching: false,
-    saveValue: () => {},
-    isSaving: false,
-    deleteItem: () => {},
+    updateItem: async () => false,
+    deleteItem: async () => false,
     stopEdit: () => {},
     startEdit: () => {},
     moveToNext: () => {},
     moveToPrevious: () => {},
-    moveCurrentItemUp: () => {},
-    moveCurrentItemDown: () => {},
-    moveToIndex: () => {},
+    moveCurrentItemUp: async () => false,
+    moveCurrentItemDown: async () => false,
+    moveToIndex: async () => false,
     isSorting: false,
     startSorting: () => {},
     stopSorting: () => {},
+    currentItemId: null,
     currentItem: null,
     toggleCurrentItem: () => {},
     markCurrentItem: () => {},
     clearCurrentItem: () => {},
     createNewItemAfterCurrent: () => {},
     createNewItemBeforeCurrent: () => {},
-    toggleDoneStatus: () => {},
-    toggleSubItemDoneStatus: () => {},
+    toggleSubItemDoneStatus: async () => false,
     isEditing: false,
     hideDone: false,
     toggleHideDone: () => {},
@@ -145,7 +141,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         deleteItem,
         stopEdit,
         startEdit,
-        saveValue,
+        updateItem,
         moveToNext,
         moveToPrevious,
         moveCurrentItemUp,
@@ -154,16 +150,15 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         isSorting,
         startSorting,
         stopSorting,
+        currentItemId,
         currentItem,
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
         checkHasOpenChanges,
-        isSaving,
         isEditing,
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
-        toggleDoneStatus,
         toggleSubItemDoneStatus,
         hideNotActionable,
         toggleHideNotActionable,
@@ -186,8 +181,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
     const value: ContextValue = {
         items,
         isFetching,
-        saveValue,
-        isSaving,
+        updateItem,
         deleteItem,
         stopEdit,
         startEdit,
@@ -199,13 +193,13 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         isSorting,
         startSorting,
         stopSorting,
+        currentItemId,
         currentItem,
         toggleCurrentItem,
         markCurrentItem,
         clearCurrentItem,
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
-        toggleDoneStatus,
         toggleSubItemDoneStatus,
         isEditing,
         hideNotActionable,

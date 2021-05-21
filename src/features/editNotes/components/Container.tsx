@@ -31,6 +31,8 @@ export const ViewContainer = styled.div`
     ${sharedContainerStyle}
     position: relative;
 
+    font-size: 0.85rem;
+
     * {
         color: rgba(0, 0, 0, 0.7);
         font-family: monospace;

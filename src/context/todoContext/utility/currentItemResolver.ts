@@ -1,11 +1,11 @@
 import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
 
 export function determineNextCurrentItem(
-    currentItem: string | null,
+    currentItemId: string | null,
     items: TodoListItemCollection<ParsedTodoValue | string>,
 ): string | null {
     const currentIndex = items.findIndex(
-        (cursorItem) => cursorItem.id === currentItem,
+        (cursorItem) => cursorItem.id === currentItemId,
     );
 
     if (items.length === 0) {
@@ -20,11 +20,11 @@ export function determineNextCurrentItem(
 }
 
 export function determinePreviousCurrentItem(
-    currentItem: string | null,
+    currentItemId: string | null,
     items: TodoListItemCollection<ParsedTodoValue | string>,
 ): string | null {
     const currentIndex = items.findIndex(
-        (cursorItem) => cursorItem.id === currentItem,
+        (cursorItem) => cursorItem.id === currentItemId,
     );
 
     if (items.length === 0) {

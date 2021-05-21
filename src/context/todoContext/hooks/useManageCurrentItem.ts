@@ -8,7 +8,7 @@ export type ClearCurrentItemHandler = () => void;
 
 export default function useManageCurrentItem(
     isEditing: boolean,
-    currentItem: string | null,
+    currentItemId: string | null,
     setCurrentItem: Dispatch<SetStateAction<string | null>>,
 ) {
     const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
@@ -20,7 +20,7 @@ export default function useManageCurrentItem(
     };
 
     const clearCurrentItem: ClearCurrentItemHandler = () => {
-        if (isEditing || !currentItem) {
+        if (isEditing || !currentItemId) {
             return;
         }
 

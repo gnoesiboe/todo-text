@@ -14,10 +14,7 @@ import AddTodo, { ButtonType } from '../addTodo/AddTodo';
 import FilterTodos from '../filterTodos/FilterTodos';
 import useStartSortingWithKeyboardShortcut from './hooks/useStartSortingWithKeyboardShortcut';
 import Container from './components/Container';
-import {
-    FetchingIndicator,
-    SavingIndicator,
-} from 'primitives/connectionIndicator/ConnectionIndicator';
+import { FetchingIndicator } from 'primitives/connectionIndicator/ConnectionIndicator';
 import Header from './components/Header';
 import Heading from './components/Heading';
 import AddTodoContainer from './components/AddTodoContainer';
@@ -29,8 +26,7 @@ const TodoList: React.FC = () => {
         filteredItems,
         items,
         isFetching,
-        isSaving,
-        currentItem,
+        currentItemId,
         isSorting,
         startSorting,
         stopSorting,
@@ -53,7 +49,6 @@ const TodoList: React.FC = () => {
     return (
         <OutsideClickHandler onOutsideClick={onOutsideClick}>
             <Container>
-                {isSaving && <SavingIndicator />}
                 {isFetching && <FetchingIndicator />}
                 <Header>
                     <Heading>Tød□</Heading>
@@ -81,7 +76,7 @@ const TodoList: React.FC = () => {
                         key={item.id}
                         index={index}
                         item={item}
-                        current={currentItem === item.id}
+                        current={currentItemId === item.id}
                     />
                 ))}
             </Container>

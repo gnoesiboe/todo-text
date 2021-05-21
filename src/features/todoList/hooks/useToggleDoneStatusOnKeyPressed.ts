@@ -4,7 +4,7 @@ import { useTodoContext } from 'context/todoContext/TodoContext';
 import { toggleDoneStatus as toggleDoneStatusKeyDefinition } from 'constants/keyDefnitions';
 
 export default function useToggleDoneStatusOnKeyPressed() {
-    const { currentItem, isEditing, toggleDoneStatus } = useTodoContext();
+    const { currentItem, isEditing, updateItem } = useTodoContext();
 
     useEffect(() => {
         if (!currentItem || isEditing) {
@@ -21,11 +21,14 @@ export default function useToggleDoneStatusOnKeyPressed() {
                 return;
             }
 
-            toggleDoneStatus();
+            // noinspection JSIgnoredPromiseFromCall
+            updateItem(currentItem.id, {
+                done: !currentItem.done,
+            });
         };
 
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [currentItem, isEditing, toggleDoneStatus]);
+    }, [currentItem, isEditing, updateItem]);
 }

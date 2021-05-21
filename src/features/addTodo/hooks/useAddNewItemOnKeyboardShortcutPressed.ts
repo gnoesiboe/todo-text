@@ -9,7 +9,7 @@ import {
 
 export default function useAddNewItemOnKeyboardShortcutPressed() {
     const {
-        currentItem,
+        currentItemId,
         isEditing,
         createNewItemBeforeCurrent,
         createNewItemAfterCurrent,
@@ -31,7 +31,7 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
                     event,
                 )
             ) {
-                if (currentItem) {
+                if (currentItemId) {
                     createNewItemAfterCurrent();
                 } else {
                     createNewItemAtTheStart();
@@ -53,7 +53,7 @@ export default function useAddNewItemOnKeyboardShortcutPressed() {
 
         return () => window.removeEventListener('keyup', onKeyUp);
     }, [
-        currentItem,
+        currentItemId,
         isEditing,
         startEdit,
         createNewItemBeforeCurrent,

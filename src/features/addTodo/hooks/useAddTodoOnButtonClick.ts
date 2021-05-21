@@ -6,7 +6,7 @@ export default function useAddTodoOnButtonClick() {
         createNewItemAtTheStart,
         createNewItemAfterCurrent,
         isEditing,
-        currentItem,
+        currentItemId,
     } = useTodoContext();
 
     const onClick: MouseEventHandler = () => {
@@ -14,7 +14,7 @@ export default function useAddTodoOnButtonClick() {
             return;
         }
 
-        if (currentItem) {
+        if (currentItemId) {
             createNewItemAfterCurrent();
         } else {
             createNewItemAtTheStart();

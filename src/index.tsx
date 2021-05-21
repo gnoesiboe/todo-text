@@ -4,6 +4,9 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import 'normalize.css';
 import './index.css';
+import { initializeApp } from './firebase/firebaseApp';
+
+initializeApp();
 
 ReactDOM.render(
     <React.StrictMode>

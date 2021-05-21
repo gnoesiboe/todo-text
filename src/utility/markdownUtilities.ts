@@ -16,7 +16,7 @@ function getInstance() {
                 try {
                     return codeHighlighter.highlight(lang, str).value;
                 } catch (error) {
-                    console.log('could not highlight value', error);
+                    console.error('could not highlight value', error);
                 }
             }
 

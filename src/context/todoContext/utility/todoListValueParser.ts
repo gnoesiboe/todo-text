@@ -1,4 +1,4 @@
-import { ParsedTodoProgress } from './../../../model/TodoListItem';
+import { ParsedTodoProgress } from '../../../model/TodoListItem';
 import { splitAtLineBreak } from '../../../utility/stringUtilities';
 import type {
     TodoListItem,
@@ -73,7 +73,7 @@ const determineProgress = (notes: ParsedTodoNote[]): ParsedTodoProgress => {
 };
 
 export const parseTodoValue = (
-    item: TodoListItem<string>,
+    item: TodoListItem,
 ): TodoListItem<ParsedTodoValue> => {
     const [summary, ...notes] = splitAtLineBreak(item.value);
 
@@ -108,6 +108,6 @@ export const parseTodoValue = (
 };
 
 export const transformToParsedCollection = (
-    items: TodoListItemCollection<string>,
+    items: TodoListItemCollection,
 ): TodoListItemCollection<ParsedTodoValue> =>
     items.map((item) => parseTodoValue(item));

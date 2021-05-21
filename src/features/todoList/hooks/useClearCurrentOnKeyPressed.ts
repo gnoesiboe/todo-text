@@ -4,10 +4,10 @@ import { useEffect } from 'react';
 import { useTodoContext } from 'context/todoContext/TodoContext';
 
 export default function useClearCurrentOnKeyPressed() {
-    const { isEditing, currentItem, clearCurrentItem } = useTodoContext();
+    const { isEditing, currentItemId, clearCurrentItem } = useTodoContext();
 
     useEffect(() => {
-        if (!currentItem || isEditing) {
+        if (!currentItemId || isEditing) {
             return;
         }
 
@@ -27,5 +27,5 @@ export default function useClearCurrentOnKeyPressed() {
         window.addEventListener('keyup', onKeyUp);
 
         return () => window.removeEventListener('keyup', onKeyUp);
-    }, [isEditing, currentItem, clearCurrentItem]);
+    }, [isEditing, currentItemId, clearCurrentItem]);
 }

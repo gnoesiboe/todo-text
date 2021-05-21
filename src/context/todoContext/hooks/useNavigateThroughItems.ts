@@ -10,7 +10,7 @@ export type MoveToNextHandler = () => void;
 export type MoveToPreviousHandler = () => void;
 
 export default function useNavigateThroughItems(
-    currentItem: string | null,
+    currentItemId: string | null,
     isEditing: boolean,
     filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
     setCurrentItem: Dispatch<SetStateAction<string | null>>,
@@ -22,7 +22,7 @@ export default function useNavigateThroughItems(
 
         // use filteredItems to determine next, to make sure the cursor
         // does not fall on a hidden item
-        setCurrentItem(determineNextCurrentItem(currentItem, filteredItems));
+        setCurrentItem(determineNextCurrentItem(currentItemId, filteredItems));
     };
 
     const moveToPrevious: MoveToPreviousHandler = () => {
@@ -33,7 +33,7 @@ export default function useNavigateThroughItems(
         // use filteredItems to determine previous, to make sure the cursor
         // does not fall on a hidden item
         setCurrentItem(
-            determinePreviousCurrentItem(currentItem, filteredItems),
+            determinePreviousCurrentItem(currentItemId, filteredItems),
         );
     };
 

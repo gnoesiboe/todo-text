@@ -23,7 +23,7 @@ export default function useTodoFormHandlers(
 
     const {
         deleteItem,
-        saveValue,
+        updateItem,
         stopEdit,
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
@@ -37,7 +37,8 @@ export default function useTodoFormHandlers(
             deleteItem(item.id);
         }
 
-        saveValue(item.id, newValue, item.done);
+        // noinspection JSIgnoredPromiseFromCall
+        updateItem(item.id, { value: newValue });
     };
 
     const onSubmit: FormEventHandler<HTMLFormElement> = (event) => {
@@ -61,7 +62,9 @@ export default function useTodoFormHandlers(
                     event,
                 )
             ) {
-                saveValue(item.id, value, item.done);
+                // noinspection JSIgnoredPromiseFromCall
+                updateItem(item.id, { value });
+
                 stopEdit();
                 createNewItemAfterCurrent();
                 startEdit();
@@ -73,7 +76,9 @@ export default function useTodoFormHandlers(
                     event,
                 )
             ) {
-                saveValue(item.id, value, item.done);
+                // noinspection JSIgnoredPromiseFromCall
+                updateItem(item.id, { value });
+
                 stopEdit();
                 createNewItemBeforeCurrent();
                 startEdit();

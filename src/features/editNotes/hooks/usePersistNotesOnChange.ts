@@ -1,9 +1,9 @@
-import { resolveDropboxNotesFileName } from 'utility/environmentUtlities';
-import { useAuthenticationAccessToken } from 'context/authenticationContext/AuthenticationContext';
 import { useEffect, useState } from 'react';
-import pushDataToDropbox from 'dropbox/handler/pushDataToDropbox';
+import { useLoggedInUser } from '../../../context/authenticationContext/AuthenticationContext';
+import { persist } from '../../../repository/noteRepository';
+import { notifyError } from '../../../utility/notifier';
 
-const pushToDropboxThrottle = 3000; // 3 seconds
+const timeoutThrottle = 3000; // 3 seconds
 
 export default function usePersistNotesOnChange(
     value: string,
@@ -12,31 +12,36 @@ export default function usePersistNotesOnChange(
     const [hasOpenChanges, setHasOpenChanges] = useState<boolean>(false);
     const [isSaving, setIsSaving] = useState<boolean>(false);
 
-    const accessToken = useAuthenticationAccessToken();
+    const user = useLoggedInUser();
 
     useEffect(() => {
+        if (!user) {
+            return;
+        }
+
         setHasOpenChanges(true);
 
-        if (!accessToken || isFetching) {
+        if (isFetching) {
             return;
         }
 
         const handle = setTimeout(() => {
             setIsSaving(true);
 
-            pushDataToDropbox(
-                accessToken,
-                value,
-                resolveDropboxNotesFileName(),
-            ).finally(() => {
-                setHasOpenChanges(false);
-                setIsSaving(false);
-            });
-        }, pushToDropboxThrottle);
+            persist(user.id, { value })
+                .then((success) => {
+                    if (!success) {
+                        notifyError(
+                            'Something went wrong when updating the notes. Please refresh and try again',
+                        );
+                    }
+                })
+                .finally(() => setIsSaving(false));
+        }, timeoutThrottle);
 
         return () => clearTimeout(handle);
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [value, isFetching]);
+    }, [value, isFetching, user]);
 
     return { hasOpenChanges, isSaving };
 }
