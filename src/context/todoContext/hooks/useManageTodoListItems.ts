@@ -28,11 +28,8 @@ export type UpdateItemHandler = (
 ) => Promise<boolean>;
 
 export default function useManageTodoListItems() {
-    const [
-        getCurrentItemId,
-        setCurrentItemId,
-        currentItemId,
-    ] = useStateWithSyncedRef<string | null>(null);
+    const [getCurrentItemId, setCurrentItemId, currentItemId] =
+        useStateWithSyncedRef<string | null>(null);
 
     // @todo combine items and statuses around it, in reducer, to prevent render flow issues
 
@@ -40,12 +37,8 @@ export default function useManageTodoListItems() {
 
     const { checkHasOpenChanges } = useManageHasOpenChangesState();
 
-    const {
-        isEditing,
-        checkIsEditing,
-        startEdit,
-        stopEdit,
-    } = useManageIsEditingState(currentItemId);
+    const { isEditing, checkIsEditing, startEdit, stopEdit } =
+        useManageIsEditingState(currentItemId);
 
     const { isFetching } = useFetchTodoListItems(
         setItems,
@@ -54,6 +47,7 @@ export default function useManageTodoListItems() {
     );
 
     const snoozeCurrentItemUntil = useSnoozeCurrentItem(
+        items,
         setItems,
         currentItemId,
     );
@@ -75,11 +69,8 @@ export default function useManageTodoListItems() {
         toggleHideNonePriority,
     } = useToggleFilters(parsedItems);
 
-    const {
-        toggleCurrentItem,
-        markCurrentItem,
-        clearCurrentItem,
-    } = useManageCurrentItem(isEditing, currentItemId, setCurrentItemId);
+    const { toggleCurrentItem, markCurrentItem, clearCurrentItem } =
+        useManageCurrentItem(isEditing, currentItemId, setCurrentItemId);
 
     const currentItem = resolveCurrentItem<ParsedTodoValue>(
         parsedItems,

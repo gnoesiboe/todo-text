@@ -127,7 +127,7 @@ const initialValue: ContextValue = {
         nonePriority: 0,
     },
     createNewItemAtTheStart: () => {},
-    snoozeCurrentItemUntil: () => {},
+    snoozeCurrentItemUntil: async () => false,
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);

@@ -1,24 +1,55 @@
 import { InexactDateInidicator } from 'utility/dateTimeUtilities';
 import { TodoListItemCollection } from 'model/TodoListItem';
 import { Dispatch, SetStateAction } from 'react';
-import { applySnoozeItemUntil } from '../utility/todosMutators';
+import { applyUpdate } from '../utility/todosMutators';
+import { persistItemUpdate } from '../../../repository/todoListItemRepository';
+import { applySnoozeItemUntilToValue } from '../utility/valuMutators';
+import { notifyError } from '../../../utility/notifier';
 
 export type SnoozeCurrentItemUntilHandler = (
     until: InexactDateInidicator,
-) => void;
+) => Promise<boolean>;
 
 export default function useSnoozeCurrentItem(
+    items: TodoListItemCollection,
     setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
     currentItemId: string | null,
 ) {
-    const snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler = (until) => {
+    const snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler = async (
+        until,
+    ) => {
         if (!currentItemId) {
-            return;
+            return false;
         }
 
-        setItems((currentItems) =>
-            applySnoozeItemUntil(currentItems, currentItemId, until),
+        const currentItem = items.find(
+            (cursorItem) => cursorItem.id === currentItemId,
         );
+
+        if (!currentItem) {
+            throw new Error(
+                'Expecting current item to be available at this point',
+            );
+        }
+
+        const newValue = applySnoozeItemUntilToValue(currentItem.value, until);
+
+        // optimistic updating
+        setItems((currentItems) =>
+            applyUpdate(currentItems, currentItemId, {
+                value: newValue,
+            }),
+        );
+
+        const success = persistItemUpdate(currentItemId, { value: newValue });
+
+        if (!success) {
+            notifyError(
+                'Could not persist update to backend. Please refresh the page.',
+            );
+        }
+
+        return success;
     };
 
     return snoozeCurrentItemUntil;
