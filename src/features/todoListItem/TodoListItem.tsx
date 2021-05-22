@@ -23,6 +23,7 @@ import { Value } from './components/Value';
 import { QuickfixIcon, WaitingIcon } from './components/StatusIndicator';
 import AddTodo, { ButtonType } from 'features/addTodo/AddTodo';
 import useToggleSubItemCheckedStatusOnClick from './hooks/useToggleSubItemCheckedStatusOnClick';
+import AppearAndDisappearAnimationContainer from '../../primitives/animation/AppearAndDisappearAnimationContainer';
 
 type Props = {
     item: ItemModel<ParsedTodoValue>;
@@ -104,7 +105,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 )}
                 {!isEditing && !isSorting && current && (
                     <TodoActionButtonWrapper>
-                        <>
+                        <AppearAndDisappearAnimationContainer>
                             <SnoozeTodoButton
                                 onClick={onTomorrowClick}
                                 disabled={snoozingButtonsDisabled}
@@ -120,7 +121,7 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                             <EditTodoButton onClick={() => startEdit()} />
                             <AddTodo buttonType={ButtonType.TodoAction} />
                             <DeleteTodo item={item} />
-                        </>
+                        </AppearAndDisappearAnimationContainer>
                     </TodoActionButtonWrapper>
                 )}
 
