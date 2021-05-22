@@ -61,6 +61,8 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
 
     return (
         <Container
+            initial={{ opacity: 0, x: 50 }}
+            animate={{ opacity: 1, x: 0 }}
             item={item}
             current={current}
             isEditing={isEditing}

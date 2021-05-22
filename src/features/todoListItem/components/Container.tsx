@@ -1,7 +1,8 @@
 import styled from 'styled-components';
 import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
+import { motion } from 'framer-motion';
 
-const Container = styled.div<{
+const Container = styled(motion.div)<{
     item: TodoListItem<ParsedTodoValue | string>;
     current: boolean;
     isDragging: boolean;
