@@ -1,6 +1,7 @@
 import React, { createContext, ReactNode, useContext } from 'react';
 import { User } from '../../model/User';
 import useEnsureUserIsAuthenticated from './hooks/useEnsureUserIsAuthenticated';
+import LoadingIndicator from '../../primitives/loadingIndicator/LoadingIndicator';
 
 type ContextValue = {
     user: User | null;
@@ -21,7 +22,11 @@ export const AuthenticationContextProvider: React.FC<{
 
     return (
         <AuthenticationContext.Provider value={value}>
-            {loading && <p>Loading..</p>}
+            {loading && (
+                <LoadingIndicator.Container>
+                    <LoadingIndicator.Indicator />
+                </LoadingIndicator.Container>
+            )}
             {user && children}
         </AuthenticationContext.Provider>
     );

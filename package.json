@@ -12,6 +12,7 @@
         "typescript:validate:watch": "tsc --noEmit --watch"
     },
     "dependencies": {
+        "@agney/react-loading": "^0.1.2",
         "@primer/octicons-react": "^11.3.0",
         "ace-builds": "^1.4.12",
         "bootstrap": "^4.6.0",
