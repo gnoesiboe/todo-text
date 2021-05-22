@@ -12,7 +12,6 @@ import useStartEditOnDoubleClick from './hooks/useStartEditOnDoubleClick';
 import useDragAndDrop from './hooks/useDragAndDrop';
 import useScrollIntoView from './hooks/useScrollIntoView';
 import ProgressBar from 'primitives/ProgressBar/ProgressBar';
-import { AutoHeightAnimate } from 'react-animate-auto-height';
 import StatusIndicatorContainer from './components/StatusIndicatorContainer';
 import EditTodoButton from './components/EditTodoButton';
 import SnoozeTodoButton from './components/SnoozeTodoButton';
@@ -91,19 +90,17 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
                 {current && isEditing ? (
                     <EditTodo item={item} onCancel={() => stopEdit()} />
                 ) : (
-                    <AutoHeightAnimate heightState={current}>
-                        <Value
-                            item={item}
-                            isDragging={isDragging}
-                            onDoubleClick={onDoubleClick}
-                            onClick={onClick}
-                            dangerouslySetInnerHTML={{
-                                __html: prepareForVisibility(item),
-                            }}
-                            isSorting={isSorting}
-                            current={current}
-                        />
-                    </AutoHeightAnimate>
+                    <Value
+                        item={item}
+                        isDragging={isDragging}
+                        onDoubleClick={onDoubleClick}
+                        onClick={onClick}
+                        dangerouslySetInnerHTML={{
+                            __html: prepareForVisibility(item),
+                        }}
+                        isSorting={isSorting}
+                        current={current}
+                    />
                 )}
                 {!isEditing && !isSorting && current && (
                     <TodoActionButtonWrapper>

@@ -29,7 +29,6 @@
         "query-string": "^6.14.1",
         "react": "^17.0.2",
         "react-ace": "^9.4.0",
-        "react-animate-auto-height": "^0.3.0",
         "react-autosize-textarea": "^7.1.0",
         "react-bootstrap": "^1.6.0",
         "react-dnd": "^11.1.3",
