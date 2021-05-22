@@ -45,8 +45,12 @@ export default function useManageItemCreation(
         setIsSaving(false);
 
         if (success) {
+            setIsSaving(true);
+
             // noinspection ES6MissingAwait
             handleRankingUpdatesForNextItemsToNew(user.id, newItem);
+
+            setIsSaving(false);
         } else {
             notifyError(
                 'Something went wrong when persisting the new todo. Refresh the page and try again',

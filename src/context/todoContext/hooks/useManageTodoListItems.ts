@@ -113,7 +113,13 @@ export default function useManageTodoListItems() {
         isSorting,
         startSorting,
         stopSorting,
-    } = useMoveTodoListItems(items, currentItemId, isEditing, setItems);
+    } = useMoveTodoListItems(
+        items,
+        currentItemId,
+        isEditing,
+        setItems,
+        setIsSaving,
+    );
 
     const updateItem: UpdateItemHandler = async (id, updates) => {
         // optimistic updating

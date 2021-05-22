@@ -76,38 +76,3 @@ export const handleRankingPersistenceForItemRemoval = async (
         return false;
     }
 };
-
-export const handleRankingPersistenceForItemMovingUp = async (
-    userId: string,
-    itemId: string,
-    newRank: number,
-): Promise<boolean> => {
-    try {
-        const allItems = await resolveAllItems(userId);
-
-        const combinedUpdates: Record<
-            string,
-            Partial<Omit<TodoListItem, 'id'>>
-        > = {};
-
-        allItems.forEach((item) => {
-            if (item.id === itemId) {
-                return;
-            }
-
-            if (item.rank >= newRank) {
-                return;
-            }
-
-            combinedUpdates[item.id] = {
-                rank: item.rank + 1,
-            };
-        });
-
-        return await batchUpdateItems(combinedUpdates);
-    } catch (error) {
-        console.error('Something went wrong when moving item up', error);
-
-        return false;
-    }
-};

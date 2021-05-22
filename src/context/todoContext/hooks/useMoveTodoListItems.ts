@@ -70,6 +70,7 @@ export default function useMoveTodoListItems(
     currentItemId: string | null,
     isEditing: boolean,
     setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
+    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const [isSorting, setIsSorting] = useState<boolean>(false);
 
@@ -130,12 +131,18 @@ export default function useMoveTodoListItems(
         );
 
         // persist rank updates to server
-        return await applySwitchUpdatePersisting(
+        setIsSaving(true);
+
+        const success = await applySwitchUpdatePersisting(
             currentItemId,
             itemToSwitchWith,
             newRank,
             oldRank,
         );
+
+        setIsSaving(false);
+
+        return success;
     };
 
     const moveCurrentItemDown: MoveCurrentItemDownHandler = async () => {
@@ -189,15 +196,22 @@ export default function useMoveTodoListItems(
         );
 
         // persist rank updates to server
-        return await applySwitchUpdatePersisting(
+        setIsSaving(false);
+
+        const success = await applySwitchUpdatePersisting(
             currentItemId,
             itemToSwitchWith,
             newRank,
             oldRank,
         );
+
+        setIsSaving(false);
+
+        return success;
     };
 
-    const { queueUpdatesToPersist } = useThrottleItemRankingUpdates();
+    const { queueUpdatesToPersist } =
+        useThrottleItemRankingUpdates(setIsSaving);
 
     const moveToIndex: MoveToIndexHandler = async (
         previousIndex,

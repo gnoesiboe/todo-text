@@ -50,8 +50,12 @@ export default function useManageItemDeletion(
             return false;
         }
 
+        setIsSaving(true);
+
         const reSortingSuccessful =
             await handleRankingPersistenceForItemRemoval(user.id, itemToDelete);
+
+        setIsSaving(false);
 
         if (!reSortingSuccessful) {
             notifyError(
