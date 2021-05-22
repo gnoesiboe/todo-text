@@ -82,6 +82,7 @@ type ContextValue = {
     matchingFilters: MatchingFilters;
     createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
     snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler;
+    isSaving: boolean;
 };
 
 const initialValue: ContextValue = {
@@ -128,6 +129,7 @@ const initialValue: ContextValue = {
     },
     createNewItemAtTheStart: () => {},
     snoozeCurrentItemUntil: async () => false,
+    isSaving: false,
 };
 
 const TodoContext = createContext<ContextValue>(initialValue);
@@ -174,6 +176,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         matchingFilters,
         createNewItemAtTheStart,
         snoozeCurrentItemUntil,
+        isSaving,
     } = useManageTodoListItems();
 
     useConfirmCloseWhenThereAreOpenChanges(checkHasOpenChanges);
@@ -216,6 +219,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         matchingFilters,
         createNewItemAtTheStart,
         snoozeCurrentItemUntil,
+        isSaving,
     };
 
     return (

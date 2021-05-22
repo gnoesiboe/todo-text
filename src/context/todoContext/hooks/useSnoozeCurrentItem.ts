@@ -14,6 +14,7 @@ export default function useSnoozeCurrentItem(
     items: TodoListItemCollection,
     setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
     currentItemId: string | null,
+    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler = async (
         until,
@@ -41,7 +42,11 @@ export default function useSnoozeCurrentItem(
             }),
         );
 
+        setIsSaving(true);
+
         const success = persistItemUpdate(currentItemId, { value: newValue });
+
+        setIsSaving(false);
 
         if (!success) {
             notifyError(

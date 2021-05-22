@@ -80,8 +80,6 @@ export const batchUpdateItems = async (
 };
 
 export const persist = async (item: TodoListItem): Promise<boolean> => {
-    console.log('persist', item);
-
     try {
         await firebase
             .firestore()

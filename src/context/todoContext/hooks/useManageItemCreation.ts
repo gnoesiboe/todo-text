@@ -26,25 +26,32 @@ export default function useManageItemCreation(
     markCurrentItem: MarkCurrentItemHandler,
     startEdit: StartEditHandler,
     currentItem: TodoListItem<string | ParsedTodoValue> | null,
+    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const user = useLoggedInUser();
 
-    const createNewItem = (user: User, rank: number) => {
+    const createNewItem = async (user: User, rank: number) => {
         const newItem = createEmpty(generateId(), user.id, rank);
 
         // update in memory changes, for quick interface update
         setItems((currentItems) => applyCreateNewItem(currentItems, newItem));
 
         // updates server rows
-        persist(newItem).then((success) => {
-            if (success) {
-                return handleRankingUpdatesForNextItemsToNew(user.id, newItem);
-            } else {
-                notifyError(
-                    'Something went wrong when persisting the new todo. Refresh the page and try again',
-                );
-            }
-        });
+        setIsSaving(true);
+
+        // @todo move to async function?
+        const success = await persist(newItem);
+
+        setIsSaving(false);
+
+        if (success) {
+            // noinspection ES6MissingAwait
+            handleRankingUpdatesForNextItemsToNew(user.id, newItem);
+        } else {
+            notifyError(
+                'Something went wrong when persisting the new todo. Refresh the page and try again',
+            );
+        }
 
         markCurrentItem(newItem.id);
 
@@ -77,21 +84,22 @@ export default function useManageItemCreation(
         createNewItem(user, currentItem.rank + 1);
     };
 
-    const createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler = () => {
-        if (!user) {
-            throw new Error(
-                'Expecting current user to be available at this point',
-            );
-        }
+    const createNewItemBeforeCurrent: CreateNewItemBeforeCurrentHandler =
+        () => {
+            if (!user) {
+                throw new Error(
+                    'Expecting current user to be available at this point',
+                );
+            }
 
-        if (!currentItem) {
-            throw new Error(
-                'Expecting there to be a current value at this point',
-            );
-        }
+            if (!currentItem) {
+                throw new Error(
+                    'Expecting there to be a current value at this point',
+                );
+            }
 
-        createNewItem(user, currentItem.rank);
-    };
+            createNewItem(user, currentItem.rank);
+        };
 
     return {
         createNewItemAtTheStart,

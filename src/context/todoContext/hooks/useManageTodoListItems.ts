@@ -35,6 +35,8 @@ export default function useManageTodoListItems() {
 
     const [items, setItems] = useState<TodoListItemCollection>([]);
 
+    const [isSaving, setIsSaving] = useState<boolean>(false);
+
     const { checkHasOpenChanges } = useManageHasOpenChangesState();
 
     const { isEditing, checkIsEditing, startEdit, stopEdit } =
@@ -50,6 +52,7 @@ export default function useManageTodoListItems() {
         items,
         setItems,
         currentItemId,
+        setIsSaving,
     );
 
     const parsedItems = transformToParsedCollection(items);
@@ -86,6 +89,7 @@ export default function useManageTodoListItems() {
         markCurrentItem,
         startEdit,
         currentItem,
+        setIsSaving,
     );
 
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
@@ -99,6 +103,7 @@ export default function useManageTodoListItems() {
         items,
         setItems,
         getCurrentItemId,
+        setIsSaving,
     );
 
     const {
@@ -115,7 +120,11 @@ export default function useManageTodoListItems() {
         setItems((currentItems) => applyUpdate(currentItems, id, updates));
 
         // update server values
+        setIsSaving(true);
+
         const success = await persistItemUpdate(id, updates);
+
+        setIsSaving(false);
 
         if (!success) {
             notifyError(
@@ -131,6 +140,7 @@ export default function useManageTodoListItems() {
         setItems,
         currentItemId,
         setCurrentItemId,
+        setIsSaving,
     );
 
     return {
@@ -172,5 +182,6 @@ export default function useManageTodoListItems() {
         matchingFilters,
         createNewItemAtTheStart,
         snoozeCurrentItemUntil,
+        isSaving,
     };
 }

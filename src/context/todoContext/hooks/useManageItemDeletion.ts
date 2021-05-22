@@ -17,6 +17,7 @@ export default function useManageItemDeletion(
     setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
     currentItemId: string | null,
     setCurrentItemId: Dispatch<SetStateAction<string | null>>,
+    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const user = useLoggedInUser();
 
@@ -34,7 +35,12 @@ export default function useManageItemDeletion(
             return false;
         }
 
+        // update server state
+        setIsSaving(true);
+
         const deletingSuccessful = await remove(itemToDelete.id);
+
+        setIsSaving(false);
 
         if (!deletingSuccessful) {
             notifyError(
@@ -44,10 +50,8 @@ export default function useManageItemDeletion(
             return false;
         }
 
-        const reSortingSuccessful = await handleRankingPersistenceForItemRemoval(
-            user.id,
-            itemToDelete,
-        );
+        const reSortingSuccessful =
+            await handleRankingPersistenceForItemRemoval(user.id, itemToDelete);
 
         if (!reSortingSuccessful) {
             notifyError(

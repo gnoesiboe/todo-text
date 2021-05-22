@@ -14,6 +14,7 @@ export default function useManageSubItemDoneStatus(
     items: TodoListItemCollection,
     setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
     getCurrentItemId: () => string | null,
+    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const toggleSubItemDoneStatus: ToggleSubItemDoneStatusHandler = async (
         itemIndex,
@@ -41,7 +42,15 @@ export default function useManageSubItemDoneStatus(
             applyUpdate(currentItems, currentItemId, { value: updatedValue }),
         );
 
-        return await persistItemUpdate(currentItemId, { value: updatedValue });
+        setIsSaving(true);
+
+        const success = await persistItemUpdate(currentItemId, {
+            value: updatedValue,
+        });
+
+        setIsSaving(false);
+
+        return success;
     };
 
     return { toggleSubItemDoneStatus };
