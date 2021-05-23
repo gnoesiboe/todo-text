@@ -1,6 +1,14 @@
 import { checkItIsCurrentlyEvening } from 'utility/dateTimeUtilities';
 import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
+import {
+    AppliedFilters,
+    TodoContextStateSetter,
+} from './useManageTodoContextState';
+import {
+    applySetAppliedFilterValue,
+    applyToggleAppliedFilterValue,
+} from '../utility/todoContextStateMutators';
 
 export type ToggleHideNotWaitingHandler = () => void;
 export type ToggleHideDoneHandler = () => void;
@@ -20,43 +28,53 @@ const eveningCheckInterval = 10000; // 10 minutes
 
 export default function useToggleFilters(
     items: TodoListItemCollection<ParsedTodoValue>,
+    appliedFilters: AppliedFilters,
+    setTodoContextState: TodoContextStateSetter,
 ) {
-    const [hideNotActionable, setHideNotActionable] = useState<boolean>(false);
-    const [hideDone, setHideDone] = useState<boolean>(false);
-    const [hideEvening, setHideEvening] = useState<boolean>(
-        !checkItIsCurrentlyEvening(),
-    );
-    const [hideSnoozed, setHideSnoozed] = useState<boolean>(true);
-    const [hideNonePriority, setHideNonePriority] = useState<boolean>(false);
-
     useEffect(() => {
         const reference = setInterval(() => {
-            if (checkItIsCurrentlyEvening() && hideEvening) {
-                setHideEvening(true);
+            if (checkItIsCurrentlyEvening() && appliedFilters.hideEvening) {
+                setTodoContextState((currentState) =>
+                    applySetAppliedFilterValue(
+                        currentState,
+                        'hideEvening',
+                        false,
+                    ),
+                );
             }
         }, eveningCheckInterval);
 
         return () => clearInterval(reference);
-    }, [setHideEvening, hideEvening]);
+    }, [setTodoContextState, appliedFilters]);
 
     const toggleHideNotActionable: ToggleHideNotWaitingHandler = () => {
-        setHideNotActionable((currentValue) => !currentValue);
+        setTodoContextState((currentState) =>
+            applyToggleAppliedFilterValue(currentState, 'hideNotActionable'),
+        );
     };
 
     const toggleHideDone: ToggleHideDoneHandler = () => {
-        setHideDone((currentValue) => !currentValue);
+        setTodoContextState((currentState) =>
+            applyToggleAppliedFilterValue(currentState, 'hideDone'),
+        );
     };
 
     const toggleHideEvening: ToggleHideEveningHandler = () => {
-        setHideEvening((currentValue) => !currentValue);
+        setTodoContextState((currentState) =>
+            applyToggleAppliedFilterValue(currentState, 'hideEvening'),
+        );
     };
 
     const toggleHideSnoozed: ToggleHideSnoozedHandler = () => {
-        setHideSnoozed((currentValue) => !currentValue);
+        setTodoContextState((currentState) =>
+            applyToggleAppliedFilterValue(currentState, 'hideSnoozed'),
+        );
     };
 
     const toggleHideNonePriority: ToggleHideNonePriorityHandler = () => {
-        setHideNonePriority((currentValue) => !currentValue);
+        setTodoContextState((currentState) =>
+            applyToggleAppliedFilterValue(currentState, 'hideNonPriority'),
+        );
     };
 
     const matchingFilters = items.reduce<MatchingFilters>(
@@ -94,27 +112,32 @@ export default function useToggleFilters(
 
     const filteredItems = items.filter((item) => {
         if (
-            hideNotActionable &&
+            appliedFilters.hideNotActionable &&
             !item.value.isActionable &&
             !item.value.isHeading
         ) {
             return false;
         }
 
-        if (hideDone && item.done) {
+        if (appliedFilters.hideDone && item.done) {
             return false;
         }
 
-        if (item.value.isEvening && hideEvening) {
+        if (item.value.isEvening && appliedFilters.hideEvening) {
             return false;
         }
 
-        if (item.value.isSnoozed && hideSnoozed) {
+        if (item.value.isSnoozed && appliedFilters.hideSnoozed) {
             return false;
         }
 
         // include headings to still be able to group todo's
-        if (!item.value.isMust && hideNonePriority && !item.value.isHeading) {
+        // noinspection RedundantIfStatementJS
+        if (
+            !item.value.isMust &&
+            appliedFilters.hideNonPriority &&
+            !item.value.isHeading
+        ) {
             return false;
         }
 
@@ -122,15 +145,10 @@ export default function useToggleFilters(
     });
 
     return {
-        hideNotActionable,
         toggleHideNotActionable,
-        hideDone,
         toggleHideDone,
-        hideEvening,
         toggleHideEvening,
-        hideSnoozed,
         toggleHideSnoozed,
-        hideNonePriority,
         toggleHideNonePriority,
         matchingFilters,
         filteredItems,

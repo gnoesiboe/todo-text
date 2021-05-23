@@ -1,10 +1,13 @@
 import { InexactDateInidicator } from 'utility/dateTimeUtilities';
 import { TodoListItemCollection } from 'model/TodoListItem';
-import { Dispatch, SetStateAction } from 'react';
-import { applyUpdate } from '../utility/todosMutators';
 import { persistItemUpdate } from '../../../repository/todoListItemRepository';
 import { applySnoozeItemUntilToValue } from '../utility/valuMutators';
 import { notifyError } from '../../../utility/notifier';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyItemUpdatesAndStartSaving,
+    applyStopSaving,
+} from '../utility/todoContextStateMutators';
 
 export type SnoozeCurrentItemUntilHandler = (
     until: InexactDateInidicator,
@@ -12,9 +15,8 @@ export type SnoozeCurrentItemUntilHandler = (
 
 export default function useSnoozeCurrentItem(
     items: TodoListItemCollection,
-    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
+    setTodoContextState: TodoContextStateSetter,
     currentItemId: string | null,
-    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler = async (
         until,
@@ -36,17 +38,27 @@ export default function useSnoozeCurrentItem(
         const newValue = applySnoozeItemUntilToValue(currentItem.value, until);
 
         // optimistic updating
-        setItems((currentItems) =>
-            applyUpdate(currentItems, currentItemId, {
-                value: newValue,
-            }),
-        );
+        // @todo move to modifier somewhere
+        setTodoContextState((currentState) => {
+            if (!currentState.currentItemId) {
+                throw new Error(
+                    'Expecting current item to be available at this point',
+                );
+            }
 
-        setIsSaving(true);
+            return applyItemUpdatesAndStartSaving(
+                currentState,
+                currentState.currentItemId,
+                {
+                    value: newValue,
+                },
+            );
+        });
 
+        // Persist change to server
         const success = persistItemUpdate(currentItemId, { value: newValue });
 
-        setIsSaving(false);
+        setTodoContextState((currentState) => applyStopSaving(currentState));
 
         if (!success) {
             notifyError(

@@ -1,19 +1,18 @@
-import {
-    ParsedTodoValue,
-    TodoListItem,
-    TodoListItemCollection,
-} from 'model/TodoListItem';
+import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import { MarkCurrentItemHandler } from './useManageCurrentItem';
 import { StartEditHandler } from './useManageIsEditingState';
-import { applyCreateNewItem } from '../utility/todosMutators';
 import { generateId } from 'utility/idGenerator';
-import { Dispatch, SetStateAction } from 'react';
 import { persist } from '../../../repository/todoListItemRepository';
 import { createEmpty } from '../../../model/factory/todoListItemFactory';
 import { useLoggedInUser } from '../../authenticationContext/AuthenticationContext';
 import { notifyError } from '../../../utility/notifier';
 import { User } from '../../../model/User';
 import { handleRankingUpdatesForNextItemsToNew } from '../../../handler/updateTodoListItemRankingPersistanceHandlers';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyCreateNewItemAndStartSaving,
+    applyStopSaving,
+} from '../utility/todoContextStateMutators';
 
 export type CreateNewItemAfterCurrentHandler = () => void;
 
@@ -22,11 +21,10 @@ export type CreateNewItemBeforeCurrentHandler = () => void;
 export type CreateNewItemAtTheStartHandler = () => void;
 
 export default function useManageItemCreation(
-    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
+    setTodoContextState: TodoContextStateSetter,
     markCurrentItem: MarkCurrentItemHandler,
     startEdit: StartEditHandler,
     currentItem: TodoListItem<string | ParsedTodoValue> | null,
-    setIsSaving: Dispatch<SetStateAction<boolean>>,
 ) {
     const user = useLoggedInUser();
 
@@ -34,28 +32,22 @@ export default function useManageItemCreation(
         const newItem = createEmpty(generateId(), user.id, rank);
 
         // update in memory changes, for quick interface update
-        setItems((currentItems) => applyCreateNewItem(currentItems, newItem));
+        setTodoContextState((currentState) =>
+            applyCreateNewItemAndStartSaving(currentState, newItem),
+        );
 
         // updates server rows
-        setIsSaving(true);
-
-        // @todo move to async function?
         const success = await persist(newItem);
 
-        setIsSaving(false);
-
         if (success) {
-            setIsSaving(true);
-
-            // noinspection ES6MissingAwait
-            handleRankingUpdatesForNextItemsToNew(user.id, newItem);
-
-            setIsSaving(false);
+            await handleRankingUpdatesForNextItemsToNew(user.id, newItem);
         } else {
             notifyError(
                 'Something went wrong when persisting the new todo. Refresh the page and try again',
             );
         }
+
+        setTodoContextState((currentState) => applyStopSaving(currentState));
 
         markCurrentItem(newItem.id);
 
@@ -69,6 +61,7 @@ export default function useManageItemCreation(
             );
         }
 
+        // noinspection JSIgnoredPromiseFromCall
         createNewItem(user, 0);
     };
 
@@ -85,6 +78,7 @@ export default function useManageItemCreation(
             );
         }
 
+        // noinspection JSIgnoredPromiseFromCall
         createNewItem(user, currentItem.rank + 1);
     };
 
@@ -102,6 +96,7 @@ export default function useManageItemCreation(
                 );
             }
 
+            // noinspection JSIgnoredPromiseFromCall
             createNewItem(user, currentItem.rank);
         };
 

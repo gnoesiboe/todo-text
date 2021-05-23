@@ -1,12 +1,17 @@
-import { Dispatch, SetStateAction, useRef } from 'react';
+import { useRef } from 'react';
 import { TodoListItemCollectionUpdates } from '../../../model/TodoListItem';
 import { batchUpdateItems } from '../../../repository/todoListItemRepository';
 import { notifyError } from '../../../utility/notifier';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyStartSaving,
+    applyStopSaving,
+} from '../utility/todoContextStateMutators';
 
 const timeoutLength = 2000; // milliseconds
 
 export default function useThrottleItemRankingUpdates(
-    setIsSaving: Dispatch<SetStateAction<boolean>>,
+    setTodoContextState: TodoContextStateSetter,
 ) {
     const handle = useRef<NodeJS.Timeout>();
 
@@ -16,12 +21,16 @@ export default function useThrottleItemRankingUpdates(
         }
 
         handle.current = setTimeout(async () => {
-            setIsSaving(true);
+            setTodoContextState((currentState) =>
+                applyStartSaving(currentState),
+            );
 
             // noinspection JSIgnoredPromiseFromCall
             const success = await batchUpdateItems(updates);
 
-            setIsSaving(false);
+            setTodoContextState((currentState) =>
+                applyStopSaving(currentState),
+            );
 
             if (!success) {
                 notifyError(

@@ -1,23 +1,26 @@
-import { applyDelete } from '../utility/todosMutators';
 import {
     fetchOneWithId,
     remove,
 } from '../../../repository/todoListItemRepository';
 import { notifyError } from '../../../utility/notifier';
 import { handleRankingPersistenceForItemRemoval } from '../../../handler/updateTodoListItemRankingPersistanceHandlers';
-import { determineNextCurrentItem } from '../utility/currentItemResolver';
-import { Dispatch, SetStateAction } from 'react';
-import { TodoListItemCollection } from '../../../model/TodoListItem';
 import { useLoggedInUser } from '../../authenticationContext/AuthenticationContext';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyDeleteItemAndStartPersisting,
+    applySetNextCurrentItem,
+    applyStopSaving,
+} from '../utility/todoContextStateMutators';
+import {
+    ParsedTodoValue,
+    TodoListItemCollection,
+} from '../../../model/TodoListItem';
 
 export type DeleteItemHandler = (id: string) => Promise<boolean>;
 
 export default function useManageItemDeletion(
-    items: TodoListItemCollection,
-    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
-    currentItemId: string | null,
-    setCurrentItemId: Dispatch<SetStateAction<string | null>>,
-    setIsSaving: Dispatch<SetStateAction<boolean>>,
+    setTodoContextState: TodoContextStateSetter,
+    filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
 ) {
     const user = useLoggedInUser();
 
@@ -27,22 +30,28 @@ export default function useManageItemDeletion(
         }
 
         // update in-memory storage
-        setItems(applyDelete(items, id));
+        setTodoContextState((currentState) =>
+            applyDeleteItemAndStartPersisting(currentState, id),
+        );
 
         const itemToDelete = await fetchOneWithId(id);
 
         if (!itemToDelete) {
+            setTodoContextState((currentState) =>
+                applyStopSaving(currentState),
+            );
+
             return false;
         }
 
         // update server state
-        setIsSaving(true);
-
         const deletingSuccessful = await remove(itemToDelete.id);
 
-        setIsSaving(false);
-
         if (!deletingSuccessful) {
+            setTodoContextState((currentState) =>
+                applyStopSaving(currentState),
+            );
+
             notifyError(
                 'Something went wrong when removing an item. Please refresh the page and try again.',
             );
@@ -50,12 +59,10 @@ export default function useManageItemDeletion(
             return false;
         }
 
-        setIsSaving(true);
-
         const reSortingSuccessful =
             await handleRankingPersistenceForItemRemoval(user.id, itemToDelete);
 
-        setIsSaving(false);
+        setTodoContextState((currentState) => applyStopSaving(currentState));
 
         if (!reSortingSuccessful) {
             notifyError(
@@ -63,9 +70,9 @@ export default function useManageItemDeletion(
             );
         }
 
-        const nextCurrentItem = determineNextCurrentItem(currentItemId, items);
-
-        setCurrentItemId(nextCurrentItem);
+        setTodoContextState((currentState) =>
+            applySetNextCurrentItem(currentState, filteredItems),
+        );
 
         return reSortingSuccessful;
     };

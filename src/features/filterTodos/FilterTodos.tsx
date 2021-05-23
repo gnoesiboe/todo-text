@@ -17,7 +17,7 @@ const FilterTodos: React.FC = () => {
         hideSnoozed,
         toggleHideSnoozed,
         matchingFilters,
-        hideNonePriority,
+        hideNonPriority,
         toggleHideNonePriority,
     } = useTodoContext();
 
@@ -27,7 +27,7 @@ const FilterTodos: React.FC = () => {
                 <Dropdown.Item as="div">
                     <FilterButton
                         onClick={() => toggleHideNonePriority()}
-                        active={hideNonePriority}
+                        active={hideNonPriority}
                         title="hide non-priority"
                         amount={matchingFilters.nonePriority}
                     />

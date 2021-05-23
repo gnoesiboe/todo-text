@@ -1,10 +1,4 @@
-import type {
-    ParsedTodoValue,
-    TodoListItem,
-    TodoListItemCollection,
-} from 'model/TodoListItem';
-import { useState } from 'react';
-import { applyUpdate } from '../utility/todosMutators';
+import type { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useToggleFilters from './useToggleFilters';
 import useNavigateThroughItems from './useNavigateThroughItems';
@@ -16,11 +10,15 @@ import useManageHasOpenChangesState from './useManageHasOpenChangesState';
 import { transformToParsedCollection } from '../utility/todoListValueParser';
 import useSnoozeCurrentItem from './useSnoozeCurrentItem';
 import useManageSubItemDoneStatus from './useManageSubItemDoneStatus';
-import useStateWithSyncedRef from 'hooks/useStateWithSyncedRef';
 import { notifyError } from '../../../utility/notifier';
 import { resolveCurrentItem } from '../utility/resolver';
 import useManageItemDeletion from './useManageItemDeletion';
 import { persistItemUpdate } from '../../../repository/todoListItemRepository';
+import useManageTodoContextState from './useManageTodoContextState';
+import {
+    applyItemUpdatesAndStartSaving,
+    applyStopSaving,
+} from '../utility/todoContextStateMutators';
 
 export type UpdateItemHandler = (
     id: string,
@@ -28,52 +26,49 @@ export type UpdateItemHandler = (
 ) => Promise<boolean>;
 
 export default function useManageTodoListItems() {
-    const [getCurrentItemId, setCurrentItemId, currentItemId] =
-        useStateWithSyncedRef<string | null>(null);
-
-    // @todo combine items and statuses around it, in reducer, to prevent render flow issues
-
-    const [items, setItems] = useState<TodoListItemCollection>([]);
-
-    const [isSaving, setIsSaving] = useState<boolean>(false);
+    const {
+        todoContextState: { currentItemId, items, statuses, appliedFilters },
+        setTodoContextState,
+    } = useManageTodoContextState();
 
     const { checkHasOpenChanges } = useManageHasOpenChangesState();
 
-    const { isEditing, checkIsEditing, startEdit, stopEdit } =
-        useManageIsEditingState(currentItemId);
+    const { startEdit, stopEdit } = useManageIsEditingState(
+        currentItemId,
+        setTodoContextState,
+    );
 
-    const { isFetching } = useFetchTodoListItems(
-        setItems,
+    useFetchTodoListItems(
+        setTodoContextState,
+        statuses.isFetching,
         checkHasOpenChanges,
-        checkIsEditing,
+        statuses.isEditing,
     );
 
     const snoozeCurrentItemUntil = useSnoozeCurrentItem(
         items,
-        setItems,
+        setTodoContextState,
         currentItemId,
-        setIsSaving,
     );
 
     const parsedItems = transformToParsedCollection(items);
 
     const {
         filteredItems,
-        hideDone,
-        hideNotActionable,
-        hideEvening,
-        hideSnoozed,
-        hideNonePriority,
         toggleHideDone,
         toggleHideNotActionable,
         toggleHideEvening,
         toggleHideSnoozed,
         matchingFilters,
         toggleHideNonePriority,
-    } = useToggleFilters(parsedItems);
+    } = useToggleFilters(parsedItems, appliedFilters, setTodoContextState);
 
     const { toggleCurrentItem, markCurrentItem, clearCurrentItem } =
-        useManageCurrentItem(isEditing, currentItemId, setCurrentItemId);
+        useManageCurrentItem(
+            statuses.isEditing,
+            currentItemId,
+            setTodoContextState,
+        );
 
     const currentItem = resolveCurrentItem<ParsedTodoValue>(
         parsedItems,
@@ -85,52 +80,48 @@ export default function useManageTodoListItems() {
         createNewItemBeforeCurrent,
         createNewItemAtTheStart,
     } = useManageItemCreation(
-        setItems,
+        setTodoContextState,
         markCurrentItem,
         startEdit,
         currentItem,
-        setIsSaving,
     );
 
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
-        currentItemId,
-        isEditing,
+        statuses.isEditing,
         filteredItems,
-        setCurrentItemId,
+        setTodoContextState,
     );
 
     const { toggleSubItemDoneStatus } = useManageSubItemDoneStatus(
         items,
-        setItems,
-        getCurrentItemId,
-        setIsSaving,
+        setTodoContextState,
+        currentItemId,
     );
 
     const {
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
-        isSorting,
         startSorting,
         stopSorting,
     } = useMoveTodoListItems(
         items,
         currentItemId,
-        isEditing,
-        setItems,
-        setIsSaving,
+        statuses.isEditing,
+        statuses.isSorting,
+        setTodoContextState,
     );
 
     const updateItem: UpdateItemHandler = async (id, updates) => {
         // optimistic updating
-        setItems((currentItems) => applyUpdate(currentItems, id, updates));
+        setTodoContextState((currentState) =>
+            applyItemUpdatesAndStartSaving(currentState, id, updates),
+        );
 
         // update server values
-        setIsSaving(true);
-
         const success = await persistItemUpdate(id, updates);
 
-        setIsSaving(false);
+        setTodoContextState((currentState) => applyStopSaving(currentState));
 
         if (!success) {
             notifyError(
@@ -142,16 +133,12 @@ export default function useManageTodoListItems() {
     };
 
     const { deleteItem } = useManageItemDeletion(
-        items,
-        setItems,
-        currentItemId,
-        setCurrentItemId,
-        setIsSaving,
+        setTodoContextState,
+        filteredItems,
     );
 
     return {
         items: parsedItems,
-        isFetching,
         stopEdit,
         startEdit,
         updateItem,
@@ -161,7 +148,6 @@ export default function useManageTodoListItems() {
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
-        isSorting,
         startSorting,
         stopSorting,
         currentItemId,
@@ -170,16 +156,10 @@ export default function useManageTodoListItems() {
         markCurrentItem,
         clearCurrentItem,
         checkHasOpenChanges,
-        isEditing,
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         toggleSubItemDoneStatus,
         filteredItems,
-        hideDone,
-        hideNotActionable,
-        hideEvening,
-        hideSnoozed,
-        hideNonePriority,
         toggleHideDone,
         toggleHideNotActionable,
         toggleHideEvening,
@@ -188,6 +168,7 @@ export default function useManageTodoListItems() {
         matchingFilters,
         createNewItemAtTheStart,
         snoozeCurrentItemUntil,
-        isSaving,
+        ...statuses,
+        ...appliedFilters,
     };
 }

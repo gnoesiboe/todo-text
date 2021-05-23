@@ -1,6 +1,6 @@
 import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
 
-export function determineNextCurrentItem(
+export function determineNextCurrentItemId(
     currentItemId: string | null,
     items: TodoListItemCollection<ParsedTodoValue | string>,
 ): string | null {
@@ -19,7 +19,7 @@ export function determineNextCurrentItem(
     return items[currentIndex + 1]?.id || items[0].id;
 }
 
-export function determinePreviousCurrentItem(
+export function determinePreviousCurrentItemId(
     currentItemId: string | null,
     items: TodoListItemCollection<ParsedTodoValue | string>,
 ): string | null {

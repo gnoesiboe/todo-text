@@ -1,28 +1,30 @@
-import useStateWithSyncedRef from 'hooks/useStateWithSyncedRef';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyStartEditing,
+    applyStopEditing,
+} from '../utility/todoContextStateMutators';
 
 export type StopEditHandler = () => void;
 
 export type StartEditHandler = (ignoreCurrentItem?: boolean) => void;
 
-export default function useManageIsEditingState(currentItemId: string | null) {
-    // used to  be able to do realtime checks if is editing, through 'checkIsEditing'
-    // to be used in situations like promise and event callbacks where there might
-    // only be access to old state.
-    const [
-        checkIsEditing,
-        setIsEditing,
-        isEditing,
-    ] = useStateWithSyncedRef<boolean>(false);
-
-    const stopEdit: StopEditHandler = () => setIsEditing(false);
+export default function useManageIsEditingState(
+    currentItemId: string | null,
+    setTodoContextState: TodoContextStateSetter,
+) {
+    const stopEdit: StopEditHandler = () => {
+        setTodoContextState((currentState) => applyStopEditing(currentState));
+    };
 
     const startEdit: StartEditHandler = (
         ignoreCurrentItem: boolean = false,
     ) => {
         if (currentItemId || ignoreCurrentItem) {
-            setIsEditing(true);
+            setTodoContextState((currentState) =>
+                applyStartEditing(currentState),
+            );
         }
     };
 
-    return { isEditing, checkIsEditing, stopEdit, startEdit };
+    return { stopEdit, startEdit };
 }

@@ -1,19 +1,18 @@
 import { ParsedTodoValue, TodoListItemCollection } from 'model/TodoListItem';
-import { Dispatch, SetStateAction } from 'react';
+import { TodoContextStateSetter } from './useManageTodoContextState';
 import {
-    determineNextCurrentItem,
-    determinePreviousCurrentItem,
-} from '../utility/currentItemResolver';
+    applySetNextCurrentItem,
+    applySetPreviousCurrentItem,
+} from '../utility/todoContextStateMutators';
 
 export type MoveToNextHandler = () => void;
 
 export type MoveToPreviousHandler = () => void;
 
 export default function useNavigateThroughItems(
-    currentItemId: string | null,
     isEditing: boolean,
     filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
-    setCurrentItem: Dispatch<SetStateAction<string | null>>,
+    setTodoContextState: TodoContextStateSetter,
 ) {
     const moveToNext: MoveToNextHandler = () => {
         if (isEditing) {
@@ -22,7 +21,9 @@ export default function useNavigateThroughItems(
 
         // use filteredItems to determine next, to make sure the cursor
         // does not fall on a hidden item
-        setCurrentItem(determineNextCurrentItem(currentItemId, filteredItems));
+        setTodoContextState((currentState) =>
+            applySetNextCurrentItem(currentState, filteredItems),
+        );
     };
 
     const moveToPrevious: MoveToPreviousHandler = () => {
@@ -32,8 +33,8 @@ export default function useNavigateThroughItems(
 
         // use filteredItems to determine previous, to make sure the cursor
         // does not fall on a hidden item
-        setCurrentItem(
-            determinePreviousCurrentItem(currentItemId, filteredItems),
+        setTodoContextState((currentState) =>
+            applySetPreviousCurrentItem(currentState, filteredItems),
         );
     };
 

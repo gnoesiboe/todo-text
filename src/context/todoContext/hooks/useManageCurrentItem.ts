@@ -1,4 +1,9 @@
-import { Dispatch, SetStateAction } from 'react';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyClearCurrentItemId,
+    applySetCurrentItemId,
+    applyToggleCurrentItemId,
+} from '../utility/todoContextStateMutators';
 
 export type ToggleCurrentItemHandler = (id: string) => void;
 
@@ -9,14 +14,18 @@ export type ClearCurrentItemHandler = () => void;
 export default function useManageCurrentItem(
     isEditing: boolean,
     currentItemId: string | null,
-    setCurrentItem: Dispatch<SetStateAction<string | null>>,
+    setTodoContextState: TodoContextStateSetter,
 ) {
     const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
-        setCurrentItem((currentId) => (currentId === id ? null : id));
+        setTodoContextState((currentState) =>
+            applyToggleCurrentItemId(currentState, id),
+        );
     };
 
     const markCurrentItem: MarkCurrentItemHandler = (id) => {
-        setCurrentItem(id);
+        setTodoContextState((currentState) =>
+            applySetCurrentItemId(currentState, id),
+        );
     };
 
     const clearCurrentItem: ClearCurrentItemHandler = () => {
@@ -24,7 +33,9 @@ export default function useManageCurrentItem(
             return;
         }
 
-        setCurrentItem(null);
+        setTodoContextState((currentState) =>
+            applyClearCurrentItemId(currentState),
+        );
     };
 
     return { toggleCurrentItem, markCurrentItem, clearCurrentItem };

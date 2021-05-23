@@ -1,11 +1,17 @@
 import { TodoListItem, TodoListItemCollection } from 'model/TodoListItem';
-import { Dispatch, SetStateAction, useState } from 'react';
-import { applyUpdate } from '../utility/todosMutators';
 import { notifyError, notifyInfo } from 'utility/notifier';
 import { batchUpdateItems } from '../../../repository/todoListItemRepository';
 import { useLoggedInUser } from '../../authenticationContext/AuthenticationContext';
 import { resolveRanksThatNeedToBeUpdated } from '../../../handler/rankingUpdatesResolver';
 import useThrottleItemRankingUpdates from './useThrottleItemRankingUpdates';
+import { TodoContextStateSetter } from './useManageTodoContextState';
+import {
+    applyItemUpdateCollection,
+    applyStartSorting,
+    applyStopSaving,
+    applyStopSorting,
+    applySwitchCurrentItemPositionsAndStartSaving,
+} from '../utility/todoContextStateMutators';
 
 export type MoveCurrentItemUpHandler = () => Promise<boolean>;
 
@@ -17,25 +23,19 @@ export type MoveToIndexHandler = (
 ) => Promise<boolean>;
 
 const applySwitchOptimisticUpdating = (
-    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
-    currentItemId: string,
+    setTodoContextState: TodoContextStateSetter,
     itemToSwitchWith: TodoListItem | null,
     oldRank: number,
     newRank: number,
 ) => {
-    setItems((currentItems) => {
-        const updatedItems = applyUpdate(currentItems, currentItemId, {
-            rank: newRank,
-        });
-
-        if (!itemToSwitchWith) {
-            return updatedItems;
-        }
-
-        return applyUpdate(updatedItems, itemToSwitchWith.id, {
-            rank: oldRank,
-        });
-    });
+    setTodoContextState((currentState) =>
+        applySwitchCurrentItemPositionsAndStartSaving(
+            currentState,
+            itemToSwitchWith?.id || null,
+            oldRank,
+            newRank,
+        ),
+    );
 };
 
 const applySwitchUpdatePersisting = async (
@@ -69,16 +69,18 @@ export default function useMoveTodoListItems(
     items: TodoListItemCollection,
     currentItemId: string | null,
     isEditing: boolean,
-    setItems: Dispatch<SetStateAction<TodoListItemCollection>>,
-    setIsSaving: Dispatch<SetStateAction<boolean>>,
+    isSorting: boolean,
+    setTodoContextState: TodoContextStateSetter,
 ) {
-    const [isSorting, setIsSorting] = useState<boolean>(false);
-
     const user = useLoggedInUser();
 
-    const startSorting = () => setIsSorting(true);
+    const startSorting = () => {
+        setTodoContextState((currentState) => applyStartSorting(currentState));
+    };
 
-    const stopSorting = () => setIsSorting(false);
+    const stopSorting = () => {
+        setTodoContextState((currentState) => applyStopSorting(currentState));
+    };
 
     const moveCurrentItemUp: MoveCurrentItemUpHandler = async () => {
         if (!user) {
@@ -123,16 +125,13 @@ export default function useMoveTodoListItems(
 
         // optimistic updating
         applySwitchOptimisticUpdating(
-            setItems,
-            currentItemId,
+            setTodoContextState,
             itemToSwitchWith,
             oldRank,
             newRank,
         );
 
         // persist rank updates to server
-        setIsSaving(true);
-
         const success = await applySwitchUpdatePersisting(
             currentItemId,
             itemToSwitchWith,
@@ -140,7 +139,7 @@ export default function useMoveTodoListItems(
             oldRank,
         );
 
-        setIsSaving(false);
+        setTodoContextState((currentState) => applyStopSaving(currentState));
 
         return success;
     };
@@ -188,16 +187,13 @@ export default function useMoveTodoListItems(
 
         // optimistic updating
         applySwitchOptimisticUpdating(
-            setItems,
-            currentItemId,
+            setTodoContextState,
             itemToSwitchWith,
             oldRank,
             newRank,
         );
 
         // persist rank updates to server
-        setIsSaving(false);
-
         const success = await applySwitchUpdatePersisting(
             currentItemId,
             itemToSwitchWith,
@@ -205,13 +201,13 @@ export default function useMoveTodoListItems(
             oldRank,
         );
 
-        setIsSaving(false);
+        setTodoContextState((currentState) => applyStopSaving(currentState));
 
         return success;
     };
 
     const { queueUpdatesToPersist } =
-        useThrottleItemRankingUpdates(setIsSaving);
+        useThrottleItemRankingUpdates(setTodoContextState);
 
     const moveToIndex: MoveToIndexHandler = async (
         previousIndex,
@@ -234,17 +230,9 @@ export default function useMoveTodoListItems(
         );
 
         // optimistic updating
-        setItems((currentItems) => {
-            let nextItems = currentItems;
-
-            Object.keys(updates).forEach((id) => {
-                const itemUpdates = updates[id];
-
-                nextItems = applyUpdate(nextItems, id, itemUpdates);
-            });
-
-            return nextItems;
-        });
+        setTodoContextState((currentState) =>
+            applyItemUpdateCollection(currentState, updates),
+        );
 
         // persist to server
         queueUpdatesToPersist(updates);
@@ -256,7 +244,6 @@ export default function useMoveTodoListItems(
         moveCurrentItemUp,
         moveCurrentItemDown,
         moveToIndex,
-        isSorting,
         startSorting,
         stopSorting,
     };

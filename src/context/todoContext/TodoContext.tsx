@@ -77,7 +77,7 @@ type ContextValue = {
     toggleHideEvening: ToggleHideEveningHandler;
     hideSnoozed: boolean;
     toggleHideSnoozed: ToggleHideSnoozedHandler;
-    hideNonePriority: boolean;
+    hideNonPriority: boolean;
     toggleHideNonePriority: ToggleHideNonePriorityHandler;
     matchingFilters: MatchingFilters;
     createNewItemAtTheStart: CreateNewItemAtTheStartHandler;
@@ -118,7 +118,7 @@ const initialValue: ContextValue = {
     toggleHideEvening: () => {},
     hideSnoozed: true,
     toggleHideSnoozed: () => {},
-    hideNonePriority: false,
+    hideNonPriority: false,
     toggleHideNonePriority: () => {},
     matchingFilters: {
         snoozed: 0,
@@ -170,7 +170,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
-        hideNonePriority,
+        hideNonPriority,
         toggleHideNonePriority,
         filteredItems,
         matchingFilters,
@@ -213,7 +213,7 @@ export const TodoContextProvider: React.FC<{ children: ReactNode }> = ({
         toggleHideEvening,
         hideSnoozed,
         toggleHideSnoozed,
-        hideNonePriority,
+        hideNonPriority,
         toggleHideNonePriority,
         filteredItems,
         matchingFilters,
