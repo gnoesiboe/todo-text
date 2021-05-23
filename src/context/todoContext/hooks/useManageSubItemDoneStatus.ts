@@ -1,54 +1,53 @@
-import { TodoListItemCollection } from '../../../model/TodoListItem';
 import { applyToggleSubItemDoneValueChange } from '../utility/todosMutators';
 import { persistItemUpdate } from '../../../repository/todoListItemRepository';
 import { TodoContextStateSetter } from './useManageTodoContextState';
-import {
-    applyStopSaving,
-    applyUpdateCurrentItemValueAndStartSaving,
-} from '../utility/todoContextStateMutators';
+import { applyUpdateCurrentItemValue } from '../utility/todoContextStateMutators';
 
 export type ToggleSubItemDoneStatusHandler = (
     index: number,
 ) => Promise<boolean>;
 
 export default function useManageSubItemDoneStatus(
-    items: TodoListItemCollection,
     setTodoContextState: TodoContextStateSetter,
-    currentItemId: string | null,
 ): ToggleSubItemDoneStatusHandler {
     return async (itemIndex) => {
-        if (!currentItemId) {
-            return false;
-        }
-
-        const currentItem = items.find(
-            (cursorItem) => cursorItem.id === currentItemId,
-        );
-
-        if (!currentItem) {
-            return false;
-        }
-
         // optimistic updating
-        const updatedValue = applyToggleSubItemDoneValueChange(
-            currentItem.value,
-            itemIndex,
-        );
+        setTodoContextState((currentState) => {
+            if (!currentState.currentItemId) {
+                return currentState;
+            }
 
-        setTodoContextState((currentState) =>
-            applyUpdateCurrentItemValueAndStartSaving(
+            const currentItem =
+                currentState.items.find(
+                    (cursorItem) =>
+                        cursorItem.id === currentState.currentItemId,
+                ) || null;
+
+            if (!currentItem) {
+                return currentState;
+            }
+
+            // As somehow the currentItemId is not available as a parameter to this hook (it is probably one render cycle
+            // behind), I applied this workaround to be able to persist it. Off course it is bad practise to do this in a
+            // setStateAction. @todo find better solution
+            const updatedValue = applyToggleSubItemDoneValueChange(
+                currentItem.value,
+                itemIndex,
+            );
+
+            const newState = applyUpdateCurrentItemValue(
                 currentState,
                 updatedValue,
-            ),
-        );
+            );
 
-        // persist changes to backend
-        const success = await persistItemUpdate(currentItemId, {
-            value: updatedValue,
+            // persist changes to backend
+            persistItemUpdate(currentItem.id, {
+                value: updatedValue,
+            });
+
+            return newState;
         });
 
-        setTodoContextState((currentState) => applyStopSaving(currentState));
-
-        return success;
+        return true;
     };
 }

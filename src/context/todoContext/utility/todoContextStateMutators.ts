@@ -180,7 +180,7 @@ export const applyDeleteItemAndStartPersisting = (
     },
 });
 
-export const applyUpdateCurrentItemValueAndStartSaving = (
+export const applyUpdateCurrentItemValue = (
     currentState: TodoContextState,
     updatedValue: string,
 ): TodoContextState => {
@@ -193,10 +193,6 @@ export const applyUpdateCurrentItemValueAndStartSaving = (
         items: applyUpdate(currentState.items, currentState.currentItemId, {
             value: updatedValue,
         }),
-        statuses: {
-            ...currentState.statuses,
-            isSaving: true,
-        },
     };
 };
 

@@ -75,12 +75,6 @@ export default function useManageTodoListItems() {
         setTodoContextState,
     );
 
-    const toggleSubItemDoneStatus = useManageSubItemDoneStatus(
-        items,
-        setTodoContextState,
-        currentItemId,
-    );
-
     const {
         moveCurrentItemUp,
         moveCurrentItemDown,
@@ -100,6 +94,9 @@ export default function useManageTodoListItems() {
         setTodoContextState,
         filteredItems,
     );
+
+    const toggleSubItemDoneStatus =
+        useManageSubItemDoneStatus(setTodoContextState);
 
     return {
         items: parsedItems,
