@@ -70,68 +70,66 @@ const TodoListItem: React.FC<Props> = ({ item, current, index }) => {
             isDragging={isDragging}
             isSorting={isSorting}
         >
-            <>
-                {/* @ts-ignore don't know how to fix ref */}
-                <StatusIndicatorContainer>
-                    {item.value.isWaiting && showStatusIcon && <WaitingIcon />}
-                    {item.value.isQuickfix &&
-                        !item.value.isWaiting &&
-                        showStatusIcon && <QuickfixIcon />}
-                </StatusIndicatorContainer>
-                {!item.value.isHeading && (
-                    <Checkbox
-                        item={item}
-                        isDragging={isDragging}
-                        accented={item.value.isMust}
-                        checked={item.done}
-                        muted={item.done}
-                        onChange={onDoneChanged}
-                        disabled={!item.value.isActionable}
-                    />
-                )}
+            {/* @ts-ignore don't know how to fix ref */}
+            <StatusIndicatorContainer>
+                {item.value.isWaiting && showStatusIcon && <WaitingIcon />}
+                {item.value.isQuickfix &&
+                    !item.value.isWaiting &&
+                    showStatusIcon && <QuickfixIcon />}
+            </StatusIndicatorContainer>
+            {!item.value.isHeading && (
+                <Checkbox
+                    item={item}
+                    isDragging={isDragging}
+                    accented={item.value.isMust}
+                    checked={item.done}
+                    muted={item.done}
+                    onChange={onDoneChanged}
+                    disabled={!item.value.isActionable}
+                />
+            )}
 
-                {current && isEditing ? (
-                    <EditTodo item={item} onCancel={() => stopEdit()} />
-                ) : (
-                    <Value
-                        item={item}
-                        isDragging={isDragging}
-                        onDoubleClick={onDoubleClick}
-                        onClick={onClick}
-                        dangerouslySetInnerHTML={{
-                            __html: prepareForVisibility(item),
-                        }}
-                        isSorting={isSorting}
-                        current={current}
-                    />
-                )}
-                {!isEditing && !isSorting && current && (
-                    <TodoActionButtonWrapper>
-                        <AppearAndDisappearAnimationContainer>
-                            <SnoozeTodoButton
-                                onClick={onTomorrowClick}
-                                disabled={snoozingButtonsDisabled}
-                            >
-                                tomorrow
-                            </SnoozeTodoButton>
-                            <SnoozeTodoButton
-                                onClick={onNextWeekClick}
-                                disabled={snoozingButtonsDisabled}
-                            >
-                                next week
-                            </SnoozeTodoButton>
-                            <EditTodoButton onClick={() => startEdit()} />
-                            <AddTodo buttonType={ButtonType.TodoAction} />
-                            <DeleteTodo item={item} />
-                        </AppearAndDisappearAnimationContainer>
-                    </TodoActionButtonWrapper>
-                )}
+            {current && isEditing ? (
+                <EditTodo item={item} onCancel={() => stopEdit()} />
+            ) : (
+                <Value
+                    item={item}
+                    isDragging={isDragging}
+                    onDoubleClick={onDoubleClick}
+                    onClick={onClick}
+                    dangerouslySetInnerHTML={{
+                        __html: prepareForVisibility(item),
+                    }}
+                    isSorting={isSorting}
+                    current={current}
+                />
+            )}
+            {!isEditing && !isSorting && current && (
+                <TodoActionButtonWrapper>
+                    <AppearAndDisappearAnimationContainer>
+                        <SnoozeTodoButton
+                            onClick={onTomorrowClick}
+                            disabled={snoozingButtonsDisabled}
+                        >
+                            tomorrow
+                        </SnoozeTodoButton>
+                        <SnoozeTodoButton
+                            onClick={onNextWeekClick}
+                            disabled={snoozingButtonsDisabled}
+                        >
+                            next week
+                        </SnoozeTodoButton>
+                        <EditTodoButton onClick={() => startEdit()} />
+                        <AddTodo buttonType={ButtonType.TodoAction} />
+                        <DeleteTodo item={item} />
+                    </AppearAndDisappearAnimationContainer>
+                </TodoActionButtonWrapper>
+            )}
 
-                {!item.done && <ProgressBar {...item.value.progress} />}
-                {item.value.notes.length > 0 && !isSorting && (
-                    <HasNotesIndicator reverse={current} />
-                )}
-            </>
+            {!item.done && <ProgressBar {...item.value.progress} />}
+            {item.value.notes.length > 0 && !isSorting && (
+                <HasNotesIndicator reverse={current} />
+            )}
         </Container>
     );
 };
