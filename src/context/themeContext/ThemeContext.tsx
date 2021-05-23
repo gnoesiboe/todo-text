@@ -1,5 +1,6 @@
 import React, { ReactNode } from 'react';
 import { DefaultTheme, ThemeProvider } from 'styled-components/macro';
+import { breakpoints } from '../../constants/breakpoints';
 
 /* @see https://coolors.co/264653-2a9d8f-e9c46a-f4a261-e76f51 */
 
@@ -17,10 +18,10 @@ const theme: DefaultTheme = {
         statusIndicatorContainerWrapper: 800,
     },
     breakpoints: {
-        small: '576px',
-        medium: '768px',
-        large: '992px',
-        extraLarge: '1200px',
+        small: `${breakpoints.small}px`,
+        medium: `${breakpoints.medium}px`,
+        large: `${breakpoints.large}px`,
+        extraLarge: `${breakpoints.extraLarge}px`,
     },
 };
 

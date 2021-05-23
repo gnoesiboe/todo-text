@@ -28,7 +28,7 @@ const Container = styled(motion.div)<{
         return isEditing
             ? 'background-color: rgba(231, 111, 81, 0.3) !important;'
             : `
-                background-color: #f3f3f3;
+                background-color: #eee;
                 border-left: ${currentBorderWidth}px solid #ccc;
                 margin-left: -${currentBorderWidth + compensationMargin}px;
             `;
@@ -40,6 +40,11 @@ const Container = styled(motion.div)<{
             color: white !important;
             background: ${theme.colors.third};
         `}
+        
+    @media (max-width: ${({ theme }) => theme.breakpoints.large}) {
+        margin-left: 0;
+        border-left: none;
+    }
 `;
 
 export default Container;
