@@ -101,23 +101,23 @@ export const applyToggleCurrentItemId = (
 
 export const applySetNextCurrentItem = (
     currentState: TodoContextState,
-    filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
+    items: TodoListItemCollection<ParsedTodoValue | string>,
 ): TodoContextState => ({
     ...currentState,
     currentItemId: determineNextCurrentItemId(
         currentState.currentItemId,
-        filteredItems,
+        items,
     ),
 });
 
 export const applySetPreviousCurrentItem = (
     currentState: TodoContextState,
-    filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
+    items: TodoListItemCollection<ParsedTodoValue | string>,
 ): TodoContextState => ({
     ...currentState,
     currentItemId: determinePreviousCurrentItemId(
         currentState.currentItemId,
-        filteredItems,
+        items,
     ),
 });
 

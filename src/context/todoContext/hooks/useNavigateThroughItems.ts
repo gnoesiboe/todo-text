@@ -21,7 +21,12 @@ export default function useNavigateThroughItems(
 
             // use filteredItems to determine next, to make sure the cursor
             // does not fall on a hidden item
-            return applySetNextCurrentItem(currentState, filteredItems);
+            return applySetNextCurrentItem(
+                currentState,
+                currentState.statuses.isSorting
+                    ? currentState.items
+                    : filteredItems,
+            );
         });
     };
 
@@ -33,7 +38,12 @@ export default function useNavigateThroughItems(
 
             // use filteredItems to determine previous, to make sure the cursor
             // does not fall on a hidden item
-            return applySetPreviousCurrentItem(currentState, filteredItems);
+            return applySetPreviousCurrentItem(
+                currentState,
+                currentState.statuses.isSorting
+                    ? currentState.items
+                    : filteredItems,
+            );
         });
     };
 
