@@ -8,14 +8,14 @@ import {
     applyStopSaving,
 } from '../utility/todoContextStateMutators';
 
-const timeoutLength = 2000; // milliseconds
+const timeoutLength = 1000; // milliseconds
 
 export default function useThrottleItemRankingUpdates(
     setTodoContextState: TodoContextStateSetter,
 ) {
     const handle = useRef<NodeJS.Timeout>();
 
-    const queueUpdatesToPersist = (updates: TodoListItemCollectionUpdates) => {
+    return (updates: TodoListItemCollectionUpdates) => {
         if (handle.current) {
             clearTimeout(handle.current);
         }
@@ -39,6 +39,4 @@ export default function useThrottleItemRankingUpdates(
             }
         }, timeoutLength);
     };
-
-    return { queueUpdatesToPersist };
 }

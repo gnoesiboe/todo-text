@@ -1,6 +1,5 @@
-import { TodoListItem, TodoListItemCollection } from 'model/TodoListItem';
-import { notifyError, notifyInfo } from 'utility/notifier';
-import { batchUpdateItems } from '../../../repository/todoListItemRepository';
+import { TodoListItemCollection } from 'model/TodoListItem';
+import { notifyInfo } from 'utility/notifier';
 import { useLoggedInUser } from '../../authenticationContext/AuthenticationContext';
 import { resolveRanksThatNeedToBeUpdated } from '../../../handler/rankingUpdatesResolver';
 import useThrottleItemRankingUpdates from './useThrottleItemRankingUpdates';
@@ -8,9 +7,7 @@ import { Statuses, TodoContextStateSetter } from './useManageTodoContextState';
 import {
     applyItemUpdateCollection,
     applyStartSorting,
-    applyStopSaving,
     applyStopSorting,
-    applySwitchCurrentItemPositionsAndStartSaving,
 } from '../utility/todoContextStateMutators';
 
 export type MoveCurrentItemUpHandler = () => Promise<boolean>;
@@ -22,33 +19,6 @@ export type MoveToIndexHandler = (
     nextIndex: number,
 ) => Promise<boolean>;
 
-const applySwitchUpdatePersisting = async (
-    currentItemId: string,
-    itemToSwitchWith: TodoListItem | null,
-    newRank: number,
-    oldRank: number,
-): Promise<boolean> => {
-    const batchedUpdates: Record<string, Partial<Omit<TodoListItem, 'id'>>> = {
-        [currentItemId]: { rank: newRank },
-    };
-
-    if (itemToSwitchWith) {
-        batchedUpdates[itemToSwitchWith.id] = {
-            rank: oldRank,
-        };
-    }
-
-    const batchedUpdateSuccess = batchUpdateItems(batchedUpdates);
-
-    if (!batchedUpdateSuccess) {
-        notifyError(
-            'Something went wrong when persisting updates to the server. Please refresh the page.',
-        );
-    }
-
-    return batchedUpdateSuccess;
-};
-
 export default function useMoveTodoListItems(
     items: TodoListItemCollection,
     currentItemId: string | null,
@@ -56,6 +26,9 @@ export default function useMoveTodoListItems(
     setTodoContextState: TodoContextStateSetter,
 ) {
     const user = useLoggedInUser();
+
+    const queueUpdatesToPersist =
+        useThrottleItemRankingUpdates(setTodoContextState);
 
     const startSorting = () => {
         setTodoContextState((currentState) => applyStartSorting(currentState));
@@ -84,51 +57,33 @@ export default function useMoveTodoListItems(
             return false;
         }
 
-        const itemIndex = items.findIndex(
+        const currentIndex = items.findIndex(
             (cursorItem) => cursorItem.id === currentItemId,
         );
 
-        if (itemIndex === 0) {
+        if (currentIndex === 0) {
             // is first element in items array. Not possible to move up
 
             return false;
         }
 
-        const oldRank = items[itemIndex].rank;
-        const newRank = oldRank - 1;
+        const nextIndex = currentIndex - 1;
 
-        const itemToSwitchWith =
-            items.find((cursorItem) => cursorItem.rank === newRank) || null;
-
-        if (!itemToSwitchWith) {
-            console.warn(
-                'There is an error in the current ranking somewhere. The item to switch with cannot be resolved.',
-            );
-        }
-
-        // @todo use resolveRanksThatNeedToBeUpdated instead (see moveToIndex)
+        const updates = resolveRanksThatNeedToBeUpdated(
+            items,
+            currentIndex,
+            nextIndex,
+        );
 
         // optimistic updating
         setTodoContextState((currentState) =>
-            applySwitchCurrentItemPositionsAndStartSaving(
-                currentState,
-                itemToSwitchWith?.id || null,
-                oldRank,
-                newRank,
-            ),
+            applyItemUpdateCollection(currentState, updates),
         );
 
-        // persist rank updates to server
-        const success = await applySwitchUpdatePersisting(
-            currentItemId,
-            itemToSwitchWith,
-            newRank,
-            oldRank,
-        );
+        // persist to server
+        queueUpdatesToPersist(updates);
 
-        setTodoContextState((currentState) => applyStopSaving(currentState));
-
-        return success;
+        return true;
     };
 
     const moveCurrentItemDown: MoveCurrentItemDownHandler = async () => {
@@ -150,55 +105,34 @@ export default function useMoveTodoListItems(
             return false;
         }
 
-        const itemIndex = items.findIndex(
+        const currentIndex = items.findIndex(
             (cursorItem) => cursorItem.id === currentItemId,
         );
 
-        if (itemIndex === items.length - 1) {
+        const nextIndex = currentIndex + 1;
+
+        if (nextIndex >= items.length) {
             // is last element in items array. not possible to move down
 
             return false;
         }
 
-        const oldRank = items[itemIndex].rank;
-        const newRank = oldRank + 1;
-
-        const itemToSwitchWith =
-            items.find((cursorItem) => cursorItem.rank === newRank) || null;
-
-        if (!itemToSwitchWith) {
-            console.warn(
-                'There is an error in the current ranking somewhere. The item to switch with cannot be resolved.',
-            );
-        }
-
-        // @todo use resolveRanksThatNeedToBeUpdated instead (see moveToIndex)
+        const updates = resolveRanksThatNeedToBeUpdated(
+            items,
+            currentIndex,
+            nextIndex,
+        );
 
         // optimistic updating
         setTodoContextState((currentState) =>
-            applySwitchCurrentItemPositionsAndStartSaving(
-                currentState,
-                itemToSwitchWith?.id || null,
-                oldRank,
-                newRank,
-            ),
+            applyItemUpdateCollection(currentState, updates),
         );
 
-        // persist rank updates to server
-        const success = await applySwitchUpdatePersisting(
-            currentItemId,
-            itemToSwitchWith,
-            newRank,
-            oldRank,
-        );
+        // persist to server
+        queueUpdatesToPersist(updates);
 
-        setTodoContextState((currentState) => applyStopSaving(currentState));
-
-        return success;
+        return true;
     };
-
-    const { queueUpdatesToPersist } =
-        useThrottleItemRankingUpdates(setTodoContextState);
 
     const moveToIndex: MoveToIndexHandler = async (
         previousIndex,

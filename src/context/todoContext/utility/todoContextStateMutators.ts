@@ -213,40 +213,6 @@ export const applyItemUpdatesAndStartSaving = (
     },
 });
 
-export const applySwitchCurrentItemPositionsAndStartSaving = (
-    currentState: TodoContextState,
-    itemIdToSwitchWith: string | null,
-    oldRank: number,
-    newRank: number,
-): TodoContextState => {
-    if (!currentState.currentItemId) {
-        return currentState;
-    }
-
-    const updatedItems = applyUpdate(
-        currentState.items,
-        currentState.currentItemId,
-        {
-            rank: newRank,
-        },
-    );
-
-    const newItems = itemIdToSwitchWith
-        ? applyUpdate(updatedItems, itemIdToSwitchWith, {
-              rank: oldRank,
-          })
-        : updatedItems;
-
-    return {
-        ...currentState,
-        items: newItems,
-        statuses: {
-            ...currentState.statuses,
-            isSaving: true,
-        },
-    };
-};
-
 export const applyStartSorting = (
     currentState: TodoContextState,
 ): TodoContextState => ({

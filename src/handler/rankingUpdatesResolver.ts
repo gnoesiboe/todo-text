@@ -6,17 +6,17 @@ import produce from 'immer';
 
 export const resolveRanksThatNeedToBeUpdated = (
     items: TodoListItemCollection,
-    previousIndex: number,
+    currentIndex: number,
     nextIndex: number,
 ) => {
     const updates: TodoListItemCollectionUpdates = {};
 
     const movedItems = produce<TodoListItemCollection>(items, (nextItems) => {
-        if (!items[previousIndex]) {
+        if (!items[currentIndex]) {
             throw new Error('Expecting item at previous index to be available');
         }
 
-        const itemToMove = nextItems.splice(previousIndex, 1)[0];
+        const itemToMove = nextItems.splice(currentIndex, 1)[0];
 
         nextItems.splice(nextIndex, 0, itemToMove);
     });
