@@ -32,12 +32,6 @@ export const AuthenticationContextProvider: React.FC<{
     );
 };
 
-export const useIsAuthenticated = (): boolean => {
-    const { user } = useContext(AuthenticationContext);
-
-    return !!user;
-};
-
 export const useLoggedInUser = (): User | null => {
     const { user } = useContext(AuthenticationContext);
 

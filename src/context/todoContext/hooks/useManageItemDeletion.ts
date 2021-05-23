@@ -21,10 +21,10 @@ export type DeleteItemHandler = (id: string) => Promise<boolean>;
 export default function useManageItemDeletion(
     setTodoContextState: TodoContextStateSetter,
     filteredItems: TodoListItemCollection<ParsedTodoValue | string>,
-) {
+): DeleteItemHandler {
     const user = useLoggedInUser();
 
-    const deleteItem: DeleteItemHandler = async (id) => {
+    return async (id) => {
         if (!user) {
             throw new Error('Expecting user to be available at this point');
         }
@@ -76,6 +76,4 @@ export default function useManageItemDeletion(
 
         return reSortingSuccessful;
     };
-
-    return { deleteItem };
 }

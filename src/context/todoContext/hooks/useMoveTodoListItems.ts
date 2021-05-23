@@ -4,7 +4,7 @@ import { batchUpdateItems } from '../../../repository/todoListItemRepository';
 import { useLoggedInUser } from '../../authenticationContext/AuthenticationContext';
 import { resolveRanksThatNeedToBeUpdated } from '../../../handler/rankingUpdatesResolver';
 import useThrottleItemRankingUpdates from './useThrottleItemRankingUpdates';
-import { TodoContextStateSetter } from './useManageTodoContextState';
+import { Statuses, TodoContextStateSetter } from './useManageTodoContextState';
 import {
     applyItemUpdateCollection,
     applyStartSorting,
@@ -21,22 +21,6 @@ export type MoveToIndexHandler = (
     previousIndex: number,
     nextIndex: number,
 ) => Promise<boolean>;
-
-const applySwitchOptimisticUpdating = (
-    setTodoContextState: TodoContextStateSetter,
-    itemToSwitchWith: TodoListItem | null,
-    oldRank: number,
-    newRank: number,
-) => {
-    setTodoContextState((currentState) =>
-        applySwitchCurrentItemPositionsAndStartSaving(
-            currentState,
-            itemToSwitchWith?.id || null,
-            oldRank,
-            newRank,
-        ),
-    );
-};
 
 const applySwitchUpdatePersisting = async (
     currentItemId: string,
@@ -68,8 +52,7 @@ const applySwitchUpdatePersisting = async (
 export default function useMoveTodoListItems(
     items: TodoListItemCollection,
     currentItemId: string | null,
-    isEditing: boolean,
-    isSorting: boolean,
+    statuses: Statuses,
     setTodoContextState: TodoContextStateSetter,
 ) {
     const user = useLoggedInUser();
@@ -87,11 +70,11 @@ export default function useMoveTodoListItems(
             throw new Error('Expecting user to be available at this point');
         }
 
-        if (isEditing) {
+        if (statuses.isEditing) {
             return false;
         }
 
-        if (!isSorting) {
+        if (!statuses.isSorting) {
             notifyInfo('Moving up is only available in sort modus');
 
             return false;
@@ -123,12 +106,16 @@ export default function useMoveTodoListItems(
             );
         }
 
+        // @todo use resolveRanksThatNeedToBeUpdated instead (see moveToIndex)
+
         // optimistic updating
-        applySwitchOptimisticUpdating(
-            setTodoContextState,
-            itemToSwitchWith,
-            oldRank,
-            newRank,
+        setTodoContextState((currentState) =>
+            applySwitchCurrentItemPositionsAndStartSaving(
+                currentState,
+                itemToSwitchWith?.id || null,
+                oldRank,
+                newRank,
+            ),
         );
 
         // persist rank updates to server
@@ -149,11 +136,11 @@ export default function useMoveTodoListItems(
             throw new Error('Expecting user to be available at this point');
         }
 
-        if (isEditing) {
+        if (statuses.isEditing) {
             return false;
         }
 
-        if (!isSorting) {
+        if (!statuses.isSorting) {
             notifyInfo('Moving down is only available in sort modus');
 
             return false;
@@ -185,12 +172,16 @@ export default function useMoveTodoListItems(
             );
         }
 
+        // @todo use resolveRanksThatNeedToBeUpdated instead (see moveToIndex)
+
         // optimistic updating
-        applySwitchOptimisticUpdating(
-            setTodoContextState,
-            itemToSwitchWith,
-            oldRank,
-            newRank,
+        setTodoContextState((currentState) =>
+            applySwitchCurrentItemPositionsAndStartSaving(
+                currentState,
+                itemToSwitchWith?.id || null,
+                oldRank,
+                newRank,
+            ),
         );
 
         // persist rank updates to server
@@ -213,11 +204,11 @@ export default function useMoveTodoListItems(
         previousIndex,
         nextIndex,
     ) => {
-        if (isEditing) {
+        if (statuses.isEditing) {
             return false;
         }
 
-        if (!isSorting) {
+        if (!statuses.isSorting) {
             notifyInfo('Moving is only available in sort modus');
 
             return false;

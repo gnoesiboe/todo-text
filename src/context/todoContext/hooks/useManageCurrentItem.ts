@@ -12,8 +12,6 @@ export type MarkCurrentItemHandler = (id: string) => void;
 export type ClearCurrentItemHandler = () => void;
 
 export default function useManageCurrentItem(
-    isEditing: boolean,
-    currentItemId: string | null,
     setTodoContextState: TodoContextStateSetter,
 ) {
     const toggleCurrentItem: ToggleCurrentItemHandler = (id) => {
@@ -29,13 +27,16 @@ export default function useManageCurrentItem(
     };
 
     const clearCurrentItem: ClearCurrentItemHandler = () => {
-        if (isEditing || !currentItemId) {
-            return;
-        }
+        setTodoContextState((currentState) => {
+            if (
+                currentState.statuses.isEditing ||
+                !currentState.currentItemId
+            ) {
+                return currentState;
+            }
 
-        setTodoContextState((currentState) =>
-            applyClearCurrentItemId(currentState),
-        );
+            return applyClearCurrentItemId(currentState);
+        });
     };
 
     return { toggleCurrentItem, markCurrentItem, clearCurrentItem };

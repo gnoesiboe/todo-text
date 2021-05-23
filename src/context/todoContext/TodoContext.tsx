@@ -5,12 +5,9 @@ import type {
     TodoListItemCollection,
 } from 'model/TodoListItem';
 import { createContext, ReactNode, useContext } from 'react';
-import useManageTodoListItems, {
-    UpdateItemHandler,
-} from './hooks/useManageTodoListItems';
+import useManageTodoListItems from './hooks/useManageTodoListItems';
 import useConfirmCloseWhenThereAreOpenChanges from './hooks/useConfirmCloseWhenThereAreOpenChanges';
 import {
-    MatchingFilters,
     ToggleHideDoneHandler,
     ToggleHideEveningHandler,
     ToggleHideNotWaitingHandler,
@@ -43,6 +40,8 @@ import {
 import { SnoozeCurrentItemUntilHandler } from './hooks/useSnoozeCurrentItem';
 import { ToggleSubItemDoneStatusHandler } from './hooks/useManageSubItemDoneStatus';
 import { DeleteItemHandler } from './hooks/useManageItemDeletion';
+import { MatchingFilters } from './utility/filterResolvers';
+import { UpdateItemHandler } from './hooks/useManageItemUpdating';
 
 type ContextValue = {
     items: TodoListItemCollection<ParsedTodoValue>;

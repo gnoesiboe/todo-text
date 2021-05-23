@@ -19,7 +19,7 @@ export default function useFetchTodoListItems(
     const user = useLoggedInUser();
 
     const fetchTodosFromBackend = useCallback(async () => {
-        if (isFetching || checkHasOpenChanges() || !user) {
+        if (isFetching || checkHasOpenChanges() || !user || isEditing) {
             return;
         }
 
@@ -30,7 +30,7 @@ export default function useFetchTodoListItems(
 
             // make sure that there are no open changes at this point. If there are
             // we cancel updating the items state, to prevent loosing them.
-            if (!checkHasOpenChanges() && !isEditing) {
+            if (!checkHasOpenChanges()) {
                 setTodoContextState((currentState) =>
                     applyItemsReceivedFromBackend(currentState, incomingItems),
                 );
@@ -46,7 +46,7 @@ export default function useFetchTodoListItems(
         }
     }, [isFetching, setTodoContextState, checkHasOpenChanges, isEditing, user]);
 
-    // initial fetch when list is in
+    // initial fetch on mount
     useEffect(() => {
         // noinspection JSIgnoredPromiseFromCall
         fetchTodosFromBackend();
@@ -54,7 +54,7 @@ export default function useFetchTodoListItems(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    // refetch on window focus
+    // refetch on window focus, to get latest changes from the backend
     useEffect(() => {
         const onWindowFocus = () => {
             // Wait a second before re-fetching. When using confirm, the window looses focus, but we want that change to be in

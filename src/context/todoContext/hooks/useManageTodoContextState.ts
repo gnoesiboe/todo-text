@@ -12,15 +12,17 @@ export type AppliedFilters = {
     hideNonPriority: boolean;
 };
 
+export type Statuses = {
+    isSaving: boolean;
+    isFetching: boolean;
+    isEditing: boolean;
+    isSorting: boolean;
+};
+
 export type TodoContextState = {
     currentItemId: string | null;
     items: TodoListItemCollection;
-    statuses: {
-        isSaving: boolean;
-        isFetching: boolean;
-        isEditing: boolean;
-        isSorting: boolean;
-    };
+    statuses: Statuses;
     appliedFilters: AppliedFilters;
 };
 

@@ -1,4 +1,4 @@
-import type { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
+import type { ParsedTodoValue } from 'model/TodoListItem';
 import useFetchTodoListItems from './useFetchTodoListItems';
 import useToggleFilters from './useToggleFilters';
 import useNavigateThroughItems from './useNavigateThroughItems';
@@ -10,20 +10,10 @@ import useManageHasOpenChangesState from './useManageHasOpenChangesState';
 import { transformToParsedCollection } from '../utility/todoListValueParser';
 import useSnoozeCurrentItem from './useSnoozeCurrentItem';
 import useManageSubItemDoneStatus from './useManageSubItemDoneStatus';
-import { notifyError } from '../../../utility/notifier';
 import { resolveCurrentItem } from '../utility/resolver';
 import useManageItemDeletion from './useManageItemDeletion';
-import { persistItemUpdate } from '../../../repository/todoListItemRepository';
 import useManageTodoContextState from './useManageTodoContextState';
-import {
-    applyItemUpdatesAndStartSaving,
-    applyStopSaving,
-} from '../utility/todoContextStateMutators';
-
-export type UpdateItemHandler = (
-    id: string,
-    updates: Partial<TodoListItem>,
-) => Promise<boolean>;
+import useManageItemUpdating from './useManageItemUpdating';
 
 export default function useManageTodoListItems() {
     const {
@@ -33,10 +23,8 @@ export default function useManageTodoListItems() {
 
     const { checkHasOpenChanges } = useManageHasOpenChangesState();
 
-    const { startEdit, stopEdit } = useManageIsEditingState(
-        currentItemId,
-        setTodoContextState,
-    );
+    const { startEdit, stopEdit } =
+        useManageIsEditingState(setTodoContextState);
 
     useFetchTodoListItems(
         setTodoContextState,
@@ -59,16 +47,12 @@ export default function useManageTodoListItems() {
         toggleHideNotActionable,
         toggleHideEvening,
         toggleHideSnoozed,
-        matchingFilters,
         toggleHideNonePriority,
+        matchingFilters,
     } = useToggleFilters(parsedItems, appliedFilters, setTodoContextState);
 
     const { toggleCurrentItem, markCurrentItem, clearCurrentItem } =
-        useManageCurrentItem(
-            statuses.isEditing,
-            currentItemId,
-            setTodoContextState,
-        );
+        useManageCurrentItem(setTodoContextState);
 
     const currentItem = resolveCurrentItem<ParsedTodoValue>(
         parsedItems,
@@ -87,12 +71,11 @@ export default function useManageTodoListItems() {
     );
 
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
-        statuses.isEditing,
         filteredItems,
         setTodoContextState,
     );
 
-    const { toggleSubItemDoneStatus } = useManageSubItemDoneStatus(
+    const toggleSubItemDoneStatus = useManageSubItemDoneStatus(
         items,
         setTodoContextState,
         currentItemId,
@@ -107,32 +90,13 @@ export default function useManageTodoListItems() {
     } = useMoveTodoListItems(
         items,
         currentItemId,
-        statuses.isEditing,
-        statuses.isSorting,
+        statuses,
         setTodoContextState,
     );
 
-    const updateItem: UpdateItemHandler = async (id, updates) => {
-        // optimistic updating
-        setTodoContextState((currentState) =>
-            applyItemUpdatesAndStartSaving(currentState, id, updates),
-        );
+    const updateItem = useManageItemUpdating(setTodoContextState);
 
-        // update server values
-        const success = await persistItemUpdate(id, updates);
-
-        setTodoContextState((currentState) => applyStopSaving(currentState));
-
-        if (!success) {
-            notifyError(
-                'Something went wrong when updating an item. Please refresh the page',
-            );
-        }
-
-        return success;
-    };
-
-    const { deleteItem } = useManageItemDeletion(
+    const deleteItem = useManageItemDeletion(
         setTodoContextState,
         filteredItems,
     );

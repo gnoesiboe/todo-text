@@ -15,10 +15,8 @@ export default function useManageSubItemDoneStatus(
     items: TodoListItemCollection,
     setTodoContextState: TodoContextStateSetter,
     currentItemId: string | null,
-) {
-    const toggleSubItemDoneStatus: ToggleSubItemDoneStatusHandler = async (
-        itemIndex,
-    ) => {
+): ToggleSubItemDoneStatusHandler {
+    return async (itemIndex) => {
         if (!currentItemId) {
             return false;
         }
@@ -53,6 +51,4 @@ export default function useManageSubItemDoneStatus(
 
         return success;
     };
-
-    return { toggleSubItemDoneStatus };
 }

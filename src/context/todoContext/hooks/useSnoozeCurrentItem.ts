@@ -17,10 +17,8 @@ export default function useSnoozeCurrentItem(
     items: TodoListItemCollection,
     setTodoContextState: TodoContextStateSetter,
     currentItemId: string | null,
-) {
-    const snoozeCurrentItemUntil: SnoozeCurrentItemUntilHandler = async (
-        until,
-    ) => {
+): SnoozeCurrentItemUntilHandler {
+    return async (until) => {
         if (!currentItemId) {
             return false;
         }
@@ -38,7 +36,6 @@ export default function useSnoozeCurrentItem(
         const newValue = applySnoozeItemUntilToValue(currentItem.value, until);
 
         // optimistic updating
-        // @todo move to modifier somewhere
         setTodoContextState((currentState) => {
             if (!currentState.currentItemId) {
                 throw new Error(
@@ -68,6 +65,4 @@ export default function useSnoozeCurrentItem(
 
         return success;
     };
-
-    return snoozeCurrentItemUntil;
 }
