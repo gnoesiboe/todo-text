@@ -17,7 +17,6 @@ const Container = styled(motion.div)<{
         ${({ current, isSorting }) => (current && !isSorting ? 30 : 5)}px -${compensationMargin}px;
     padding: 5px 0 3px 0;
     border-radius: 3px;
-    transition: background-color 0.3s;
     background: #fff;
 
     ${({ isEditing, current }) => {
