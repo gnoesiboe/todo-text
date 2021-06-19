@@ -63,12 +63,7 @@ export default function useManageTodoListItems() {
         createNewItemAfterCurrent,
         createNewItemBeforeCurrent,
         createNewItemAtTheStart,
-    } = useManageItemCreation(
-        setTodoContextState,
-        markCurrentItem,
-        startEdit,
-        currentItem,
-    );
+    } = useManageItemCreation(setTodoContextState, currentItem);
 
     const { moveToNext, moveToPrevious } = useNavigateThroughItems(
         filteredItems,

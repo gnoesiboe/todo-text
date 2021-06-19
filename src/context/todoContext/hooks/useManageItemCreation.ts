@@ -1,6 +1,4 @@
 import { ParsedTodoValue, TodoListItem } from 'model/TodoListItem';
-import { MarkCurrentItemHandler } from './useManageCurrentItem';
-import { StartEditHandler } from './useManageIsEditingState';
 import { generateId } from 'utility/idGenerator';
 import { persist } from '../../../repository/todoListItemRepository';
 import { createEmpty } from '../../../model/factory/todoListItemFactory';
@@ -22,8 +20,6 @@ export type CreateNewItemAtTheStartHandler = () => void;
 
 export default function useManageItemCreation(
     setTodoContextState: TodoContextStateSetter,
-    markCurrentItem: MarkCurrentItemHandler,
-    startEdit: StartEditHandler,
     currentItem: TodoListItem<string | ParsedTodoValue> | null,
 ) {
     const user = useLoggedInUser();
@@ -48,10 +44,6 @@ export default function useManageItemCreation(
         }
 
         setTodoContextState((currentState) => applyStopSaving(currentState));
-
-        markCurrentItem(newItem.id);
-
-        startEdit(true);
     };
 
     const createNewItemAtTheStart: CreateNewItemAtTheStartHandler = () => {

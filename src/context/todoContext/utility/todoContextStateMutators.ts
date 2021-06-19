@@ -145,7 +145,9 @@ export const applyCreateNewItemAndStartSaving = (
     statuses: {
         ...currentState.statuses,
         isSaving: true,
+        isEditing: true, // start editing right away
     },
+    currentItemId: newItem.id, // mark new item as current
 });
 
 export const applyStartSaving = (
