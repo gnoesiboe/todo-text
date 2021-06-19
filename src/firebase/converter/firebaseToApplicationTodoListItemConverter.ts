@@ -3,20 +3,19 @@ import { normalizeFirebaseTodoListItem } from '../normalizer/todoListItemNormali
 import { TodoListItem } from '../../model/TodoListItem';
 import { FirestoreTodoListItem } from '../model/FirestoreTodoListItem';
 
-export const firebaseToApplicationTodoListItemConverter: firebase.firestore.FirestoreDataConverter<TodoListItem> = {
-    toFirestore(todoListItem: TodoListItem): FirestoreTodoListItem {
-        const { id, ...otherProps } = todoListItem;
+export const firebaseToApplicationTodoListItemConverter: firebase.firestore.FirestoreDataConverter<TodoListItem> =
+    {
+        toFirestore(todoListItem: TodoListItem): FirestoreTodoListItem {
+            const { id, ...otherProps } = todoListItem;
 
-        const normalizedData = normalizeFirebaseTodoListItem(otherProps);
+            return normalizeFirebaseTodoListItem(otherProps);
+        },
+        fromFirestore(snapshot, options) {
+            const data = normalizeFirebaseTodoListItem(snapshot.data(options));
 
-        return normalizedData;
-    },
-    fromFirestore(snapshot, options) {
-        const data = normalizeFirebaseTodoListItem(snapshot.data(options));
-
-        return {
-            ...data,
-            id: snapshot.id,
-        };
-    },
-};
+            return {
+                ...data,
+                id: snapshot.id,
+            };
+        },
+    };
