@@ -9,6 +9,7 @@ const Textarea = styled(ReactTextareaAutosize)`
     font-size: 18px !important;
     font-family: Arial, Helvetica, sans-serif !important;
     resize: none;
+    border: none;
 `;
 
 export default Textarea;
